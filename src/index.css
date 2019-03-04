@@ -9,14 +9,20 @@ body {
   text-align: left;
 }
 
-.table_name {
+.navigation {
+  display: flex;
+  justify-content: space-between;
+}
+
+.titlebar {
   border-style: solid;
   border-top-width: 0px;
   border-left-width: 0px;
   border-right-width: 0px;
   border-bottom-width: 2px;
   border-color: black;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
 }
 
 .value-viewer {

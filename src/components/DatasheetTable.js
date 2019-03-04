@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import './App.css';
 import _ from 'lodash';
 
 import ReactDataSheet from 'react-datasheet';
 import 'react-datasheet/lib/react-datasheet.css';
 
-class DatasheetTable extends Component {
+export default class DatasheetTable extends Component {
   constructor(props) {
     super(props)
     this.onCellsChanged = this.onCellsChanged.bind(this);
+    this.addRow = this.addRow.bind(this);
     let grid = null;
     if (props.grid == null) {
       grid = [[{value: ""}]];
@@ -44,11 +44,30 @@ class DatasheetTable extends Component {
     this.setState({grid})
   }
 
+  addRow() {
+    const grid = this.state.grid.slice();
+    grid.push([{readOnly: true, value: grid.length+1},{value: ""}])
+    this.setState({
+      name: this.state.name,
+      background_color: this.state.background_color,
+      grid: grid
+    })
+  }
+
   render() {
+    console.log("background color is " + this.state.background_color);
     return (
       <div className="table" style={{backgroundColor: this.state.background_color}}>
-        <div className="table_name">
-          {this.state.name}
+        <div className="titlebar">
+          <span></span>
+          <span className="table_name">
+            {this.state.name}
+          </span>
+          <span className="add_button">
+            <button className="add" onClick={this.addRow}>
+              Add
+            </button>
+          </span>
         </div>
         <ReactDataSheet
           data={this.state.grid}
@@ -60,45 +79,3 @@ class DatasheetTable extends Component {
     );
   }
 }
-
-function loadTables() {
-  return (
-    <div className="tables">
-      <DatasheetTable name="TODO"
-                      background_color="yellow"
-                      grid = {[
-                        [{value:  "Mettre a jour mes contacts"}],
-                        [{value:  "Pouvoir ecrire en francais"}],
-                        [{value:  "Prendre mon vieux vimrc"}]
-                      ]}
-      />
-      <DatasheetTable name="Notes"
-                      grid = {[
-                        [{value:  1}],
-                        [{value:  2}]
-                      ]}
-      />
-      <DatasheetTable name="Musique" />
-      <DatasheetTable name="Test"
-                      grid = {[
-                        [{value:  1},{value:  3}],
-                        [{value:  2},{value:  4}]
-                      ]}
-      />
-      <DatasheetTable name="Videos" />
-      <DatasheetTable name="Emails" />
-      <DatasheetTable name="Bookmarks" />
-    </div>
-  );
-}
-
-class App extends Component {
-  render () {
-    console.log("render App")
-    return (
-      loadTables()
-    )
-  }
-}
-
-export default App;
