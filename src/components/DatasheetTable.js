@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 
 import ReactDataSheet from 'react-datasheet';
 import 'react-datasheet/lib/react-datasheet.css';

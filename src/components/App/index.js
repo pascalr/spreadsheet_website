@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
 import DatasheetTable from '../DatasheetTable';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
@@ -54,8 +54,10 @@ export default class App extends React.Component {
             <Navigation />
 
             <hr />
-
             <Route exact path={ROUTES.LANDING} component={LandingPage} />
+            <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+            <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+
           </div>
         </Router>
         {loadTables()}
@@ -63,9 +65,7 @@ export default class App extends React.Component {
     )
   }
 }
-            /*<Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-            <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-            <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
+            /*<Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
             <Route path={ROUTES.HOME} component={HomePage} />
             <Route path={ROUTES.ACCOUNT} component={AccountPage} />
             <Route path={ROUTES.ADMIN} component={AdminPage} />*/
