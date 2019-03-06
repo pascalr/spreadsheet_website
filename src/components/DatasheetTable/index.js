@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import ReactDataSheet from 'react-datasheet';
 import 'react-datasheet/lib/react-datasheet.css';
 
-export default class DatasheetTable extends Component {
+import { withFirebase } from '../Firebase';
+
+class DatasheetTableBase extends Component {
   constructor(props) {
     super(props)
     this.onCellsChanged = this.onCellsChanged.bind(this);
@@ -14,8 +16,10 @@ export default class DatasheetTable extends Component {
     } else {
       grid = props.grid;
       // Add numbers to each line
-      for (let i = 0; i < grid.length; i++) {
-        grid[i].unshift({readOnly: true, value: i+1})
+      /*for (let i = 0; i < grid.length; i++) {
+        if (grid[i] != undefined) {
+          grid[i].unshift({readOnly: true, value: i+1})
+        }
       }
       // Add letters to each column, if there is more than one
       let n_column = grid[1].length - 1;
@@ -25,14 +29,25 @@ export default class DatasheetTable extends Component {
           letters.push({readOnly: true, value: String.fromCharCode(65 + i)})
         }
         grid.unshift(letters)
-      }
+      }*/
     }
     this.state = {
       name: props.name,
-      background_color: props.background_color,
+      background_color: props.background_color || "white",
       grid: grid
     }
   }
+
+  /*static getDerivedStateFromProps(props, current_state) {
+    debugger
+    if (current_state.grid !== props.grid) {
+      return {
+        grid: props.grid,
+        //computed_prop: heavy_computation(props.value)
+      }
+    }
+    return null
+  }*/
   
   onCellsChanged(changes) {
     console.log('onCellsChanged')
@@ -54,7 +69,6 @@ export default class DatasheetTable extends Component {
   }
 
   render() {
-    console.log("background color is " + this.state.background_color);
     return (
       <div className="table" style={{backgroundColor: this.state.background_color}}>
         <div className="titlebar">
@@ -78,3 +92,7 @@ export default class DatasheetTable extends Component {
     );
   }
 }
+
+const DatasheetTable = withFirebase(DatasheetTableBase);
+
+export default DatasheetTable;

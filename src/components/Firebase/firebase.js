@@ -1,5 +1,6 @@
 import app from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/database';
 
 console.log("firebase.js");
 
@@ -12,33 +13,42 @@ const config = {
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
 
-class Firebase2 {
-  constructor(blah) {
-    debugger
+class Firebase {
+  constructor() {
     app.initializeApp(config);
 
     this.auth = app.auth();
+    this.db = app.database();
   }
 
-  doCreateUserWithEmailAndPassword(email, password) {
+  doCreateUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
-  }
 
-  doSignInWithEmailAndPassword(email, password) {
+  doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);
-  }
 
-  doSignOut() {
-    this.auth.signOut();
-  }
+  doSignOut = () => this.auth.signOut();
 
-  doPasswordReset(email) {
-    this.auth.sendPasswordResetEmail(email);
-  }
+  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
-  doPasswordUpdate(password) {
+  doPasswordUpdate = password =>
     this.auth.currentUser.updatePassword(password);
-  }
+
+  // *** tmp for testing ***
+  
+  get_db = () => this.db
+
+  // *** Tables API ***
+  
+  tables = () => this.db.ref('tables');
+
+  table_defs = () => this.db.ref('table_defs');
+
+  // *** User API ***
+
+  user = uid => this.db.ref(`users/${uid}`);
+
+  users = () => this.db.ref('users');
 }
 
-export default Firebase2;
+export default Firebase;
