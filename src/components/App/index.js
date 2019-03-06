@@ -31,16 +31,10 @@ class App extends React.Component {
     // BIG FIXME: L'ordre ici est important pour que ca marche
     // et ca ne devrait pas parce qu'il y a aucune garantie.
     this.props.firebase.tables().once('value').then((snapshot) => (
-      this.setState({
-        tables: snapshot.val(),
-      })
-      // Object.keys(snapshot.val()).map
+      this.setState({tables: snapshot.val()})
     ))
     this.props.firebase.table_defs().once('value').then((snapshot) => (
-      this.setState({
-        table_defs: snapshot.val(),
-      })
-      // Object.keys(snapshot.val()).map
+      this.setState({table_defs: snapshot.val()})
     ))
   }
 
@@ -53,40 +47,35 @@ class App extends React.Component {
                         [{value:  "Pouvoir ecrire en francais"}],
                         [{value:  "Prendre mon vieux vimrc"}]
                       ]}
+                      table_defs = {this.state.table_defs}
       />
       <DatasheetTable name="Notes"
                       grid = {[
                         [{value:  1}, {value: 3}],
                         [{value:  2}, {value: 3}]
                       ]}
+                      table_defs = {this.state.table_defs}
       />
-      <DatasheetTable name="Videos" />
-      <DatasheetTable name="Emails" />
-      <DatasheetTable name="Bookmarks" />
       {Object.keys(this.state.table_defs).map((name,i) => {
+        let columns = this.state.table_defs[name]["columns"]
         let firstLine = [{readOnly: true, value:""}, // top left corner is blank
-                         ...this.state.table_defs[name]["columns"].map((col, j) => (
-                              {value: col}
+                         ...columns.map((col, j) => (
+                              {readOnly: true, value: col}
                          ))];
-        let dataLines = (this.state.tables[name] ?
-                            this.state.tables[name].map((table, j) => (
-                            [{readOnly: true, value:j},{value: "test"},{value: "test"}] // line number
-                          )) : [[{readOnly: true, value:1},{value: ""}]])
-        let grid = [firstLine, ...dataLines].filter(function (el) {
-          return el != null;
-        }); // FIXME: maybe useless...
-        let z = this;
+        let dataLines = (this.state.tables[name] || []).map((table, j) => (
+                              [{readOnly: true, value:j},
+                                ...columns.map(col => ({value: table[col]}) )
+                              ]
+                          ))
+        let grid = [firstLine, ...dataLines].filter((el) => ( el != null ));
+        let emptyLine = new Array(grid[0].length).fill({value: ""})
+        emptyLine[0] = {readOnly: true, value: grid.length}
+        // Add an empty line
         return (
-        <DatasheetTable key = {i}
-                        name = {name}
-                        grid = {grid}
-        />
+        <DatasheetTable key={i} name={name} grid={[...grid, emptyLine]} table_defs={this.state.table_defs} />
       )})}
     </div>
   )
- //                       grid={this.state.tablesValues[i].map((table,j) => (
- //                         Object.values(table).map((val) => ({value: val}))
- //                       ))}
 
   render() {
     return (
