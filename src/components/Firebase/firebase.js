@@ -44,7 +44,8 @@ class Firebase {
   table = name => this.db.ref(`tables/${name}`);
   tableRow = (name, row) => this.db.ref(`tables/${name}/${row}`);
 
-  table_defs = () => this.db.ref('table_defs');
+  tableDefs = () => this.db.ref('table_defs');
+  tableDefs2 = () => this.db.ref('tableDefs2');
 
   // *** User API ***
 

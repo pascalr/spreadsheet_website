@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
-
+import React, { Component } from 'react'
 import ReactDataSheet from 'react-datasheet';
-import 'react-datasheet/lib/react-datasheet.css';
+import './datasheet.css';
 
 import { withFirebase } from '../Firebase';
 
@@ -13,7 +12,8 @@ class DatasheetTableBase extends Component {
     this.state = {
       name: props.name,
       background_color: props.background_color || "white",
-      table_defs: props.table_defs,
+      table_def: props.table_def,
+      tables: props.tables,
       grid: props.grid || [[{value: ""}]],
     }
   }
@@ -30,23 +30,29 @@ class DatasheetTableBase extends Component {
     return null
   }*/
 
-  columns = () => {
-    let table_def = this.state.table_defs[this.state.name]
-    if (table_def) {
-      return table_def["columns"]
+  // TODO: Encapsuler toute cette logique dans une classe TableDef
+  column = (col) => {
+    if (this.state.table_def.showLineNumbers != false) {
+      return this.columns()[col-1]
     } else {
-      return undefined
+      return this.columns()[col]
     }
   }
+
+  columns = () => ((this.state.table_def || {})["columns"])
   
   onCellsChanged(changes) {
     const grid = this.state.grid.map(row => [...row])
     changes.forEach(({cell, row, col, value}) => {
       let val = {}
       for (let i = 0; i < this.columns().length; i++) {
-        val[this.columns()[i].name] = grid[row][i+1].value || ""
+        if (this.state.table_def.showLineNumbers != false) {
+          val[this.columns()[i].name] = grid[row][i+1].value || ""
+        } else {
+          val[this.columns()[i].name] = grid[row][i].value || ""
+        }
       }
-      val[this.columns()[col-1].name] = value;
+      val[this.column(col).name] = value;
       this.props.firebase.tableRow(this.state.name,row).set(val)
       grid[row][col] = {...grid[row][col], value}
     })
@@ -55,7 +61,11 @@ class DatasheetTableBase extends Component {
 
   addRow() {
     const grid = this.state.grid.slice();
-    grid.push([{readOnly: true, value: grid.length+1},{value: ""}])
+    var row = new Array(grid[0].length).fill({value: ""})
+    if (this.state.table_def.showLineNumbers != false) {
+      row[0] = {readOnly: true, value: grid.length}
+    }
+    grid.push(row)
     this.setState({grid: grid})
   }
 
@@ -64,8 +74,8 @@ class DatasheetTableBase extends Component {
     // ouin, mais ca serait mieux de pouvoir mettre en gras une partie du texte seulement
     // essayer avec LaTeX
     let cols = this.columns()
-    if (cols && i > 0 && j > 0) { // FIXME: This will break when I make numbers optional
-      let col = cols[j-1];
+    if (cols && !cell.readOnly) {
+      let col = this.column(j);
       if (col && col.type && col.type == "link" && cell.value) {
         return (<a href={cell.value}>{cell.value}</a>);
       }
