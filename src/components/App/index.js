@@ -40,31 +40,15 @@ class App extends React.Component {
 
   renderTables = () => (
     <div className="tables">
-      <DatasheetTable name="TODO"
-                      background_color="yellow"
-                      grid = {[
-                        [{value:  "Mettre a jour mes contacts"}],
-                        [{value:  "Pouvoir ecrire en francais"}],
-                        [{value:  "Prendre mon vieux vimrc"}]
-                      ]}
-                      table_defs = {this.state.table_defs}
-      />
-      <DatasheetTable name="Notes"
-                      grid = {[
-                        [{value:  1}, {value: 3}],
-                        [{value:  2}, {value: 3}]
-                      ]}
-                      table_defs = {this.state.table_defs}
-      />
       {Object.keys(this.state.table_defs).map((name,i) => {
         let columns = this.state.table_defs[name]["columns"]
         let firstLine = [{readOnly: true, value:""}, // top left corner is blank
                          ...columns.map((col, j) => (
-                              {readOnly: true, value: col}
+                              {readOnly: true, value: col.name}
                          ))];
         let dataLines = (this.state.tables[name] || []).map((table, j) => (
                               [{readOnly: true, value:j},
-                                ...columns.map(col => ({value: table[col]}) )
+                                ...columns.map(col => ({value: table[col.name]}) )
                               ]
                           ))
         let grid = [firstLine, ...dataLines].filter((el) => ( el != null ));
@@ -72,7 +56,12 @@ class App extends React.Component {
         emptyLine[0] = {readOnly: true, value: grid.length}
         // Add an empty line
         return (
-        <DatasheetTable key={i} name={name} grid={[...grid, emptyLine]} table_defs={this.state.table_defs} />
+        <DatasheetTable key={i}
+                        name={name}
+                        grid={[...grid, emptyLine]}
+                        table_defs={this.state.table_defs}
+                        background_color={this.state.table_defs[name]["backgroundColor"]}
+          />
       )})}
     </div>
   )

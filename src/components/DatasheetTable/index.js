@@ -29,19 +29,24 @@ class DatasheetTableBase extends Component {
     }
     return null
   }*/
+
+  columns = () => {
+    let table_def = this.state.table_defs[this.state.name]
+    if (table_def) {
+      return table_def["columns"]
+    } else {
+      return undefined
+    }
+  }
   
   onCellsChanged(changes) {
     const grid = this.state.grid.map(row => [...row])
     changes.forEach(({cell, row, col, value}) => {
-      let columns = this.state.table_defs[this.state.name]["columns"]
-      let column = columns[col-1]
-      console.log(`onCellsChanged: cell=${cell}, row=${row}, col=${col}, value=${value}`)
-      console.log(`column = ${column}`)
       let val = {}
-      for (let i = 0; i < columns.length; i++) {
-        val[columns[i]] = grid[row][i+1].value
+      for (let i = 0; i < this.columns().length; i++) {
+        val[this.columns()[i].name] = grid[row][i+1].value || ""
       }
-      val[column] = value;
+      val[this.columns()[col-1].name] = value;
       this.props.firebase.tableRow(this.state.name,row).set(val)
       grid[row][col] = {...grid[row][col], value}
     })
@@ -52,6 +57,20 @@ class DatasheetTableBase extends Component {
     const grid = this.state.grid.slice();
     grid.push([{readOnly: true, value: grid.length+1},{value: ""}])
     this.setState({grid: grid})
+  }
+
+  customValueRenderer = (cell,i,j) => {
+    // if cell.bold = true, encadrer avec <strong></strong>
+    // ouin, mais ca serait mieux de pouvoir mettre en gras une partie du texte seulement
+    // essayer avec LaTeX
+    let cols = this.columns()
+    if (cols && i > 0 && j > 0) { // FIXME: This will break when I make numbers optional
+      let col = cols[j-1];
+      if (col && col.type && col.type == "link" && cell.value) {
+        return (<a href={cell.value}>{cell.value}</a>);
+      }
+    }
+    return cell.value;
   }
 
   render() {
@@ -70,7 +89,7 @@ class DatasheetTableBase extends Component {
         </div>
         <ReactDataSheet
           data={this.state.grid}
-          valueRenderer={(cell) => cell.value}
+          valueRenderer={this.customValueRenderer}
           dataRenderer={(cell) => cell.expr}
           onCellsChanged={this.onCellsChanged}
         />
