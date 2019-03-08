@@ -15,9 +15,6 @@ import AdminPage from '../Admin';
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 
-import HTML5Backend from 'react-dnd-html5-backend'
-import { DragDropContextProvider } from 'react-dnd'
-
 // 1 = A, A..Z, AA..ZZ, AAA..ZZZ, etc
 function lettersFromColumnNumber(colNb) {
       //name: String.fromCharCode(65 + columns.length),
@@ -165,9 +162,7 @@ class App extends React.Component {
             <Route path={ROUTES.ACCOUNT} component={AccountPage} />
           </div>
         </Router>
-        <DragDropContextProvider backend={HTML5Backend}>
           {this.renderTables()}
-        </DragDropContextProvider>
         <button className="updateTables" onClick={this.updateTableDefs}>
           Update tables
         </button>

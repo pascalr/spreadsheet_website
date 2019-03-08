@@ -5,10 +5,15 @@ import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import Firebase, { FirebaseContext } from './components/Firebase';
 
+import HTML5Backend from 'react-dnd-html5-backend'
+import { DragDropContextProvider } from 'react-dnd'
+
 ReactDOM.render(
-  <FirebaseContext.Provider value={new Firebase()}>
-    <App />
-  </FirebaseContext.Provider>,
+  <DragDropContextProvider backend={HTML5Backend}>
+    <FirebaseContext.Provider value={new Firebase()}>
+      <App />
+    </FirebaseContext.Provider>
+  </DragDropContextProvider>,
   document.getElementById('root')
 );
 

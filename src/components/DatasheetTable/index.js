@@ -7,8 +7,6 @@ import { DragDropContextProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import Select from 'react-select'
 
-import {ENTER_KEY, TAB_KEY} from '../../lib/keys'
-
 import {
   colDragSource, colDropTarget,
   rowDragSource, rowDropTarget
@@ -60,25 +58,19 @@ class DatasheetTableBase extends Component {
   
   generateGrid = (def) => {
     let columns = def["columns"] || []
-    let firstLine = null;
-    let dataLines = null;
-    if (def.showLineNumbers != false) {
-      dataLines = (this.props.table || []).map((row, j) => (
-                            [{readOnly: true, value:j},
-                              ...columns.map(col => ({value: row[col.name]}) )
-                            ]
-                        ))
-    } else {
-      dataLines = (this.props.table || []).map((row, j) => (
+    let rawGrid = (this.props.table || []).map((row, j) => (
                               columns.map(col => ({value: row[col.name]}) )
                         ))
+    let emptyLine = new Array(def.columns.length).fill({value: ""})
+    let grid = []
+    for (var i = 0; i < rawGrid.length; ++i) {
+       grid.push(rawGrid[i] ? rawGrid[i] : emptyLine)
     }
-    let grid = dataLines.filter((el) => ( el != null ));
-    let emptyLine = new Array(def.columns.length + (def.showLineNumbers ? 1 : 0)).fill({value: ""})
+    grid.push(emptyLine)
     if (def.showLineNumbers != false) {
-      emptyLine[0] = {readOnly: true, value: grid.length}
+      grid = grid.map((l,j) => [{readOnly: true, value:j+1}, ...l])
     }
-    return [...grid, emptyLine]
+    return grid
   }
 
   column = (col) => {
