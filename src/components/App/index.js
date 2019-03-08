@@ -15,6 +15,9 @@ import AdminPage from '../Admin';
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 
+import HTML5Backend from 'react-dnd-html5-backend'
+import { DragDropContextProvider } from 'react-dnd'
+
 // 1 = A, A..Z, AA..ZZ, AAA..ZZZ, etc
 function lettersFromColumnNumber(colNb) {
       //name: String.fromCharCode(65 + columns.length),
@@ -63,6 +66,15 @@ class App extends React.Component {
     this.props.firebase.tableDefs().set(defs)
     this.setState({tableDefs: defs})
   }
+
+  handleColumnDrop = def => (from, to) => {
+    let defs = [...this.state.tableDefs]
+    let columns = [...defs.find(el => (el.name == def.name)).columns]
+    columns.splice(to, 0, ...columns.splice(from, 1))
+    defs.find(el => (el.name == def.name)).columns = columns
+    this.props.firebase.tableDefs().set(defs)
+    this.setState({tableDefs: defs})
+  }
   
   onCellsChanged = (changes, tableDef) => {
     let tables = Object.assign({},this.state.tables)
@@ -104,6 +116,7 @@ class App extends React.Component {
                         doAddColumn={this.addColumn}
                         doAddRow={this.addRow}
                         onCellsChanged={this.onCellsChanged}
+                        onColumnDrop={this.handleColumnDrop}
         />
       ))}
     </div>
@@ -152,7 +165,9 @@ class App extends React.Component {
             <Route path={ROUTES.ACCOUNT} component={AccountPage} />
           </div>
         </Router>
-        {this.renderTables()}
+        <DragDropContextProvider backend={HTML5Backend}>
+          {this.renderTables()}
+        </DragDropContextProvider>
         <button className="updateTables" onClick={this.updateTableDefs}>
           Update tables
         </button>

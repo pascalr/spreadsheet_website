@@ -3,8 +3,48 @@ import ReactDataSheet from 'react-datasheet';
 
 import { withFirebase } from '../Firebase';
 
-// TODO: Garder les valeurs pas dans grid
-// puis faire setState{tables: ...}
+import { DragDropContextProvider } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+import Select from 'react-select'
+
+import {ENTER_KEY, TAB_KEY} from '../../lib/keys'
+
+import {
+  colDragSource, colDropTarget,
+  rowDragSource, rowDropTarget
+} from './drag-drop.js'
+
+const Header = colDropTarget(colDragSource((props) => {
+  const { col, connectDragSource, connectDropTarget, isOver } = props
+  const className = isOver ? 'cell read-only drop-target' : 'cell read-only'
+  return connectDropTarget(
+    connectDragSource(
+      <th className={className} style={{ width: col.width }}>{col.name}</th>
+    ))
+}))
+
+class SheetRenderer extends React.PureComponent {
+  render () {
+    const { className, columns, onColumnDrop } = this.props
+    return (
+      <table className={className}>
+        <thead>
+          <tr>
+            <th className='cell read-only row-handle' key='$$actionCell' />
+            {
+              columns.map((col, index) => (
+                <Header key={col.name} col={col} columnIndex={index} onColumnDrop={onColumnDrop} />
+              ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {this.props.children}
+        </tbody>
+      </table>
+    )
+  }
+}
 
 class DatasheetTableBase extends Component {
   constructor(props) {
@@ -14,29 +54,26 @@ class DatasheetTableBase extends Component {
     }
   }
   
+  renderSheet = (props) => ( // FIXME: {...props}
+    <SheetRenderer columns={this.props.tableDef.columns} onColumnDrop={this.props.onColumnDrop(this.props.tableDef)} {...props} />
+  )
+  
   generateGrid = (def) => {
     let columns = def["columns"] || []
     let firstLine = null;
     let dataLines = null;
     if (def.showLineNumbers != false) {
-      firstLine = [{readOnly: true, value:""}, // top left corner is blank
-                       ...columns.map((col, j) => (
-                            {readOnly: true, value: col.name}
-                       ))];
-      dataLines = (this.props.table || []).map((table, j) => (
+      dataLines = (this.props.table || []).map((row, j) => (
                             [{readOnly: true, value:j},
-                              ...columns.map(col => ({value: table[col.name]}) )
+                              ...columns.map(col => ({value: row[col.name]}) )
                             ]
                         ))
     } else {
-      firstLine = columns.map((col, j) => (
-                            {readOnly: true, value: col.name}
-                       ))
-      dataLines = (this.props.table || []).map((table, j) => (
-                              columns.map(col => ({value: table[col.name]}) )
+      dataLines = (this.props.table || []).map((row, j) => (
+                              columns.map(col => ({value: row[col.name]}) )
                         ))
     }
-    let grid = [firstLine, ...dataLines].filter((el) => ( el != null ));
+    let grid = dataLines.filter((el) => ( el != null ));
     let emptyLine = new Array(def.columns.length + (def.showLineNumbers ? 1 : 0)).fill({value: ""})
     if (def.showLineNumbers != false) {
       emptyLine[0] = {readOnly: true, value: grid.length}
@@ -90,12 +127,13 @@ class DatasheetTableBase extends Component {
           </span>
           <span></span>
         </div>
-        <ReactDataSheet
-          data={this.generateGrid(this.props.tableDef)}
-          valueRenderer={this.customValueRenderer}
-          dataRenderer={(cell) => cell.expr}
-          onCellsChanged={(changes) => (this.props.onCellsChanged(changes, this.props.tableDef))}
-        />
+          <ReactDataSheet
+            data={this.generateGrid(this.props.tableDef)}
+            sheetRenderer={this.renderSheet}
+            valueRenderer={this.customValueRenderer}
+            dataRenderer={(cell) => cell.expr}
+            onCellsChanged={(changes) => (this.props.onCellsChanged(changes, this.props.tableDef))}
+          />
       </div>
     );
   }
