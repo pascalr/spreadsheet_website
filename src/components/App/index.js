@@ -15,6 +15,20 @@ import AdminPage from '../Admin';
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 
+// 1 = A, A..Z, AA..ZZ, AAA..ZZZ, etc
+function lettersFromColumnNumber(colNb) {
+      //name: String.fromCharCode(65 + columns.length),
+}
+
+// I need to have a list of all tables to be able to access it.
+// It belongs in App I think
+//
+// App needs a hashmap of tables and tableDefs,
+// but the grid and 
+//
+// Ah! Ah! Je pense que j'ai trouve la solution:
+// Vu que les props des autres tables ne changent pas, elles ne seront pas re-render!
+// Alors oui je peux updater le state de l'App au complet pour une table seulement!
 class App extends React.Component {
 
   constructor(props) {
@@ -22,67 +36,81 @@ class App extends React.Component {
 
     this.state = {
       tables: {},
-      tableDefs: {},
-      tableDefs2: {},
+      tableDefs: [],
     };
     this.loadTablesWithFirebase()
   }
+  
+  addRow = (table, tableDef) => {
+    let tables = Object.assign({},this.state.tables)
+    let rows = tables[tableDef.name]
+    let emptyLine = new Array(tableDef.columns.length).fill("")
+    if (rows) {
+      rows.push(emptyLine)
+    } else {
+      tables[tableDef.name] = [emptyLine]
+    }
+    this.setState({tables: tables})
+  }
+
+  addColumn = (tableDef) => {
+    let defs = [...this.state.tableDefs]
+    let columns = defs.find(el => (el.name == tableDef.name)).columns
+    columns.push({
+      name: String.fromCharCode(65 + columns.length),
+      type: "",
+    })
+    this.props.firebase.tableDefs().set(defs)
+    this.setState({tableDefs: defs})
+  }
+  
+  onCellsChanged = (changes, tableDef) => {
+    let tables = Object.assign({},this.state.tables)
+    console.log(`There are ${changes.length} changes`)
+    changes.forEach(({cell, row, col, value}) => {
+      let val = tables[tableDef.name][row]
+      if (!val) {
+        let empty = tableDef.columns.reduce((acc,currVal) => {acc[currVal.name] = ""; return acc}, {})
+        tables[tableDef.name][row] = empty
+        val = empty
+      }
+      if (tableDef.showLineNumbers) {
+        val[tableDef.columns[col-1].name] = value
+      } else {
+        val[tableDef.columns[col].name] = value
+      }
+      this.props.firebase.tableRow(tableDef.name,row).set(val) // TODO: set all at once maybe
+    })
+    this.setState({tables: tables})
+  }
 
   loadTablesWithFirebase() { 
-    // BIG FIXME: L'ordre ici est important pour que ca marche
-    // et ca ne devrait pas parce qu'il y a aucune garantie.
+    this.props.firebase.tableDefs().on('value', (snapshot) => (
+      this.setState({tableDefs: snapshot.val()})
+    ))
     this.props.firebase.tables().on('value', (snapshot) => (
       this.setState({tables: snapshot.val()})
     ))
-    this.props.firebase.tableDefs().on('value', (snapshot) => (
-      this.setState({tableDefs: snapshot.val(),tableDefs2: snapshot.val()})
-    ))
   }
 
-  renderTables = () => (
+  renderTables = () => {
+    return (
     <div className="tables">
-      {Object.keys(this.state.tableDefs).map((name,i) => {
-        let columns = this.state.tableDefs[name]["columns"]
-        let firstLine = null;
-        let dataLines = null;
-        if (this.state.tableDefs[name]["showLineNumbers"] != false) {
-          firstLine = [{readOnly: true, value:""}, // top left corner is blank
-                           ...columns.map((col, j) => (
-                                {readOnly: true, value: col.name}
-                           ))];
-          dataLines = (this.state.tables[name] || []).map((table, j) => (
-                                [{readOnly: true, value:j},
-                                  ...columns.map(col => ({value: table[col.name]}) )
-                                ]
-                            ))
-        } else {
-          firstLine = columns.map((col, j) => (
-                                {readOnly: true, value: col.name}
-                           ))
-          dataLines = (this.state.tables[name] || []).map((table, j) => (
-                                  columns.map(col => ({value: table[col.name]}) )
-                            ))
-        }
-        let grid = [firstLine, ...dataLines].filter((el) => ( el != null ));
-        let emptyLine = new Array(grid[0].length).fill({value: ""})
-        if (this.state.tableDefs[name]["showLineNumbers"] != false) {
-          emptyLine[0] = {readOnly: true, value: grid.length}
-        }
-        // Add an empty line
-        let c = (<DatasheetTable key={i}
-                                name={name}
-                                grid={[...grid, emptyLine]}
-                                table_def={this.state.tableDefs[name]}
-                                tables={this.state.tables}
-                                background_color={this.state.tableDefs[name]["backgroundColor"]}
-          />)
-        return c
-      })}
+      {this.state.tableDefs.map((def,i) => (
+        <DatasheetTable key={i}
+                        name={def["name"]}
+                        tableDef={def}
+                        table={this.state.tables[def["name"]]}
+                        doAddColumn={this.addColumn}
+                        doAddRow={this.addRow}
+                        onCellsChanged={this.onCellsChanged}
+        />
+      ))}
     </div>
-  )
+  )}
 
   updateTableDefs = () => {
-    let defs = [...this.state.tables["table_defs"]].filter((el) => ( el != null ));
+    let defs = [...this.state.tables["table_defs"]].filter((el) => ( el && el.name && el.name !== "" ));
     let defsByName = defs.reduce((acc,currVal) => {
       acc[currVal.name] = currVal
       return acc
@@ -100,7 +128,7 @@ class App extends React.Component {
         }
       }
     })
-    this.props.firebase.tableDefs2().set(defs)
+    this.props.firebase.tableDefs().set(defs)
   }
 
   render() {
