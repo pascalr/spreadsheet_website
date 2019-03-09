@@ -40,7 +40,7 @@ class App extends React.Component {
     this.loadTablesWithFirebase()
   }
   
-  addRow = (table, tableDef) => {
+  /*addRow = (table, tableDef) => {
     let tables = Object.assign({},this.state.tables)
     let rows = tables[tableDef.name]
     let emptyLine = new Array(tableDef.columns.length).fill("")
@@ -50,7 +50,7 @@ class App extends React.Component {
       tables[tableDef.name] = [emptyLine]
     }
     this.setState({tables: tables})
-  }
+  }*/
 
   addColumn = (tableDef) => {
     let defs = [...this.state.tableDefs]
@@ -74,8 +74,10 @@ class App extends React.Component {
   
   onCellsChanged = (changes, tableDef) => {
     let tables = Object.assign({},this.state.tables)
-    console.log(`There are ${changes.length} changes`)
     changes.forEach(({cell, row, col, value}) => {
+      if (!tables[tableDef.name]) {
+        tables[tableDef.name] = []
+      }
       let val = tables[tableDef.name][row]
       if (!val) {
         let empty = tableDef.columns.reduce((acc,currVal) => {acc[currVal.name] = ""; return acc}, {})
@@ -106,11 +108,9 @@ class App extends React.Component {
     <div className="tables">
       {this.state.tableDefs.map((def,i) => (
         <DatasheetTable key={i}
-                        name={def["name"]}
                         tableDef={def}
                         table={this.state.tables[def["name"]]}
                         doAddColumn={this.addColumn}
-                        doAddRow={this.addRow}
                         onCellsChanged={this.onCellsChanged}
                         onColumnDrop={this.handleColumnDrop}
         />

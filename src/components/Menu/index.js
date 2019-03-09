@@ -3,13 +3,15 @@ import React, { Component } from 'react'
 import { Menu, Item, Separator, Submenu, MenuProvider } from 'react-contexify'
 import 'react-contexify/dist/ReactContexify.min.css';
 
-const withMenu = (menu, val) => {
+const withMenu = (id, items, val) => {
   return (
   <React.Fragment>
-    <MenuProvider id={menu.props.id}>
-      {val}
+    <MenuProvider id={id}>
+        {val}
     </MenuProvider>
-    {menu}
+    <Menu id = {id}>
+      {items}
+    </Menu>
   </React.Fragment>
   )
 }
