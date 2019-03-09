@@ -7,6 +7,8 @@ import { DragDropContextProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import Select from 'react-select'
 
+import Command from '../Command'
+
 import {
   colDragSource, colDropTarget,
   rowDragSource, rowDropTarget
@@ -95,6 +97,16 @@ class DatasheetTableBase extends Component {
           return (<a href={cell.value}>{cell.value}</a>);
         } else if (col.type == "bullet") {
           return (<span>&bull;</span>)
+        } else if (col.type == "checkbox") {
+          //return (<input type="checkbox">)
+        }
+      }
+      if (cell.value && cell.value[0] === '=') { // Command
+        let cmd = cell.value.substr(1)
+        try {
+          return Command[cmd]() // TODO: A lot...
+        } catch {
+          return <span style={{color: 'red'}}>#Erreur!</span>
         }
       }
     }
