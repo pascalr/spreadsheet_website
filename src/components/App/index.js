@@ -15,7 +15,6 @@ import AdminPage from '../Admin';
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 
-// 1 = A, A..Z, AA..ZZ, AAA..ZZZ, etc
 function lettersFromColumnNumber(colNb) {
       //name: String.fromCharCode(65 + columns.length),
 }
@@ -163,9 +162,6 @@ class App extends React.Component {
           </div>
         </Router>
           {this.renderTables()}
-        <button className="updateTables" onClick={this.updateTableDefs}>
-          Update tables
-        </button>
       </div>
     );
   }
