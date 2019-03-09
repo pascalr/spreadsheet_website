@@ -14,7 +14,7 @@ import {
   rowDragSource, rowDropTarget
 } from './drag-drop.js'
 
-import { Item, Separator, Submenu } from 'react-contexify'
+import { Menu, MenuProvider, Item, Separator, Submenu } from 'react-contexify'
 import { withMenu } from '../Menu'
 
 const columnMenuItems = () => (
@@ -186,7 +186,7 @@ class DatasheetTableBase extends Component {
 
   render() {
     return (
-      withMenu(this.props.name, this.tableMenuItems(),
+      withMenu(this.props.tableDef.name, this.tableMenuItems(),
         <ReactDataSheet
           data={this.generateGrid(this.props.tableDef)}
           sheetRenderer={this.renderSheet}
@@ -194,7 +194,7 @@ class DatasheetTableBase extends Component {
           valueRenderer={this.customValueRenderer}
           dataRenderer={(cell) => cell.expr}
           onCellsChanged={(changes) => (this.props.onCellsChanged(changes, this.props.tableDef))}
-        />
+        />, "table"
       )
     );
   }

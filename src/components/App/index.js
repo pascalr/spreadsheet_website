@@ -15,9 +15,27 @@ import AdminPage from '../Admin';
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 
+import { Item, Separator, Submenu } from 'react-contexify'
+import { InlineMenu, withMenu } from '../Menu'
+
+
+// A-Z, AA-ZZ, AAA-ZZZ
 function lettersFromColumnNumber(colNb) {
       //name: String.fromCharCode(65 + columns.length),
 }
+
+function nextTableName(defs) {
+  debugger
+  let defsByName = defs.reduce((acc,currVal) => {
+    acc[currVal.name] = currVal
+    return acc
+  }, {})
+  let i = 1;
+  while (defsByName["table" + i]) {i++}
+  return "table" + i
+}
+
+const onClickMenu = ({ event, props }) => console.log(event,props);
 
 // I need to have a list of all tables to be able to access it.
 // It belongs in App I think
@@ -84,7 +102,7 @@ class App extends React.Component {
         tables[tableDef.name][row] = empty
         val = empty
       }
-      if (tableDef.showLineNumbers) {
+      if (tableDef.showLineNumbers != false) {
         val[tableDef.columns[col-1].name] = value
       } else {
         val[tableDef.columns[col].name] = value
@@ -106,10 +124,12 @@ class App extends React.Component {
   renderTables = () => {
     return (
     <div className="tables">
-      {this.state.tableDefs.map((def,i) => (
+      {this.state.tableDefs
+        .filter(el => (el ? true : false))
+        .map((def,i) => (
         <DatasheetTable key={i}
                         tableDef={def}
-                        table={this.state.tables[def["name"]]}
+                        table={this.state.tables[def.name]}
                         doAddColumn={this.addColumn}
                         onCellsChanged={this.onCellsChanged}
                         onColumnDrop={this.handleColumnDrop}
@@ -140,15 +160,31 @@ class App extends React.Component {
     this.props.firebase.tableDefs().set(defs)
   }
 
+  addNewTable = () => {
+    let defs = [...this.state.tableDefs]
+    defs.push({name: nextTableName(defs), columns: [{name: "A"}], showLineNumbers: true})
+    this.props.firebase.tableDefs().set(defs)
+    this.setState({tableDefs: defs})
+  }
+
+  appMenuItems = () => (
+    <React.Fragment>
+      <Item onClick={this.addNewTable}>add table</Item>
+      <Separator />
+      <Submenu label="Foobar">
+        <Item onClick={onClickMenu}>Foo</Item>
+        <Item onClick={onClickMenu}>Bar</Item>
+      </Submenu>
+    </React.Fragment>
+  )
+
   render() {
-    return (
+    return (<InlineMenu id="app_menu_id" items={this.appMenuItems()}>
       <div>
         <Router>
           <div>
             <Navigation />
-
             <hr />
-
             <Route exact path={ROUTES.LANDING} component={LandingPage} />
             <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
@@ -163,7 +199,7 @@ class App extends React.Component {
         </Router>
           {this.renderTables()}
       </div>
-    );
+    </InlineMenu>);
   }
 }
 
