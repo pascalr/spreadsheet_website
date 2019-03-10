@@ -170,6 +170,7 @@ class App extends React.Component {
     let layout = [...this.dataGridLayouts()]
     return (
       <div className="tables">
+      <ByPass>
       <GridLayout className="layout"
                   compactType={null}
                   cols={12}
@@ -190,12 +191,14 @@ class App extends React.Component {
                             tableDef={def}
                             table={this.state.tables[def.name]}
                             doAddColumn={this.addColumn}
+                            doDeleteTable={this.deleteTable}
                             onCellsChanged={this.onCellsChanged}
                             onColumnDrop={this.handleColumnDrop}
                           />
             </div>
         ))}
       </GridLayout>
+      </ByPass>
     </div>
   )}
 
@@ -221,12 +224,24 @@ class App extends React.Component {
     this.props.firebase.tableDefs().set(defs)
   }
 
+  /* --- App menu callbacks --- */
+
   addNewTable = () => {
     const defs = [...this.state.tableDefs]
     defs.push({name: nextTableName(defs), columns: [{name: "A"}], showLineNumbers: true})
     this.props.firebase.tableDefs().set(defs)
     this.setState({tableDefs: defs})
   }
+
+  /* --- End app menu callbacks --- */
+
+  deleteTable = (def) => {
+    // TODO: Delete table too...
+    const defs = this.state.tableDefs.filter(e => e.name !== def.name)
+    this.props.firebase.tableDefs().set(defs)
+    this.setState({tableDefs: defs})
+  }
+  
 
   appMenuItems = () => (
     <React.Fragment>

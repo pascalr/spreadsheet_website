@@ -125,7 +125,7 @@ class DatasheetTableBase extends Component {
   
   generateGrid = (def) => {
     let columns = def.columns || []
-    let rawGrid = (this.props.table || []).map((row, j) => (
+    let rawGrid = (this.props.table || []).slice(0,20).map((row, j) => (
                               columns.map(col => ({value: row[col.name]}) )
                         ))
     let emptyLine = new Array(def.columns.length).fill({value: ""})
@@ -196,7 +196,7 @@ class DatasheetTableBase extends Component {
 
   tableMenuItems = () => (
     <React.Fragment>
-      <Item onClick={onClickMenu}>delete table</Item>
+      <Item onClick={() => this.props.doDeleteTable(this.props.tableDef)}>delete table</Item>
       <Separator />
       <Item onClick={() => this.props.doAddColumn(this.props.tableDef)}>add column</Item>
       <Separator />
