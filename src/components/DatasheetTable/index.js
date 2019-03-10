@@ -71,13 +71,13 @@ class SheetRenderer extends React.PureComponent {
             <div className='rTableHead cell read-only row-handle' key='$$actionCell' />
             {
               columns.map((col, index) => (
-                <Header key={col.name} col={col} tableDef={tableDef}
+                <Header key={col.name} col={col} tableDef={tableDef} className="data-header"
                         columnIndex={index} onColumnDrop={onColumnDrop} />
               ))
             }
           </div>
         </div>
-        <div className="rTableBody">
+        <div className="rTableBody data-body">
           {this.props.children}
         </div>
       </div>
@@ -85,17 +85,27 @@ class SheetRenderer extends React.PureComponent {
   }
 }
 
-const RowRenderer = (props) => { // Useless for now
+const RowRenderer = (props) => {
   return (
-    <div className="rTableRow">
+    <div className={"rTableRow " + props.className}>
       { props.children }
     </div>
   )
 }
 
 const CellRenderer = props => {
+  const {cell, row, col, columns, attributesRenderer,
+    selected, editing, updated, style, ...rest } = props
+
+  // hey, how about some custom attributes on our cell?
+  const attributes = cell.attributes || {}
+  // ignore default style handed to us by the component and roll our own
+  //attributes.style = { width: columns[col].width }
+  //if (col === 0) {
+  //  attributes.title = cell.label
+  //}
   return (
-    <div className={"rTableCell " + props.className}>
+    <div {...rest} {...attributes}>
       {props.children}
     </div>
   )
@@ -181,7 +191,7 @@ class DatasheetTableBase extends Component {
 
   renderRow (props) {
     const {row, cells, ...rest} = props
-    return <RowRenderer rowIndex={row} {...rest} />
+    return <RowRenderer rowIndex={row} className="data-row" {...rest} />
   }
 
   tableMenuItems = () => (

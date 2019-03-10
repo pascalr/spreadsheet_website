@@ -32,7 +32,6 @@ function lettersFromColumnNumber(colNb) {
 const ROW_HEIGHT = 20;
 
 function nextTableName(defs) {
-  debugger
   let defsByName = defs.reduce((acc,currVal) => {
     acc[currVal.name] = currVal
     return acc
@@ -119,6 +118,23 @@ class App extends React.Component {
     this.setState({tables: tables})
   }
 
+    /*handleCellsChanged (changes, additions) { TODO: Additions
+    const grid = this.state.grid.map(row => [...row])
+    changes.forEach(({cell, row, col, value}) => {
+      grid[row][col] = {...grid[row][col], value}
+    })
+    // paste extended beyond end, so add a new row
+    additions && additions.forEach(({cell, row, col, value}) => {
+      if (!grid[row]) {
+        grid[row] = [{value: ''}, {value: ''}, {value: ''}, {value: 0}]
+      }
+      if (grid[row][col]) {
+        grid[row][col] = {...grid[row][col], value}
+      }
+    })
+    this.setState({grid})
+  }*/
+
   loadTablesWithFirebase() { 
     this.props.firebase.tables().on('value', (snapshot) => (
       this.setState({tables: snapshot.val()})
@@ -133,8 +149,8 @@ class App extends React.Component {
     let layout = null
     if (table) {
       let nbRows = Object.keys(table).length
-      console.log(`h:${Math.ceil(nbRows / 2)}`)
-      layout = {x: 0, y: 0, w: 5, h: Math.ceil(nbRows)}
+      console.log(`h:${Math.ceil(nbRows + 2)}`)
+      layout = {x: 0, y: 0, w: 5, h: nbRows+2}
     } else {
       layout = {x: 0, y: 0, w: 5, h: 5}
     }
@@ -144,7 +160,6 @@ class App extends React.Component {
 
   dataGridLayouts = () => {
     let v = (this.state.tableDefs.map(e => (this.dataGridLayout(e, this.state.tables[e.name]))))
-    debugger;
     return v
   }
 
@@ -153,10 +168,8 @@ class App extends React.Component {
     // if !layoutLoaded, <span>Loading layout</span>
     // data-grid={this.dataGridLayout(this.state.tables[def.name])}
     let layout = [...this.dataGridLayouts()]
-    debugger
     return (
       <div className="tables">
-      <ByPass>
       <GridLayout className="layout"
                   compactType={null}
                   cols={12}
@@ -165,7 +178,7 @@ class App extends React.Component {
                   onLayoutChange={(layout) => (undefined)/*TODO*/}
                   draggableHandle=".rCaption"
                   style={{height: '2810px'}}
-                  rowHeight={30}
+                  rowHeight={21}
                   width={1920}>
         {this.state.tableDefs
           .filter(el => (el ? true : false))
@@ -183,7 +196,6 @@ class App extends React.Component {
             </div>
         ))}
       </GridLayout>
-      </ByPass>
     </div>
   )}
 
