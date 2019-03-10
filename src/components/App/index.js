@@ -22,6 +22,8 @@ import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 
+import ByPass from '../../lib/ByPass'
+
 // A-Z, AA-ZZ, AAA-ZZZ
 function lettersFromColumnNumber(colNb) {
       //name: String.fromCharCode(65 + columns.length),
@@ -154,15 +156,17 @@ class App extends React.Component {
     debugger
     return (
       <div className="tables">
+      <ByPass>
       <GridLayout className="layout"
-                  verticalCompact={false}
+                  compactType={null}
                   cols={12}
                   layout={layout}
                   autoSize={true}
                   onLayoutChange={(layout) => (undefined)/*TODO*/}
+                  draggableHandle=".rCaption"
                   style={{height: '2810px'}}
                   rowHeight={30}
-                  width={1200}>
+                  width={1920}>
         {this.state.tableDefs
           .filter(el => (el ? true : false))
           .map((def,i) => (
@@ -179,6 +183,7 @@ class App extends React.Component {
             </div>
         ))}
       </GridLayout>
+      </ByPass>
     </div>
   )}
 

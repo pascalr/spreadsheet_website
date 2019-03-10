@@ -45,20 +45,6 @@ body {
   display: table-column-group;
 }
 
-table {
-  table-layout:fixed;
-  margin-bottom: 10px;
-}
-td, th {
-  overflow:hidden;
-  white-space:nowrap;
-  text-overflow: ellipsis;
-}
-caption {
-  background-color: whitesmoke;
-  font-weight: bold;
-}
-
 .navigation {
   display: flex;
   justify-content: space-between;
@@ -73,6 +59,21 @@ caption {
   border-color: black;
   display: flex;
   justify-content: space-between;
+}
+
+.rTable {
+  table-layout:fixed;
+  margin-bottom: 10px;
+}
+.rTableCell, .rTableHead {
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow: ellipsis;
+}
+.rCaption {
+  background-color: whitesmoke;
+  font-weight: bold;
+  cursor: grab;
 }
 
 .value-viewer {
