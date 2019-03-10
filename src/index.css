@@ -10,13 +10,11 @@ body {
 }
 
 .table {
-  width: 500px;
 }
 
 table {
   table-layout:fixed;
   margin-bottom: 10px;
-  width: 500px;
 }
 td, th {
   overflow:hidden;
@@ -85,6 +83,7 @@ span.data-grid-container, span.data-grid-container:focus {
   background: whitesmoke;
   color: #999;
   text-align: center;
+  cursor: pointer;
 }
 
 .data-grid-container .data-grid .cell > .text {

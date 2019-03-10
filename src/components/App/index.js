@@ -18,6 +18,9 @@ import { withAuthentication } from '../Session';
 import { Item, Separator, Submenu } from 'react-contexify'
 import { InlineMenu, withMenu } from '../Menu'
 
+import GridLayout from 'react-grid-layout';
+import 'react-grid-layout/css/styles.css'
+import 'react-resizable/css/styles.css'
 
 // A-Z, AA-ZZ, AAA-ZZZ
 function lettersFromColumnNumber(colNb) {
@@ -122,19 +125,36 @@ class App extends React.Component {
   }
 
   renderTables = () => {
+    // TODO: Loading layout first
+    // if !layoutLoaded, <span>Loading layout</span>
     return (
     <div className="tables">
-      {this.state.tableDefs
-        .filter(el => (el ? true : false))
-        .map((def,i) => (
-        <DatasheetTable key={i}
-                        tableDef={def}
-                        table={this.state.tables[def.name]}
-                        doAddColumn={this.addColumn}
-                        onCellsChanged={this.onCellsChanged}
-                        onColumnDrop={this.handleColumnDrop}
-        />
-      ))}
+      <GridLayout className="layout"
+                  verticalCompact={false}
+                  cols={12}
+                  autoSize={false}
+                  onLayoutChange={(layout) => (undefined)/*TODO*/}
+                  rowHeight={30}
+                  width={1200}>
+        {this.state.tableDefs
+          .filter(el => (el ? true : false))
+          .map((def,i) => (
+            <div key={"gridTable_" + def.name}
+                 data-grid={{x: 0, y: 0, w: 5, h: 5}}
+                 className="gridTable"
+            >
+              <span>aaaaa</span>  
+              <span>bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</span>  
+            <DatasheetTable key={i}
+                            tableDef={def}
+                            table={this.state.tables[def.name]}
+                            doAddColumn={this.addColumn}
+                            onCellsChanged={this.onCellsChanged}
+                            onColumnDrop={this.handleColumnDrop}
+                          />
+            </div>
+        ))}
+      </GridLayout>
     </div>
   )}
 
@@ -161,7 +181,7 @@ class App extends React.Component {
   }
 
   addNewTable = () => {
-    let defs = [...this.state.tableDefs]
+    const defs = [...this.state.tableDefs]
     defs.push({name: nextTableName(defs), columns: [{name: "A"}], showLineNumbers: true})
     this.props.firebase.tableDefs().set(defs)
     this.setState({tableDefs: defs})
@@ -178,8 +198,9 @@ class App extends React.Component {
     </React.Fragment>
   )
 
-  render() {
-    return (<InlineMenu id="app_menu_id" items={this.appMenuItems()}>
+  render = () => {
+    return (
+    <InlineMenu id="app_menu_id" items={this.appMenuItems()}>
       <div>
         <Router>
           <div>
@@ -190,17 +211,14 @@ class App extends React.Component {
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
             <Route path={ROUTES.ADMIN} component={AdminPage} />
             <Route path={ROUTES.HOME} component={HomePage} />
-            <Route
-              path={ROUTES.PASSWORD_FORGET}
-              component={PasswordForgetPage}
-            />
+            <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
             <Route path={ROUTES.ACCOUNT} component={AccountPage} />
           </div>
         </Router>
-          {this.renderTables()}
+        {this.renderTables()}
       </div>
-    </InlineMenu>);
-  }
+    </InlineMenu>
+  );}
 }
 
 export default withAuthentication(withFirebase(App));
