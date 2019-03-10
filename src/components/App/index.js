@@ -27,6 +27,8 @@ function lettersFromColumnNumber(colNb) {
       //name: String.fromCharCode(65 + columns.length),
 }
 
+const ROW_HEIGHT = 20;
+
 function nextTableName(defs) {
   debugger
   let defsByName = defs.reduce((acc,currVal) => {
@@ -116,35 +118,57 @@ class App extends React.Component {
   }
 
   loadTablesWithFirebase() { 
-    this.props.firebase.tableDefs().on('value', (snapshot) => (
-      this.setState({tableDefs: snapshot.val()})
-    ))
     this.props.firebase.tables().on('value', (snapshot) => (
       this.setState({tables: snapshot.val()})
     ))
+    this.props.firebase.tableDefs().on('value', (snapshot) => (
+      this.setState({tableDefs: snapshot.val()})
+    ))
+  }
+
+  dataGridLayout(def, table) {
+    console.log('dataGridLayout')
+    let layout = null
+    if (table) {
+      let nbRows = Object.keys(table).length
+      console.log(`h:${Math.ceil(nbRows / 2)}`)
+      layout = {x: 0, y: 0, w: 5, h: Math.ceil(nbRows)}
+    } else {
+      layout = {x: 0, y: 0, w: 5, h: 5}
+    }
+    layout["i"] = "gridTable_" + def.name
+    return layout
+  }
+
+  dataGridLayouts = () => {
+    let v = (this.state.tableDefs.map(e => (this.dataGridLayout(e, this.state.tables[e.name]))))
+    debugger;
+    return v
   }
 
   renderTables = () => {
     // TODO: Loading layout first
     // if !layoutLoaded, <span>Loading layout</span>
+    // data-grid={this.dataGridLayout(this.state.tables[def.name])}
+    let layout = [...this.dataGridLayouts()]
+    debugger
     return (
-    <div className="tables">
+      <div className="tables">
       <GridLayout className="layout"
                   verticalCompact={false}
                   cols={12}
-                  autoSize={false}
+                  layout={layout}
+                  autoSize={true}
                   onLayoutChange={(layout) => (undefined)/*TODO*/}
+                  style={{height: '2810px'}}
                   rowHeight={30}
                   width={1200}>
         {this.state.tableDefs
           .filter(el => (el ? true : false))
           .map((def,i) => (
             <div key={"gridTable_" + def.name}
-                 data-grid={{x: 0, y: 0, w: 5, h: 5}}
                  className="gridTable"
             >
-              <span>aaaaa</span>  
-              <span>bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</span>  
             <DatasheetTable key={i}
                             tableDef={def}
                             table={this.state.tables[def.name]}

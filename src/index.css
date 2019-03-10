@@ -9,7 +9,40 @@ body {
   text-align: left;
 }
 
-.table {
+.rTable {  /* <table> */
+  	display: table;
+  	width: 100%;
+}
+.rTableRow {  /* <tr> */
+  	display: table-row;
+}
+.rTableHeading {  /* <thead> */
+  	display: table-header-group;
+  	background-color: #ddd;
+}
+.rTableCell, .rTableHead {  /* <td>, <th> */
+  	display: table-cell;
+  	padding: 3px 10px;
+  	border: 1px solid #999999;
+}
+.rTableFoot {  /* <tfoot> */
+  	display: table-footer-group;
+  	font-weight: bold;
+  	background-color: #ddd;
+}
+.rTableBody {  /* <tbody> */
+  	display: table-row-group;
+}
+.rCaption {  /* <caption> */
+  display: table-caption;
+  text-align: center;
+}
+.rCol { /* <col> */
+  display: table-column;
+}
+
+.rColGroup { /* <colgroup> */
+  display: table-column-group;
 }
 
 table {

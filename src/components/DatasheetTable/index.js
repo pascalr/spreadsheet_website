@@ -47,13 +47,13 @@ const onClickMenu = ({ event, props }) => console.log(event,props);
 
 const Header = colDropTarget(colDragSource((props) => {
   const { tableDef, col, connectDragSource, connectDropTarget, isOver } = props
-  const className = isOver ? 'cell read-only drop-target' : 'cell read-only'
+  const className = 'rTableHead cell read-only' + (isOver ? 'drop-target' : '')
   return (columnMenuItems(),
     connectDropTarget(
       connectDragSource(
-          <th className={className} style={{ width: col.width }}>
+          <div className={className} style={{ width: col.width }}>
             {withMenu(tableDef.name + col.name,columnMenuItems(),col.name)}
-          </th>
+          </div>
       )))
 }))
 
@@ -61,34 +61,43 @@ class SheetRenderer extends React.PureComponent {
   render () {
     const { className, columns, onColumnDrop, tableDef } = this.props
     return (
-      <table className={className} style={{backgroundColor: this.props.tableDef.backgroundColor}}>
-        <caption>
+      <div className={"rTable "+className}
+           style={{backgroundColor: this.props.tableDef.backgroundColor}}>
+        <div className="rCaption">
           {tableDef.name}
-        </caption>
-        <thead>
-          <tr>
-            <th className='cell read-only row-handle' key='$$actionCell' />
+        </div>
+        <div className="rTableHeading">
+          <div className="rTableRow">
+            <div className='rTableHead cell read-only row-handle' key='$$actionCell' />
             {
               columns.map((col, index) => (
                 <Header key={col.name} col={col} tableDef={tableDef}
                         columnIndex={index} onColumnDrop={onColumnDrop} />
               ))
             }
-          </tr>
-        </thead>
-        <tbody>
+          </div>
+        </div>
+        <div className="rTableBody">
           {this.props.children}
-        </tbody>
-      </table>
+        </div>
+      </div>
     )
   }
 }
 
 const RowRenderer = (props) => { // Useless for now
   return (
-    <tr>
+    <div className="rTableRow">
       { props.children }
-    </tr>
+    </div>
+  )
+}
+
+const CellRenderer = props => {
+  return (
+    <div className={"rTableCell " + props.className}>
+      {props.children}
+    </div>
   )
 }
 
@@ -166,6 +175,10 @@ class DatasheetTableBase extends Component {
     }
   }
 
+  renderCell (props) {
+    return <CellRenderer {...props} />
+  }
+
   renderRow (props) {
     const {row, cells, ...rest} = props
     return <RowRenderer rowIndex={row} {...rest} />
@@ -191,6 +204,7 @@ class DatasheetTableBase extends Component {
           data={this.generateGrid(this.props.tableDef)}
           sheetRenderer={this.renderSheet}
           rowRenderer={this.renderRow}
+          cellRenderer={this.renderCell}
           valueRenderer={this.customValueRenderer}
           dataRenderer={(cell) => cell.expr}
           onCellsChanged={(changes) => (this.props.onCellsChanged(changes, this.props.tableDef))}
