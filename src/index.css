@@ -10,7 +10,7 @@ body {
 }
 
 .rTable {  /* <table> */
-  	display: table;
+  	/* display: table; */
   	width: 100%;
 }
 .rTableRow {  /* <tr> */

@@ -9,57 +9,29 @@ import Select from 'react-select'
 
 import Command from '../Command'
 
-import {
-  colDragSource, colDropTarget,
-  rowDragSource, rowDropTarget
-} from './drag-drop.js'
+import { colDragSource, colDropTarget } from './drag-drop.js'
 
 import { Menu, MenuProvider, Item, Separator, Submenu } from 'react-contexify'
 import { withMenu } from '../Menu'
 
-const columnMenuItems = () => (
-  <React.Fragment>
-    <Item onClick={onClickMenu}>delete column</Item>
-    <Separator />
-    <Item onClick={onClickMenu}>rename</Item>
-    <Separator />
-    <Submenu label="Foobar">
-      <Item onClick={onClickMenu}>Foo</Item>
-      <Item onClick={onClickMenu}>Bar</Item>
-    </Submenu>
-  </React.Fragment>
-);
-
-const rowMenuItems = () => (
-  <React.Fragment>
-    <Item onClick={onClickMenu}>delete row</Item>
-    <Separator />
-    <Item onClick={onClickMenu}>add row</Item>
-    <Separator />
-    <Submenu label="Foobar">
-      <Item onClick={onClickMenu}>Foo</Item>
-      <Item onClick={onClickMenu}>Bar</Item>
-    </Submenu>
-  </React.Fragment>
-);
-
 const onClickMenu = ({ event, props }) => console.log(event,props);
 
 const Header = colDropTarget(colDragSource((props) => {
-  const { tableDef, col, connectDragSource, connectDropTarget, isOver } = props
+  const { tableDef, col, connectDragSource, connectDropTarget, isOver,
+          columnMenuItems} = props
   const className = 'rTableHead cell read-only' + (isOver ? 'drop-target' : '')
-  return (columnMenuItems(),
+  return (columnMenuItems(col),
     connectDropTarget(
       connectDragSource(
           <div className={className} style={{ width: col.width }}>
-            {withMenu(tableDef.name + col.name,columnMenuItems(),col.name)}
+            {withMenu(tableDef.name + col.name,columnMenuItems(col),col.name)}
           </div>
       )))
 }))
 
 class SheetRenderer extends React.PureComponent {
   render () {
-    const { className, columns, onColumnDrop, tableDef } = this.props
+    const { className, columns, onColumnDrop, tableDef, columnMenuItems } = this.props
     return (
       <div className={"rTable "+className}
            style={{backgroundColor: this.props.tableDef.backgroundColor}}>
@@ -72,7 +44,9 @@ class SheetRenderer extends React.PureComponent {
             {
               columns.map((col, index) => (
                 <Header key={col.name} col={col} tableDef={tableDef} className="data-header"
-                        columnIndex={index} onColumnDrop={onColumnDrop} />
+                  columnIndex={index} onColumnDrop={onColumnDrop}
+                  columnMenuItems={columnMenuItems}
+                />
               ))
             }
           </div>
@@ -105,9 +79,9 @@ const CellRenderer = props => {
   //  attributes.title = cell.label
   //}
   return (
-    <div {...rest} {...attributes}>
-      {props.children}
-    </div>
+      <div {...rest} {...attributes}>
+        {props.children}
+      </div>
   )
 }
 
@@ -120,7 +94,7 @@ class DatasheetTableBase extends Component {
   }
   
   renderSheet = (props) => ( // FIXME: {...props}
-    <SheetRenderer tableDef={this.props.tableDef} columns={this.props.tableDef.columns} onColumnDrop={this.props.onColumnDrop(this.props.tableDef)} {...props} />
+    <SheetRenderer tableDef={this.props.tableDef} columns={this.props.tableDef.columns} onColumnDrop={this.props.onColumnDrop(this.props.tableDef)} columnMenuItems={this.columnMenuItems} {...props} />
   )
   
   generateGrid = (def) => {
@@ -177,7 +151,7 @@ class DatasheetTableBase extends Component {
   
   customValueRenderer = (cell,i,j) => {
     if (j == 0 && this.props.tableDef) {
-      return (withMenu(this.props.tableDef.name+i, rowMenuItems(),
+      return (withMenu(this.props.tableDef.name+i, this.rowMenuItems(),
                        this.valueFromCell(cell,i,j)))
     
     } else {
@@ -207,9 +181,36 @@ class DatasheetTableBase extends Component {
     </React.Fragment>
   );
 
+  columnMenuItems = (col) => (
+    <React.Fragment>
+      <Item onClick={() => this.props.doDeleteColumn(this.props.tableDef, col)}>delete column</Item>
+      <Separator />
+      <Item onClick={onClickMenu}>rename</Item>
+      <Separator />
+      <Submenu label="Foobar">
+        <Item onClick={onClickMenu}>Foo</Item>
+        <Item onClick={onClickMenu}>Bar</Item>
+      </Submenu>
+    </React.Fragment>
+  );
+  
+  rowMenuItems = () => (
+    <React.Fragment>
+      <Item onClick={onClickMenu}>delete row</Item>
+      <Separator />
+      <Item onClick={onClickMenu}>add row</Item>
+      <Separator />
+      <Submenu label="Foobar">
+        <Item onClick={onClickMenu}>Foo</Item>
+        <Item onClick={onClickMenu}>Bar</Item>
+      </Submenu>
+    </React.Fragment>
+  );
+
   render() {
     return (
       withMenu(this.props.tableDef.name, this.tableMenuItems(),
+        <div>
         <ReactDataSheet
           data={this.generateGrid(this.props.tableDef)}
           sheetRenderer={this.renderSheet}
@@ -218,7 +219,7 @@ class DatasheetTableBase extends Component {
           valueRenderer={this.customValueRenderer}
           dataRenderer={(cell) => cell.expr}
           onCellsChanged={(changes) => (this.props.onCellsChanged(changes, this.props.tableDef))}
-        />, "table"
+        /></div>, "table"
       )
     );
   }

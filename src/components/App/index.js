@@ -192,6 +192,7 @@ class App extends React.Component {
                             table={this.state.tables[def.name]}
                             doAddColumn={this.addColumn}
                             doDeleteTable={this.deleteTable}
+                            doDeleteColumn={this.deleteColumn}
                             onCellsChanged={this.onCellsChanged}
                             onColumnDrop={this.handleColumnDrop}
                           />
@@ -224,7 +225,7 @@ class App extends React.Component {
     this.props.firebase.tableDefs().set(defs)
   }
 
-  /* --- App menu callbacks --- */
+  /* --- Menu callbacks --- */
 
   addNewTable = () => {
     const defs = [...this.state.tableDefs]
@@ -233,8 +234,6 @@ class App extends React.Component {
     this.setState({tableDefs: defs})
   }
 
-  /* --- End app menu callbacks --- */
-
   deleteTable = (def) => {
     // TODO: Delete table too...
     const defs = this.state.tableDefs.filter(e => e.name !== def.name)
@@ -242,6 +241,17 @@ class App extends React.Component {
     this.setState({tableDefs: defs})
   }
   
+  deleteColumn = (tableDef, col) => {
+    // TODO: Delete in table too...
+    const defs = [...this.state.tableDefs]
+    const def = this.state.tableDefs.filter(e => e.name === tableDef.name)[0]
+    const filter = def.columns.filter(e => e !== col)
+    def.columns = filter
+    this.props.firebase.tableDefs().set(defs)
+    this.setState({tableDefs: defs})
+  }
+  
+  /* --- End menu callbacks --- */
 
   appMenuItems = () => (
     <React.Fragment>
