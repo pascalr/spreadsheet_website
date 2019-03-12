@@ -1,5 +1,23 @@
 git push -u origin master
 
+https://css-tricks.com/snippets/css/complete-guide-grid/
+
+Notes sur React:
+
+Mon point de vue:
+Un React.Component est comme un mix entre une vue et un modele.
+
+Je pense qu'une variable devrait etre un props si et seulement si ca modifie sa vue.
+
+Par exemple, je ne crois pas que firebase ne devrait etre un props. C'est juste
+une reference a une database. Ca n'affecte en rien la vue.
+
+Aussi, un state est simplement un props, mais qui est prive a lui-meme.
+
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

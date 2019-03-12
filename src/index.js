@@ -1,18 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './components/App';
+import App from './App';
+import ImprovedApp from './ImprovedApp';
 import * as serviceWorker from './serviceWorker';
-import Firebase, { FirebaseContext } from './components/Firebase';
 
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContextProvider } from 'react-dnd'
 
+import Firebase from './Firebase'
+let db = new Firebase()
+
 ReactDOM.render(
   <DragDropContextProvider backend={HTML5Backend}>
-    <FirebaseContext.Provider value={new Firebase()}>
-      <App />
-    </FirebaseContext.Provider>
+    <ImprovedApp db={db}/>
   </DragDropContextProvider>,
   document.getElementById('root')
 );

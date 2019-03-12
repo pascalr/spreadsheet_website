@@ -1,89 +1,18 @@
 import React, { Component } from 'react'
 import ReactDataSheet from 'react-datasheet';
 
-import { withFirebase } from '../Firebase';
-
 import { DragDropContextProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import Select from 'react-select'
 
 import Command from '../Command'
 
-import { colDragSource, colDropTarget } from './drag-drop.js'
-
 import { Menu, MenuProvider, Item, Separator, Submenu } from 'react-contexify'
 import { withMenu } from '../Menu'
 
+import { SheetRenderer, RowRenderer, CellRenderer } from './DatasheetTable'
+
 const onClickMenu = ({ event, props }) => console.log(event,props);
-
-const Header = colDropTarget(colDragSource((props) => {
-  const { tableDef, col, connectDragSource, connectDropTarget, isOver,
-          columnMenuItems} = props
-  const className = 'rTableHead cell read-only' + (isOver ? 'drop-target' : '')
-  return (columnMenuItems(col),
-    connectDropTarget(
-      connectDragSource(
-          <div className={className} style={{ width: col.width }}>
-            {withMenu(tableDef.name + col.name,columnMenuItems(col),col.name)}
-          </div>
-      )))
-}))
-
-class SheetRenderer extends React.PureComponent {
-  render () {
-    const { className, columns, onColumnDrop, tableDef, columnMenuItems } = this.props
-    return (
-      <div className={"rTable "+className}
-           style={{backgroundColor: this.props.tableDef.backgroundColor}}>
-        <div className="rCaption">
-          {tableDef.name}
-        </div>
-        <div className="rTableHeading">
-          <div className="rTableRow">
-            <div className='rTableHead cell read-only row-handle' key='$$actionCell' />
-            {
-              columns.map((col, index) => (
-                <Header key={col.name} col={col} tableDef={tableDef} className="data-header"
-                  columnIndex={index} onColumnDrop={onColumnDrop}
-                  columnMenuItems={columnMenuItems}
-                />
-              ))
-            }
-          </div>
-        </div>
-        <div className="rTableBody data-body">
-          {this.props.children}
-        </div>
-      </div>
-    )
-  }
-}
-
-const RowRenderer = (props) => {
-  return (
-    <div className={"rTableRow " + props.className}>
-      { props.children }
-    </div>
-  )
-}
-
-const CellRenderer = props => {
-  const {cell, row, col, columns, attributesRenderer,
-    selected, editing, updated, style, ...rest } = props
-
-  // hey, how about some custom attributes on our cell?
-  const attributes = cell.attributes || {}
-  // ignore default style handed to us by the component and roll our own
-  //attributes.style = { width: columns[col].width }
-  //if (col === 0) {
-  //  attributes.title = cell.label
-  //}
-  return (
-      <div {...rest} {...attributes}>
-        {props.children}
-      </div>
-  )
-}
 
 class DatasheetTableBase extends Component {
   constructor(props) {
@@ -187,9 +116,10 @@ class DatasheetTableBase extends Component {
       <Separator />
       <Item onClick={onClickMenu}>rename</Item>
       <Separator />
-      <Submenu label="Foobar">
-        <Item onClick={onClickMenu}>Foo</Item>
-        <Item onClick={onClickMenu}>Bar</Item>
+      <Submenu label="Type">
+        <Item onClick={onClickMenu}>normal</Item>
+        <Item onClick={onClickMenu}>link</Item>
+        <Item onClick={onClickMenu}>money</Item>
       </Submenu>
     </React.Fragment>
   );
@@ -218,13 +148,13 @@ class DatasheetTableBase extends Component {
           cellRenderer={this.renderCell}
           valueRenderer={this.customValueRenderer}
           dataRenderer={(cell) => cell.expr}
-          onCellsChanged={(changes) => (this.props.onCellsChanged(changes, this.props.tableDef))}
+          onCellsChanged={this.props.onCellsChanged(this.props.tableDef)}
         /></div>, "table"
       )
     );
   }
 }
 
-const DatasheetTable = withFirebase(DatasheetTableBase);
+const DatasheetTable = DatasheetTableBase;
 
 export default DatasheetTable;

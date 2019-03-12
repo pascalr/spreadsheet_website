@@ -2,27 +2,20 @@ import React from 'react';
 import './App.css';
 import DatasheetTable from '../DatasheetTable';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-import { withFirebase } from '../Firebase';
-import Navigation from '../Navigation';
-import LandingPage from '../Landing';
-import SignUpPage from '../SignUp';
-import SignInPage from '../SignIn';
-import PasswordForgetPage from '../PasswordForget';
-import HomePage from '../Home';
-import AccountPage from '../Account';
-import AdminPage from '../Admin';
 
-import * as ROUTES from '../../constants/routes';
-import { withAuthentication } from '../Session';
+import * as ROUTES from '../constants/routes';
 
 import { Item, Separator, Submenu } from 'react-contexify'
 import { InlineMenu, withMenu } from '../Menu'
+
+import Firebase from '../Firebase'
+import Helper from '../Helper'
 
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 
-import ByPass from '../../lib/ByPass'
+import ByPass from '../lib/ByPass'
 
 // A-Z, AA-ZZ, AAA-ZZZ
 function lettersFromColumnNumber(colNb) {
@@ -31,39 +24,24 @@ function lettersFromColumnNumber(colNb) {
 
 const ROW_HEIGHT = 20;
 
-function nextTableName(defs) {
-  let defsByName = defs.reduce((acc,currVal) => {
-    acc[currVal.name] = currVal
-    return acc
-  }, {})
-  let i = 1;
-  while (defsByName["table" + i]) {i++}
-  return "table" + i
-}
-
 const onClickMenu = ({ event, props }) => console.log(event,props);
 
-// I need to have a list of all tables to be able to access it.
-// It belongs in App I think
-//
-// App needs a hashmap of tables and tableDefs,
-// but the grid and 
-//
-// Ah! Ah! Je pense que j'ai trouve la solution:
-// Vu que les props des autres tables ne changent pas, elles ne seront pas re-render!
-// Alors oui je peux updater le state de l'App au complet pour une table seulement!
 class App extends React.Component {
 
   constructor(props) {
     super(props);
 
+    console.log('In app constructor');
+    this.db = new Firebase()
+    this.db.loadTables(tables => (this.setState({tables: tables})))
+    this.db.loadTableDefs(defs => (this.setState({tableDefs: defs})))
+
     this.state = {
       tables: {},
       tableDefs: [],
     };
-    this.loadTablesWithFirebase()
   }
-  
+
   /*addRow = (table, tableDef) => {
     let tables = Object.assign({},this.state.tables)
     let rows = tables[tableDef.name]
@@ -96,9 +74,9 @@ class App extends React.Component {
     this.setState({tableDefs: defs})
   }
   
-  onCellsChanged = (changes, tableDef) => {
+  onCellsChanged = tableDef => (changes, additions) => {
     let tables = Object.assign({},this.state.tables)
-    changes.forEach(({cell, row, col, value}) => {
+    changes.concat(additions || []).forEach(({cell, row, col, value}) => {
       if (!tables[tableDef.name]) {
         tables[tableDef.name] = []
       }
@@ -134,15 +112,6 @@ class App extends React.Component {
     })
     this.setState({grid})
   }*/
-
-  loadTablesWithFirebase() { 
-    this.props.firebase.tables().on('value', (snapshot) => (
-      this.setState({tables: snapshot.val()})
-    ))
-    this.props.firebase.tableDefs().on('value', (snapshot) => (
-      this.setState({tableDefs: snapshot.val()})
-    ))
-  }
 
   dataGridLayout(def, table) {
     console.log('dataGridLayout')
@@ -229,7 +198,7 @@ class App extends React.Component {
 
   addNewTable = () => {
     const defs = [...this.state.tableDefs]
-    defs.push({name: nextTableName(defs), columns: [{name: "A"}], showLineNumbers: true})
+    defs.push({name: Helper.nextTableName(defs), columns: [{name: "A"}], showLineNumbers: true})
     this.props.firebase.tableDefs().set(defs)
     this.setState({tableDefs: defs})
   }
@@ -270,15 +239,14 @@ class App extends React.Component {
       <div>
         <Router>
           <div>
-            <Navigation />
-            <hr />
+            {/*<hr />
             <Route exact path={ROUTES.LANDING} component={LandingPage} />
             <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
             <Route path={ROUTES.ADMIN} component={AdminPage} />
             <Route path={ROUTES.HOME} component={HomePage} />
             <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-            <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+            <Route path={ROUTES.ACCOUNT} component={AccountPage} />*/}
           </div>
         </Router>
         {this.renderTables()}
@@ -287,4 +255,4 @@ class App extends React.Component {
   );}
 }
 
-export default withAuthentication(withFirebase(App));
+export default App;
