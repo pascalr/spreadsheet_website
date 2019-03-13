@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { colDragSource, colDropTarget } from './drag-drop.js'
-import { withMenu } from '../Menu'
 
 const Header = colDropTarget(colDragSource((props) => {
   const { tableDef, col, connectDragSource, connectDropTarget, isOver,
@@ -11,7 +10,7 @@ const Header = colDropTarget(colDragSource((props) => {
     connectDropTarget(
       connectDragSource(
           <div className={className} style={{ width: col.width }}>
-            {withMenu(tableDef.name + col.name,columnMenuItems(col),col.name)}
+            {col.name}
           </div>
       )))
 }))

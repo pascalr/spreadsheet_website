@@ -3,12 +3,16 @@ import React from 'react'
 import Firebase from '../Firebase'
 import Helper from '../Helper'
 
-import './App.css'
-
 import DefinitionsProvider from '../DefinitionsProvider'
 
 import { Menu, Item, Separator, Submenu, MenuProvider } from 'react-contexify'
 import * as TABLES from '../constants/tables'
+
+import 'react-contexify/dist/ReactContexify.min.css';
+
+import GridLayout from 'react-grid-layout';
+import '../styles/react-grid-layout-style.css'
+import 'react-resizable/css/styles.css'
 
 const onClickMenu = ({ event, props }) => console.log(event,props);
 
@@ -45,6 +49,43 @@ class ScreenMenu extends React.Component {
   }
 }
 
+class TablesGridLayout extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.props.db.load(TABLES.LAYOUT,
+      (layout) => (this.setState(layout)))
+    this.state = {layout: {}}
+  }
+
+  onLayoutChange = (layout) => {
+    this.setState({layout: layout})
+  }
+
+  render() { return(
+    <GridLayout className="layout"
+                compactType={null}
+                cols={40}
+                autoSize={true}
+                onLayoutChange={this.onLayoutChange}
+                style={{height: '2810px'}}
+                margin={[0,0]}
+                rowHeight={20}
+                width={40*20}>
+      {Object.keys(this.props.tables || {}).map(d => (
+        <div key={"gridTable_" + d}
+          className="gridTable"
+          data-grid={{x: 0, y: 0, w: 2, h: 2}}
+        >
+          <div className="gridTable" style={{width: 20, height: 20}}>
+            <Table name={d} key={d}/>
+          </div>
+        </div>
+      ))}
+    </GridLayout>
+  );}
+}
+
 class Screen extends React.Component {
   constructor(props) {
     super(props)
@@ -54,7 +95,7 @@ class Screen extends React.Component {
     this.state = {tables: {}}
   }
 
-  getSnapshotBeforeUpdate = (prevProps, prevState) => {
+  componentDidUpdate = (prevProps, prevState) => {
     if (prevState != this.state) {
       // Keep the state of the screen in the database
       this.props.db.set(TABLES.SCREEN,this.state);
@@ -72,9 +113,7 @@ class Screen extends React.Component {
       <React.Fragment>
         <MenuProvider id="screen_menu" data={{test2: 12}}>
           <div id="screen">
-            {Object.keys(this.state.tables || {}).map(d => (
-              <Table name={d} key={d}/>
-            ))}
+            <TablesGridLayout db={this.props.db} tables={this.state.tables}/>
           </div>
         </MenuProvider>
         <ScreenMenu {...this.props} screen={this} />

@@ -2,6 +2,8 @@ git push -u origin master
 
 https://css-tricks.com/snippets/css/complete-guide-grid/
 
+serve -s build
+
 Notes sur React:
 
 Mon point de vue:

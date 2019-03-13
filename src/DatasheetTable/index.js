@@ -8,7 +8,6 @@ import Select from 'react-select'
 import Command from '../Command'
 
 import { Menu, MenuProvider, Item, Separator, Submenu } from 'react-contexify'
-import { withMenu } from '../Menu'
 
 import { SheetRenderer, RowRenderer, CellRenderer } from './DatasheetTable'
 
@@ -80,8 +79,8 @@ class DatasheetTableBase extends Component {
   
   customValueRenderer = (cell,i,j) => {
     if (j == 0 && this.props.tableDef) {
-      return (withMenu(this.props.tableDef.name+i, this.rowMenuItems(),
-                       this.valueFromCell(cell,i,j)))
+      return (this.props.tableDef.name+i, this.rowMenuItems(),
+                       this.valueFromCell(cell,i,j))
     
     } else {
       return this.valueFromCell(cell,i,j)
@@ -97,49 +96,8 @@ class DatasheetTableBase extends Component {
     return <RowRenderer rowIndex={row} className="data-row" {...rest} />
   }
 
-  tableMenuItems = () => (
-    <React.Fragment>
-      <Item onClick={() => this.props.doDeleteTable(this.props.tableDef)}>delete table</Item>
-      <Separator />
-      <Item onClick={() => this.props.doAddColumn(this.props.tableDef)}>add column</Item>
-      <Separator />
-      <Submenu label="Foobar">
-        <Item onClick={onClickMenu}>Foo</Item>
-        <Item onClick={onClickMenu}>Bar</Item>
-      </Submenu>
-    </React.Fragment>
-  );
-
-  columnMenuItems = (col) => (
-    <React.Fragment>
-      <Item onClick={() => this.props.doDeleteColumn(this.props.tableDef, col)}>delete column</Item>
-      <Separator />
-      <Item onClick={onClickMenu}>rename</Item>
-      <Separator />
-      <Submenu label="Type">
-        <Item onClick={onClickMenu}>normal</Item>
-        <Item onClick={onClickMenu}>link</Item>
-        <Item onClick={onClickMenu}>money</Item>
-      </Submenu>
-    </React.Fragment>
-  );
-  
-  rowMenuItems = () => (
-    <React.Fragment>
-      <Item onClick={onClickMenu}>delete row</Item>
-      <Separator />
-      <Item onClick={onClickMenu}>add row</Item>
-      <Separator />
-      <Submenu label="Foobar">
-        <Item onClick={onClickMenu}>Foo</Item>
-        <Item onClick={onClickMenu}>Bar</Item>
-      </Submenu>
-    </React.Fragment>
-  );
-
   render() {
     return (
-      withMenu(this.props.tableDef.name, this.tableMenuItems(),
         <div>
         <ReactDataSheet
           data={this.generateGrid(this.props.tableDef)}
@@ -149,9 +107,8 @@ class DatasheetTableBase extends Component {
           valueRenderer={this.customValueRenderer}
           dataRenderer={(cell) => cell.expr}
           onCellsChanged={this.props.onCellsChanged(this.props.tableDef)}
-        /></div>, "table"
+        /></div>
       )
-    );
   }
 }
 

@@ -6,7 +6,6 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 
 import { Item, Separator, Submenu } from 'react-contexify'
-import { InlineMenu, withMenu } from '../Menu'
 
 import Firebase from '../Firebase'
 import Helper from '../Helper'
@@ -235,7 +234,6 @@ class App extends React.Component {
 
   render = () => {
     return (
-    <InlineMenu id="app_menu_id" items={this.appMenuItems()}>
       <div>
         <Router>
           <div>
@@ -251,7 +249,6 @@ class App extends React.Component {
         </Router>
         {this.renderTables()}
       </div>
-    </InlineMenu>
   );}
 }
 

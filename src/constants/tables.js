@@ -1,6 +1,7 @@
 export const TABLES = 'tables';
 export const DEFS = 'defs';
 export const SCREEN = 'screen';
+export const LAYOUT = 'layout';
 
 // A Table contains all the data
 // A Table has one Def
