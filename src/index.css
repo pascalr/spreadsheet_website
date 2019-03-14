@@ -105,6 +105,9 @@ code {
 
 .gridTable {
   overflow:hidden;
+  border: 1px double silver;
+  box-shadow: inset 0 0 1px #000;
+  background-color: whitesmoke;
 }
 
 span.data-grid-container, span.data-grid-container:focus {

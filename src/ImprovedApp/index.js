@@ -33,6 +33,63 @@ class Table extends React.Component {
   }
 }
 
+class TablesGridLayout extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.props.db.load(TABLES.LAYOUT,
+      (layout) => (this.setState({layout: layout})))
+    this.state = {}
+  }
+
+  gridLayout = () => (
+    (Object.keys(this.props.tables) || []).map(t => (
+      this.state.layout[t] || {x: 0, y:0, w: 2, h: 2, i: t}
+    ))
+  )
+
+  onLayoutChange = (layout) => {
+    let layoutByName = layout.reduce((acc,currVal) => {
+      const {x,y,w,h,i} = currVal;
+      acc[currVal.i] = {x,y,w,h,i};
+      return acc;
+    }, {})
+    this.props.db.set(TABLES.LAYOUT, layoutByName);
+    // FIXME: This renders twice for nothing I think
+    this.setState({layout: layoutByName})
+  }
+
+  render() {
+    if (this.state.layout) {
+      return(
+        <GridLayout className="layout"
+                    compactType={null}
+                    cols={40}
+                    autoSize={true}
+                    layout={this.gridLayout()}
+                    onLayoutChange={this.onLayoutChange}
+                    preventCollision="true"
+                    style={{height: '2810px'}}
+                    margin={[0,0]}
+                    rowHeight={20}
+                    width={40*20}>
+          {Object.keys(this.props.tables || {}).map(t => (
+            /* isResizable="false" dependemment du type */
+            <div key={t} className="gridTable" style={{
+              width: this.state.layout[t].w*20,
+              height: this.state.layout[t].h*20}}
+            >
+              <Table name={t} key={t}/>
+            </div>
+          ))}
+        </GridLayout>
+      );
+    } else {
+      return null
+    }
+  }
+}
+
 class ScreenMenu extends React.Component {
   render() {
     return(
@@ -47,43 +104,6 @@ class ScreenMenu extends React.Component {
       </Menu>
     );
   }
-}
-
-class TablesGridLayout extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.props.db.load(TABLES.LAYOUT,
-      (layout) => (this.setState(layout)))
-    this.state = {layout: {}}
-  }
-
-  onLayoutChange = (layout) => {
-    this.setState({layout: layout})
-  }
-
-  render() { return(
-    <GridLayout className="layout"
-                compactType={null}
-                cols={40}
-                autoSize={true}
-                onLayoutChange={this.onLayoutChange}
-                style={{height: '2810px'}}
-                margin={[0,0]}
-                rowHeight={20}
-                width={40*20}>
-      {Object.keys(this.props.tables || {}).map(d => (
-        <div key={"gridTable_" + d}
-          className="gridTable"
-          data-grid={{x: 0, y: 0, w: 2, h: 2}}
-        >
-          <div className="gridTable" style={{width: 20, height: 20}}>
-            <Table name={d} key={d}/>
-          </div>
-        </div>
-      ))}
-    </GridLayout>
-  );}
 }
 
 class Screen extends React.Component {
