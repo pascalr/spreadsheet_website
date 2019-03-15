@@ -1,3 +1,45 @@
+Feature list:
+- Avoir un menu customizable avec des icons que je click, que je peux deplacer.
+- Voir la liste de mes bookmarks.
+- Voir mes todos listes directement dans ma page d'acceuil.
+- Avoir une checklist des trucs a faire pour ce projet
+- Avoir une db de mes films, mes musiques, (liens youtube, accords, ...)
+- Pouvoir inclure des documents LaTeX. Voir: https://stackoverflow.com/questions/3284131/is-there-a-javascript-latex-equation-renderer
+- Pouvoir faire des calculs de spreadsheet de base
+- Pouvoir faire mes impots, avec une base de donnee locale, incryptee.
+- Faire ma liste d'epicerie
+
+
+
+
+
+
+Faire un application de spreesheet.
+
+La page d'acceuil est une liste de toute les tables avec seulement leurs noms en ordre alphabetique. Quand je click sur une, ca ouvre vers la table.
+
+Toutefois, ce qui est innovant est de pouvoir imbriquer une table dans une autre table. Dans la vue en tout cas. Le modele existe encore quand meme par lui-meme, mais on le visualise a l'interieur de la table.
+
+Le feature le plus important je crois est le zoom infini.
+
+Dans le fond, juste faire un navigateur pour l'instant? Parce tous le reste revient a
+reinventer des applications qui marche deja comme Spreadsheet et Word, etc.
+
+Ce qui innovateur est de naviguer en se deplacant et zoomant dans un monde facile pour notre memoire a naviguer.
+
+Au moins pouvoir ecrire du texte.
+
+Donner des liens au File:/// protocol, mais c pas bon ca pcq c juste local...
+
+J'ai deux problemes que je veux resoudre:
+
+- Avoir une base do donnees.
+- Naviguer dans cette base de donnees.
+
+Ca serait nice de pouvoir avoir une vue isometrique aussi pas juste quadrille.
+Une vue comme age of empires ou tous les jeux videos. Ca serait du pseudo 3d! Ca serait
+pas mal plus beau comme home.
+
 git push -u origin master
 
 https://css-tricks.com/snippets/css/complete-guide-grid/

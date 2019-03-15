@@ -1,255 +1,186 @@
-import React from 'react';
-import './App.css';
-import DatasheetTable from '../DatasheetTable';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
-
-import * as ROUTES from '../constants/routes';
-
-import { Item, Separator, Submenu } from 'react-contexify'
+import React from 'react'
 
 import Firebase from '../Firebase'
 import Helper from '../Helper'
 
+import DefinitionsProvider from '../DefinitionsProvider'
+
+import { Menu, Item, Separator, Submenu, MenuProvider } from 'react-contexify'
+import * as TABLES from '../constants/tables'
+
+import 'react-contexify/dist/ReactContexify.min.css';
+
 import GridLayout from 'react-grid-layout';
-import 'react-grid-layout/css/styles.css'
+import '../styles/react-grid-layout-style.css'
 import 'react-resizable/css/styles.css'
-
-import ByPass from '../lib/ByPass'
-
-// A-Z, AA-ZZ, AAA-ZZZ
-function lettersFromColumnNumber(colNb) {
-      //name: String.fromCharCode(65 + columns.length),
-}
-
-const ROW_HEIGHT = 20;
 
 const onClickMenu = ({ event, props }) => console.log(event,props);
 
-class App extends React.Component {
-
+class Table extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
-    console.log('In app constructor');
-    this.db = new Firebase()
-    this.db.loadTables(tables => (this.setState({tables: tables})))
-    this.db.loadTableDefs(defs => (this.setState({tableDefs: defs})))
-
-    this.state = {
-      tables: {},
-      tableDefs: [],
-    };
+    //this.props.db.loadRecord(TABLES.TABLES,props.name,
+    //  (data)=>(this.setState({data: data})))
+    //this.state = {data: {}}
   }
-
-  /*addRow = (table, tableDef) => {
-    let tables = Object.assign({},this.state.tables)
-    let rows = tables[tableDef.name]
-    let emptyLine = new Array(tableDef.columns.length).fill("")
-    if (rows) {
-      rows.push(emptyLine)
-    } else {
-      tables[tableDef.name] = [emptyLine]
-    }
-    this.setState({tables: tables})
-  }*/
-
-  addColumn = (tableDef) => {
-    let defs = [...this.state.tableDefs]
-    let columns = defs.find(el => (el.name == tableDef.name)).columns
-    columns.push({
-      name: String.fromCharCode(65 + columns.length),
-      type: "",
-    })
-    this.props.firebase.tableDefs().set(defs)
-    this.setState({tableDefs: defs})
-  }
-
-  handleColumnDrop = def => (from, to) => {
-    let defs = [...this.state.tableDefs]
-    let columns = [...defs.find(el => (el.name == def.name)).columns]
-    columns.splice(to, 0, ...columns.splice(from, 1))
-    defs.find(el => (el.name == def.name)).columns = columns
-    this.props.firebase.tableDefs().set(defs)
-    this.setState({tableDefs: defs})
-  }
-  
-  onCellsChanged = tableDef => (changes, additions) => {
-    let tables = Object.assign({},this.state.tables)
-    changes.concat(additions || []).forEach(({cell, row, col, value}) => {
-      if (!tables[tableDef.name]) {
-        tables[tableDef.name] = []
-      }
-      let val = tables[tableDef.name][row]
-      if (!val) {
-        let empty = tableDef.columns.reduce((acc,currVal) => {acc[currVal.name] = ""; return acc}, {})
-        tables[tableDef.name][row] = empty
-        val = empty
-      }
-      if (tableDef.showLineNumbers != false) {
-        val[tableDef.columns[col-1].name] = value
-      } else {
-        val[tableDef.columns[col].name] = value
-      }
-      this.props.firebase.tableRow(tableDef.name,row).set(val) // TODO: set all at once maybe
-    })
-    this.setState({tables: tables})
-  }
-
-    /*handleCellsChanged (changes, additions) { TODO: Additions
-    const grid = this.state.grid.map(row => [...row])
-    changes.forEach(({cell, row, col, value}) => {
-      grid[row][col] = {...grid[row][col], value}
-    })
-    // paste extended beyond end, so add a new row
-    additions && additions.forEach(({cell, row, col, value}) => {
-      if (!grid[row]) {
-        grid[row] = [{value: ''}, {value: ''}, {value: ''}, {value: 0}]
-      }
-      if (grid[row][col]) {
-        grid[row][col] = {...grid[row][col], value}
-      }
-    })
-    this.setState({grid})
-  }*/
-
-  dataGridLayout(def, table) {
-    console.log('dataGridLayout')
-    let layout = null
-    if (table) {
-      let nbRows = Object.keys(table).length
-      console.log(`h:${Math.ceil(nbRows + 2)}`)
-      layout = {x: 0, y: 0, w: 5, h: nbRows+2}
-    } else {
-      layout = {x: 0, y: 0, w: 5, h: 5}
-    }
-    layout["i"] = "gridTable_" + def.name
-    return layout
-  }
-
-  dataGridLayouts = () => {
-    let v = (this.state.tableDefs.map(e => (this.dataGridLayout(e, this.state.tables[e.name]))))
-    return v
-  }
-
-  renderTables = () => {
-    // TODO: Loading layout first
-    // if !layoutLoaded, <span>Loading layout</span>
-    // data-grid={this.dataGridLayout(this.state.tables[def.name])}
-    let layout = [...this.dataGridLayouts()]
-    return (
-      <div className="tables">
-      <ByPass>
-      <GridLayout className="layout"
-                  compactType={null}
-                  cols={12}
-                  layout={layout}
-                  autoSize={true}
-                  onLayoutChange={(layout) => (undefined)/*TODO*/}
-                  draggableHandle=".rCaption"
-                  style={{height: '2810px'}}
-                  rowHeight={21}
-                  width={1920}>
-        {this.state.tableDefs
-          .filter(el => (el ? true : false))
-          .map((def,i) => (
-            <div key={"gridTable_" + def.name}
-                 className="gridTable"
-            >
-            <DatasheetTable key={i}
-                            tableDef={def}
-                            table={this.state.tables[def.name]}
-                            doAddColumn={this.addColumn}
-                            doDeleteTable={this.deleteTable}
-                            doDeleteColumn={this.deleteColumn}
-                            onCellsChanged={this.onCellsChanged}
-                            onColumnDrop={this.handleColumnDrop}
-                          />
-            </div>
-        ))}
-      </GridLayout>
-      </ByPass>
-    </div>
-  )}
-
-  updateTableDefs = () => {
-    let defs = [...this.state.tables["table_defs"]].filter((el) => ( el && el.name && el.name !== "" ));
-    let defsByName = defs.reduce((acc,currVal) => {
-      acc[currVal.name] = currVal
-      return acc
-    }, {})
-    let columns = [...this.state.tables["table_def_columns"]].filter((el) => ( el != null ));
-    Object.values(columns).forEach(col => {
-      if (col) {
-        let def = defsByName[col["table_def"]]
-        if (def) {
-          if (def["columns"]) {
-            def["columns"] = [...def["columns"], col]
-          } else {
-            def["columns"] = [col]
-          }
-        }
-      }
-    })
-    this.props.firebase.tableDefs().set(defs)
-  }
-
-  /* --- Menu callbacks --- */
-
-  addNewTable = () => {
-    const defs = [...this.state.tableDefs]
-    defs.push({name: Helper.nextTableName(defs), columns: [{name: "A"}], showLineNumbers: true})
-    this.props.firebase.tableDefs().set(defs)
-    this.setState({tableDefs: defs})
-  }
-
-  deleteTable = (def) => {
-    // TODO: Delete table too...
-    const defs = this.state.tableDefs.filter(e => e.name !== def.name)
-    this.props.firebase.tableDefs().set(defs)
-    this.setState({tableDefs: defs})
-  }
-  
-  deleteColumn = (tableDef, col) => {
-    // TODO: Delete in table too...
-    const defs = [...this.state.tableDefs]
-    const def = this.state.tableDefs.filter(e => e.name === tableDef.name)[0]
-    const filter = def.columns.filter(e => e !== col)
-    def.columns = filter
-    this.props.firebase.tableDefs().set(defs)
-    this.setState({tableDefs: defs})
-  }
-  
-  /* --- End menu callbacks --- */
-
-  appMenuItems = () => (
-    <React.Fragment>
-      <Item onClick={this.addNewTable}>add table</Item>
-      <Separator />
-      <Submenu label="Foobar">
-        <Item onClick={onClickMenu}>Foo</Item>
-        <Item onClick={onClickMenu}>Bar</Item>
-      </Submenu>
-    </React.Fragment>
-  )
-
-  render = () => {
+  render() {
     return (
       <div>
-        <Router>
-          <div>
-            {/*<hr />
-            <Route exact path={ROUTES.LANDING} component={LandingPage} />
-            <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-            <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-            <Route path={ROUTES.ADMIN} component={AdminPage} />
-            <Route path={ROUTES.HOME} component={HomePage} />
-            <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-            <Route path={ROUTES.ACCOUNT} component={AccountPage} />*/}
-          </div>
-        </Router>
-        {this.renderTables()}
+        {this.props.name}
       </div>
-  );}
+    );
+  }
 }
 
-export default App;
+// A GridItem is selectable with a click
+// When a GridItem is selected and another click happens, the
+// actions will depend on the type of the component.
+//
+// For a Table:
+// The table will be opened in another page
+// For a text:
+// The text will be editable
+class GridItem extends React.Component {
+}
+
+class TablesGridLayout extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.props.db.load(TABLES.LAYOUT,
+      (layout) => (this.setState({layout: layout})))
+    this.state = {editMode: false}
+  }
+
+  gridLayout = () => (
+    (Object.keys(this.props.tables) || []).map(t => (
+      {...(this.state.layout[t] || {x: 0, y:0, w: 2, h: 2, i: t}),
+        static: !this.state.editMode}
+    ))
+  )
+
+  onLayoutChange = (layout) => {
+    let layoutByName = layout.reduce((acc,currVal) => {
+      const {x,y,w,h,i} = currVal;
+      acc[currVal.i] = {x,y,w,h,i};
+      return acc;
+    }, {})
+    this.props.db.set(TABLES.LAYOUT, layoutByName);
+    // FIXME: This renders twice for nothing I think
+    this.setState({layout: layoutByName})
+  }
+
+  render() {
+    if (this.state.layout) {
+      return(
+        <GridLayout className="layout"
+                    compactType={null}
+                    cols={100}
+                    autoSize={true}
+                    layout={this.gridLayout()}
+                    onLayoutChange={this.onLayoutChange}
+                    preventCollision={true}
+                    style={{height: '2810px'}}
+                    margin={[0,0]}
+                    rowHeight={20}
+                    width={100*20}>
+          {Object.keys(this.props.tables || {}).map(t => (
+            /* isResizable="false" dependemment du type */
+            <div key={t} className="gridTable" style={{
+              width: this.state.layout[t].w*20,
+              height: this.state.layout[t].h*20}}
+            >
+              <Table name={t} key={t}/>
+            </div>
+          ))}
+        </GridLayout>
+      );
+    } else {
+      return null
+    }
+  }
+}
+
+class ScreenMenu extends React.Component {
+  render() {
+    return(
+      <Menu id="screen_menu">
+        <Submenu label="add table">
+          <Item onClick={onClickMenu}><input type='text' /></Item>
+          {Object.keys(this.props.defs || {}).map(d => (
+            <Item onClick={this.props.screen.addTable(d)} key={d}>{d}</Item>
+          ))}
+        </Submenu>
+        <Item onClick={this.props.defsHandler.newTable} data={{test: 10}}>new table</Item>
+        <Item onClick={onClickMenu}>edit mode</Item>
+      </Menu>
+    );
+  }
+}
+
+class Screen extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.props.db.load(TABLES.SCREEN,
+      (screen) => (this.setState(screen)))
+    this.state = {tables: {}}
+  }
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState != this.state) {
+      // Keep the state of the screen in the database
+      this.props.db.set(TABLES.SCREEN,this.state);
+    }
+  }
+
+  addTable = (tableName) => ({ event, props }) => {
+    const tables = {...this.state.tables}
+    tables[tableName] = true
+    this.setState({tables: tables})
+  }
+
+  render() {
+    return (/* The MenuProvider should provide all it's children with it's value. */
+      <React.Fragment>
+        <MenuProvider id="screen_menu" data={{test2: 12}} className="screen_menu">
+          <div id="screen">
+            <TablesGridLayout db={this.props.db} tables={this.state.tables}/>
+          </div>
+        </MenuProvider>
+        <ScreenMenu {...this.props} screen={this} />
+      </React.Fragment>
+    );
+  }
+}
+
+class ImprovedApp extends React.Component {
+  actionTemp = () => {
+    this.props.db.load("tableDefs", (oldDefs) => {
+      let defsByName = oldDefs.reduce((acc,currVal) => {
+        currVal["type"] = null;
+        let name = currVal.name;
+        currVal["name"] = null;
+        acc[name] = currVal;
+        return acc;
+      }, {})
+      this.props.db.set(TABLES.DEFS,defsByName)
+    })
+    return undefined
+  }
+  render() {
+    return(
+      <React.Fragment>
+        <DefinitionsProvider db={this.props.db}>
+          <Screen db={this.props.db}/>
+        </DefinitionsProvider>
+        <button onClick={this.actionTemp}>
+          Bouton d'action temporaire
+        </button>
+      </React.Fragment>
+    );
+  }
+}
+
+export default ImprovedApp;

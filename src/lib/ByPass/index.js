@@ -1,5 +1,5 @@
 import React from 'react'
 
-const ByPass = (props) => (props.children.props.children)
+const ByPass = cond => (props) => cond ? (props.children.props.children) : props.children
 
 export default ByPass;
