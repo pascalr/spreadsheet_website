@@ -8,6 +8,10 @@ Feature list:
 - Pouvoir faire des calculs de spreadsheet de base
 - Pouvoir faire mes impots, avec une base de donnee locale, incryptee.
 - Faire ma liste d'epicerie
+- Avoir une liste d'articles interessant avec une petite description:
+Ex:
+https://www.npr.org/sections/goatsandsoda/2019/03/13/685533353/a-playful-way-to-teach-kids-to-control-their-anger
+Les parents inuits eduquent leur enfants sans jamais se facher, lever la voix ou les envoyer dans le coin. Au lieu, ils utilisent le pouvoir des histoires et du jeux. Si tu vas dans la riviere le monstre de la riviere va te prendre, t'emmener au fond de l'eau et d'adopter dans une nouvelle famille. Aussi, ils font rejoue un mauvais comportement a l'enfant lorsque ses emotions sont abaisses et lui posent des questions: Why don't you hit me? Owww, that hurts. Does that mean you don't like me?
 
 
 mapDispatchToProps is so very ugly

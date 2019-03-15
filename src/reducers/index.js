@@ -1,7 +1,10 @@
 import * as ACTION from "../constants/action-types";
 
+import Firebase from '../Firebase'
+
 const initialState = {
-  editMode: false
+  editMode: false,
+  //  firebase: new Firebase(),
 };
 
 function rootReducer(state = initialState, action) {

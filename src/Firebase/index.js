@@ -24,19 +24,11 @@ const prodConfig = {
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
 
-class Database {
-  constructor() {
-  }
-  loadTables() {throw new Error('You have to implement the method load tables!');}
-  loadTableDefs() {throw new Error('You have to implement the method load tables defs!');}
-}
-
 const config =
   process.env.NODE_ENV === 'production' ? prodConfig : devConfig;
 
-class Firebase extends Database {
+class Firebase {
   constructor() {
-    super()
     console.log('In firebase constructor');
     if (!app.apps.length) {
       console.log('Erreur: trying to reinitialize Firebase');
