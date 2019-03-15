@@ -1,11 +1,14 @@
 import React from 'react'
 
+import { connect } from "react-redux";
+
 import Firebase from '../Firebase'
 import Helper from '../Helper'
 
 import DefinitionsProvider from '../DefinitionsProvider'
 
-import { Menu, Item, Separator, Submenu, MenuProvider } from 'react-contexify'
+import { MenuProvider } from 'react-contexify'
+
 import * as TABLES from '../constants/tables'
 
 import 'react-contexify/dist/ReactContexify.min.css';
@@ -14,7 +17,7 @@ import GridLayout from 'react-grid-layout';
 import '../styles/react-grid-layout-style.css'
 import 'react-resizable/css/styles.css'
 
-const onClickMenu = ({ event, props }) => console.log(event,props);
+import ScreenMenu from '../ScreenMenu';
 
 class Table extends React.Component {
   constructor(props) {
@@ -44,7 +47,11 @@ class Table extends React.Component {
 class GridItem extends React.Component {
 }
 
-class TablesGridLayout extends React.Component {
+const mapStateToProps = state => {
+  return { editMode: state.editMode };
+};
+
+class ConnectedTablesGridLayout extends React.Component {
   constructor(props) {
     super(props)
 
@@ -56,7 +63,7 @@ class TablesGridLayout extends React.Component {
   gridLayout = () => (
     (Object.keys(this.props.tables) || []).map(t => (
       {...(this.state.layout[t] || {x: 0, y:0, w: 2, h: 2, i: t}),
-        static: !this.state.editMode}
+        static: !this.props.editMode}
     ))
   )
 
@@ -102,22 +109,7 @@ class TablesGridLayout extends React.Component {
   }
 }
 
-class ScreenMenu extends React.Component {
-  render() {
-    return(
-      <Menu id="screen_menu">
-        <Submenu label="add table">
-          <Item onClick={onClickMenu}><input type='text' /></Item>
-          {Object.keys(this.props.defs || {}).map(d => (
-            <Item onClick={this.props.screen.addTable(d)} key={d}>{d}</Item>
-          ))}
-        </Submenu>
-        <Item onClick={this.props.defsHandler.newTable} data={{test: 10}}>new table</Item>
-        <Item onClick={onClickMenu}>edit mode</Item>
-      </Menu>
-    );
-  }
-}
+const TablesGridLayout = connect(mapStateToProps)(ConnectedTablesGridLayout);
 
 class Screen extends React.Component {
   constructor(props) {

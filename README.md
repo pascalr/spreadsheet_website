@@ -10,9 +10,12 @@ Feature list:
 - Faire ma liste d'epicerie
 
 
+mapDispatchToProps is so very ugly
 
-
-
+Pour avoir acces a des variables ou des fonctions pour tester, je peux faire:
+window.variable = variable;
+ou
+window.function = function;
 
 Faire un application de spreesheet.
 
