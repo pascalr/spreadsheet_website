@@ -3,10 +3,9 @@ import React from 'react'
 import { colDragSource, colDropTarget } from './drag-drop.js'
 
 const Header = colDropTarget(colDragSource((props) => {
-  const { tableDef, col, connectDragSource, connectDropTarget, isOver,
-          columnMenuItems} = props
+  const { tableDef, col, connectDragSource, connectDropTarget, isOver} = props
   const className = 'rTableHead cell read-only' + (isOver ? 'drop-target' : '')
-  return (columnMenuItems(col),
+  return (
     connectDropTarget(
       connectDragSource(
           <div className={className} style={{ width: col.width }}>
@@ -17,7 +16,7 @@ const Header = colDropTarget(colDragSource((props) => {
 
 class SheetRenderer extends React.PureComponent {
   render () {
-    const { className, columns, onColumnDrop, tableDef, columnMenuItems } = this.props
+    const { className, columns, onColumnDrop, tableDef } = this.props
     return (
       <div className={"rTable "+className}
            style={{backgroundColor: this.props.tableDef.backgroundColor}}>
@@ -31,7 +30,6 @@ class SheetRenderer extends React.PureComponent {
               columns.map((col, index) => (
                 <Header key={col.name} col={col} tableDef={tableDef} className="data-header"
                   columnIndex={index} onColumnDrop={onColumnDrop}
-                  columnMenuItems={columnMenuItems}
                 />
               ))
             }

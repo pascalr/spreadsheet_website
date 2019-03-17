@@ -2,30 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import * as TABLE from '../constants/tables'
 import DatasheetTable from '../DatasheetTable'
-
-class ObjectElement extends React.Component {
-  render() {
-    return (
-      <div>
-        {Object.keys(this.props.val).map((k) => {
-          return this.props.val[k];
-        })}
-      </div>
-    );
-  }
-}
-
-class ArrayElement extends React.Component {
-  render() {
-    return (
-      <div>
-        <ObjectElement val={this.props.val}/>
-      </div>
-    );
-  }
-}
-
-const onClickMenu = ({ event, props }) => console.log(event,props);
+import FixedDataTable from '../FixedDataTable'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -36,44 +13,34 @@ class Table extends React.Component {
 
   constructor(props) {
     super(props)
-    this.props.db.loadRecord(TABLE.TABLES,this.name, (table) => {
+    this.props.db.loadRecord(TABLE.TABLES,this.name(), (table) => {
       this.setState({data: table})
     })
     this.state = {}
   }
 
-  name = this.props.match.params.id
+  name = () => this.props.match.params.id;
+  def = () => this.props.defs[this.name()];
+
+  renderDatasheetTable = () => (
+        <DatasheetTable
+          tableDef={this.props.defs[this.name()]}
+          table={this.state.data}
+        />);
 
   render() {
     if (!this.state.data) {return null;}
     return (
       <div className="Table">
-        <h1>{this.name}</h1>
-        <DatasheetTable
-          tableDef={this.props.defs[this.name]}
-          table={this.state.data}
-          doAddColumn={onClickMenu}
-          doDeleteTable={onClickMenu}
-          doDeleteColumn={onClickMenu}
-          onCellsChanged={onClickMenu}
-          onColumnDrop={onClickMenu}
-        />
+        <h1>{this.name()}</h1>
+        {this.renderDatasheetTable()}
       </div>
     );
   }
 
-    /*render() {
-    return (
-      <div className="Table">
-        <h1>{this.name}</h1>
-        <div className="TableArray">
-          {this.state.data ?
-            this.state.data.map(d => (<ArrayElement val={d}/>))
-          : null}
-        </div>
-      </div>
-    );
-  }*/
+  renderFixedDataTable = () => (
+    <FixedDataTable {...this.props} data={this.state.data} def={this.def()}/>);
+
 }
 
 export default connect(mapStateToProps)(Table);

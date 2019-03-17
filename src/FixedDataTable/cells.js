@@ -1,9 +1,7 @@
 "use strict";
 
-const ExampleImage = require('./ExampleImage');
 const { Cell } = require('fixed-data-table-2');
 const React = require('react');
-const ReactTooltip = require('react-tooltip');
 
 class CollapseCell extends React.PureComponent {
   render() {
@@ -17,7 +15,7 @@ class CollapseCell extends React.PureComponent {
     );
   }
 };
-module.exports.CollapseCell = CollapseCell;
+export { CollapseCell }
 
 class ColoredTextCell extends React.PureComponent {
   render() {
@@ -38,7 +36,7 @@ class ColoredTextCell extends React.PureComponent {
     });
   }
 };
-module.exports.ColoredTextCell = ColoredTextCell;
+export {ColoredTextCell}
 
 class DateCell extends React.PureComponent {
   render() {
@@ -50,19 +48,7 @@ class DateCell extends React.PureComponent {
     );
   }
 };
-module.exports.DateCell = DateCell;
-
-class ImageCell extends React.PureComponent {
-  render() {
-    const {data, rowIndex, columnKey, ...props} = this.props;
-    return (
-      <ExampleImage
-        src={data.getObjectAt(rowIndex)[columnKey]}
-      />
-    );
-  }
-};
-module.exports.ImageCell = ImageCell;
+export {DateCell}
 
 class LinkCell extends React.PureComponent {
   render() {
@@ -74,7 +60,7 @@ class LinkCell extends React.PureComponent {
     );
   }
 };
-module.exports.LinkCell = LinkCell;
+export {LinkCell}
 
 class PendingCell extends React.PureComponent {
   render() {
@@ -97,7 +83,7 @@ const PagedCell = ({data, ...props}) => {
     </PendingCell>
   );
 };
-module.exports.PagedCell = PagedCell;
+export {PagedCell}
 
 class RemovableHeaderCell extends React.PureComponent {
   render() {
@@ -112,11 +98,12 @@ class RemovableHeaderCell extends React.PureComponent {
     );
   }
 };
-module.exports.RemovableHeaderCell = RemovableHeaderCell;
+export {RemovableHeaderCell}
 
 class TextCell extends React.PureComponent {
   render() {
     const {data, rowIndex, columnKey, ...props} = this.props;
+    debugger
     return (
       <Cell {...props}>
         {data.getObjectAt(rowIndex)[columnKey]}
@@ -124,22 +111,4 @@ class TextCell extends React.PureComponent {
     );
   }
 };
-module.exports.TextCell = TextCell;
-
-class TooltipCell extends React.PureComponent {
-  render() {
-    const {data, rowIndex, columnKey, ...props} = this.props;
-    const value = data.getObjectAt(rowIndex)[columnKey];
-    return (
-      <Cell
-        {...props}
-        onMouseEnter={() => { ReactTooltip.show(); }}
-        onMouseLeave={() => { ReactTooltip.hide(); }}>
-        <div ref='valueDiv' data-tip={value}>
-          {value}
-        </div>
-      </Cell>
-    );
-  }
-};
-module.exports.TooltipCell = TooltipCell;
+export {TextCell}

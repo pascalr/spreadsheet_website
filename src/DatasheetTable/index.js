@@ -22,7 +22,7 @@ class DatasheetTableBase extends Component {
   }
   
   renderSheet = (props) => ( // FIXME: {...props}
-    <SheetRenderer tableDef={this.props.tableDef} columns={this.props.tableDef.columns} onColumnDrop={this.props.onColumnDrop(this.props.tableDef)} columnMenuItems={this.columnMenuItems} {...props} />
+    <SheetRenderer tableDef={this.props.tableDef} columns={this.props.tableDef.columns} onColumnDrop={onClickMenu} {...props} />
   )
   
   generateGrid = (def) => {
@@ -79,9 +79,7 @@ class DatasheetTableBase extends Component {
   
   customValueRenderer = (cell,i,j) => {
     if (j == 0 && this.props.tableDef) {
-      return (this.props.tableDef.name+i, this.rowMenuItems(),
-                       this.valueFromCell(cell,i,j))
-    
+      return (this.valueFromCell(cell,i,j))
     } else {
       return this.valueFromCell(cell,i,j)
     }
@@ -96,7 +94,7 @@ class DatasheetTableBase extends Component {
     return <RowRenderer rowIndex={row} className="data-row" {...rest} />
   }
 
-    /*render() {
+    render() {
     return (
         <div>
         <ReactDataSheet
@@ -106,11 +104,11 @@ class DatasheetTableBase extends Component {
           cellRenderer={this.renderCell}
           valueRenderer={this.customValueRenderer}
           dataRenderer={(cell) => cell.expr}
-          onCellsChanged={this.props.onCellsChanged(this.props.tableDef)}
+          onCellsChanged={onClickMenu}
         /></div>
       )
-  }*/
-  render() {
+  }
+    /*render() {
     return (
         <div>
         <ReactDataSheet
@@ -118,7 +116,7 @@ class DatasheetTableBase extends Component {
           valueRenderer={(cell) => cell.value}
         /></div>
       )
-  }
+  }*/
 }
 
 const DatasheetTable = DatasheetTableBase;
