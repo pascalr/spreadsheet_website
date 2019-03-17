@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 
 import { MenuProvider } from 'react-contexify'
 
-import TablesGridLayout from '../TablesGridLayout'
+import DesktopGridLayout from '../DesktopGridLayout'
 
-import ScreenMenu from '../ScreenMenu';
+import ScreenMenu from './ScreenMenu';
 
 import * as TABLES from '../constants/tables'
 
@@ -47,7 +47,7 @@ class Screen extends React.Component {
       <React.Fragment>
         <MenuProvider id="screen_menu" data={{test2: 12}} className="screen_menu">
           <div id="screen" className={this.props.editMode ? "editMode" : "notEditMode"}>
-            <TablesGridLayout db={this.props.db} tables={this.state.tables}/>
+            <DesktopGridLayout db={this.props.db} tables={this.state.tables}/>
           </div>
         </MenuProvider>
         <ScreenMenu {...this.props} screen={this} />

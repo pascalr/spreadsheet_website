@@ -13,8 +13,8 @@ import * as TABLES from '../constants/tables'
 
 import { defsLoaded } from '../actions'
 
-import Landing from '../Landing'
 import Table from '../Table'
+import Screen from '../Screen'
 
 const mapStateToProps = state => ({
   db: state.db
@@ -35,7 +35,7 @@ class ImprovedApp extends React.Component {
       <Router>
         <React.Fragment>
           <Link to={'/'}>Home</Link>
-          <Route exact path="/" component={Landing}/>
+          <Route exact path="/" component={Screen}/>
           <Route path={`/tables/:id`} render={props => (<Table {...props} />)} />
         </React.Fragment>
       </Router>

@@ -30,7 +30,7 @@ const mapStateToProps = state => {
   return { editMode: state.editMode };
 };
 
-class TablesGridLayout extends React.Component {
+class DesktopGridLayout extends React.Component {
   constructor(props) {
     super(props)
 
@@ -91,4 +91,4 @@ class TablesGridLayout extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(TablesGridLayout);
+export default connect(mapStateToProps)(DesktopGridLayout);
