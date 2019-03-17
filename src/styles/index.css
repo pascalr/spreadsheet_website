@@ -9,13 +9,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
-
-  background-size: 20px 20px;
-  background-image: linear-gradient(to right, whitesmoke 1px, transparent 1px), linear-gradient(to bottom, whitesmoke 1px, transparent 1px);
 }
 html, body, #root, #screen, #root > div {
   width: 100%;
   height: 100%;
+}
+
+#screen.editMode {
+  background-size: 20px 20px;
+  background-image: linear-gradient(to right, whitesmoke 1px, transparent 1px), linear-gradient(to bottom, whitesmoke 1px, transparent 1px);
 }
 
 .rTable {  /* <table> */

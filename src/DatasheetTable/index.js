@@ -96,7 +96,7 @@ class DatasheetTableBase extends Component {
     return <RowRenderer rowIndex={row} className="data-row" {...rest} />
   }
 
-  render() {
+    /*render() {
     return (
         <div>
         <ReactDataSheet
@@ -107,6 +107,15 @@ class DatasheetTableBase extends Component {
           valueRenderer={this.customValueRenderer}
           dataRenderer={(cell) => cell.expr}
           onCellsChanged={this.props.onCellsChanged(this.props.tableDef)}
+        /></div>
+      )
+  }*/
+  render() {
+    return (
+        <div>
+        <ReactDataSheet
+          data={this.generateGrid(this.props.tableDef)}
+          valueRenderer={(cell) => cell.value}
         /></div>
       )
   }

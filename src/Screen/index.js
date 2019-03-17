@@ -11,6 +11,7 @@ import * as TABLES from '../constants/tables'
 
 const mapStateToProps = state => ({
   db: state.db,
+  editMode: state.editMode,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -42,7 +43,7 @@ class Screen extends React.Component {
     return (
       <React.Fragment>
         <MenuProvider id="screen_menu" data={{test2: 12}} className="screen_menu">
-          <div id="screen">
+          <div id="screen" className={this.props.editMode ? "editMode" : "notEditMode"}>
             <TablesGridLayout db={this.props.db} tables={this.state.tables}/>
           </div>
         </MenuProvider>
