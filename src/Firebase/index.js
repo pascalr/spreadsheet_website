@@ -29,9 +29,7 @@ const config =
 
 class Firebase {
   constructor() {
-    console.log('In firebase constructor');
     if (!app.apps.length) {
-      console.log('Erreur: trying to reinitialize Firebase');
       app.initializeApp(config);
 
       this.auth = app.auth();

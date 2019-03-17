@@ -5,7 +5,7 @@ import * as TABLES from '../constants/tables'
 
 import GridLayout from 'react-grid-layout';
 
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 
 // A GridItem is selectable with a click
@@ -30,7 +30,7 @@ const mapStateToProps = state => {
   return { editMode: state.editMode };
 };
 
-class ConnectedTablesGridLayout extends React.Component {
+class TablesGridLayout extends React.Component {
   constructor(props) {
     super(props)
 
@@ -74,8 +74,8 @@ class ConnectedTablesGridLayout extends React.Component {
           {Object.keys(this.props.tables || {}).map(t => (
             /* isResizable="false" dependemment du type */
             <div key={t} className="gridTable" style={{
-              width: this.state.layout[t].w*20,
-              height: this.state.layout[t].h*20}}
+              width: (this.state.layout[t] ? this.state.layout[t].w : 2)*20,
+              height: (this.state.layout[t] ? this.state.layout[t].h : 2)*20,}}
             >
               <GridItem name={t}/>
             </div>
@@ -88,6 +88,4 @@ class ConnectedTablesGridLayout extends React.Component {
   }
 }
 
-const TablesGridLayout = connect(mapStateToProps)(ConnectedTablesGridLayout);
-
-export default TablesGridLayout;
+export default connect(mapStateToProps)(TablesGridLayout);

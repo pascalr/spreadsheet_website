@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from "react-redux";
 
 import Helper from '../Helper'
 
@@ -6,13 +7,17 @@ import * as TABLES from '../constants/tables'
 
 const EMPTY_DEF = {backgroundColor: "", columns: {},showLineNumbers: true}
 
+const mapStateToProps = state => ({
+  db: state.db
+})
+
 // A DefinitionsProvider is the single source of truth of table definitions.
 // I lifted the state up of definitions here.
-class DefinitionsProvider extends React.Component {
+class RawDefinitionsProvider extends React.Component {
   constructor(props) {
     super(props)
     
-    this.props.db.load(TABLES.DEFS, defs => (this.setState({defs: defs})))
+    //this.props.db.load(TABLES.DEFS, defs => (this.setState({defs: defs})))
     this.state = {}
   }
 
@@ -32,5 +37,7 @@ class DefinitionsProvider extends React.Component {
     </React.Fragment>
   )
 }
+
+const DefinitionsProvider = connect(mapStateToProps)(RawDefinitionsProvider);
 
 export default DefinitionsProvider;

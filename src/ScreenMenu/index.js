@@ -1,18 +1,24 @@
 import React from "react"
 import { connect } from "react-redux";
-import { Menu, Item, Separator, Submenu, MenuProvider } from 'react-contexify'
+import { Menu, Item, Submenu } from 'react-contexify'
+
+import { newTable } from '../actions'
 
 import { toggleEditMode } from "../actions";
 
 const onClickMenu = ({ event, props }) => console.log(event,props);
 
+const mapStateToProps = state => ({
+  db: state.db,
+  defs: state.defs,
+})
+
 const mapDispatchToProps = (dispatch) => ({
-  toggleEditMode: () => dispatch(toggleEditMode())
+  toggleEditMode: () => dispatch(toggleEditMode()),
+  newTable: (db, defs) => () => dispatch(newTable(db,defs)),
 });
 
-// withDispatch(React.Component)
-// this.dispatch(toggleEditMode())
-class RawScreenMenu extends React.Component {
+class ScreenMenu extends React.Component {
   render() {
     return(
       <Menu id="screen_menu">
@@ -22,13 +28,12 @@ class RawScreenMenu extends React.Component {
             <Item onClick={this.props.screen.addTable(d)} key={d}>{d}</Item>
           ))}
         </Submenu>
-        <Item onClick={this.props.defsHandler.newTable} data={{test: 10}}>new table</Item>
+        <Item onClick={this.props.newTable(this.props.db,this.props.defs)}
+              data={{test: 10}}>new table</Item>
         <Item onClick={this.props.toggleEditMode}>edit mode</Item>
       </Menu>
     );
   }
 }
 
-const ScreenMenu = connect(null, mapDispatchToProps)(RawScreenMenu);
-
-export default ScreenMenu;
+export default connect(mapStateToProps, mapDispatchToProps)(ScreenMenu);

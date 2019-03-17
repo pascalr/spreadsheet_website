@@ -10,13 +10,10 @@ import store from "./store"
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContextProvider } from 'react-dnd'
 
-import Firebase from './Firebase'
-let db = new Firebase()
-
 ReactDOM.render(
   <Provider store={store}>
     <DragDropContextProvider backend={HTML5Backend}>
-      <ImprovedApp db={db}/>
+      <ImprovedApp />
     </DragDropContextProvider>
   </Provider>,
   document.getElementById('root')
