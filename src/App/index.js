@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
+import {Link} from 'react-router-dom';
+
 import 'react-contexify/dist/ReactContexify.min.css';
 import '../styles/react-grid-layout-style.css'
 import 'react-resizable/css/styles.css'
@@ -32,6 +34,7 @@ class ImprovedApp extends React.Component {
     return(
       <Router>
         <React.Fragment>
+          <Link to={'/'}>Home</Link>
           <Route exact path="/" component={Landing}/>
           <Route path={`/tables/:id`} render={props => (<Table {...props} />)} />
         </React.Fragment>

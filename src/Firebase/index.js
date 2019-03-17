@@ -46,18 +46,7 @@ class Firebase {
     this.db.ref(table).set(values)
   }
 
-
-
-  loadTables = callback => (
-    this.tables().on('value', s => (callback(s.val())))
-  )
-  loadDefs = callback => (
-    this.tableDefs().on('value', s => (callback(s.val())))
-  )
-  loadTableDefs = callback => ( // DEPRECATED
-    this.tableDefs().on('value', s => (callback(s.val())))
-  )
-
+  /*
   doCreateUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
 
@@ -70,25 +59,7 @@ class Firebase {
 
   doPasswordUpdate = password =>
     this.auth.currentUser.updatePassword(password);
-
-  // *** tmp for testing ***
-  
-  get_db = () => this.db
-
-  // *** Tables API ***
-  
-  tables = () => this.db.ref('tables');
-  table = name => this.db.ref(`tables/${name}`);
-  tableRow = (name, row) => this.db.ref(`tables/${name}/${row}`);
-
-  tableDefs = () => this.db.ref('tableDefs');
-  tableDefs2 = () => this.db.ref('tableDefs2');
-
-  // *** User API ***
-
-  user = uid => this.db.ref(`users/${uid}`);
-
-  users = () => this.db.ref('users');
+  */
 }
 
 export default Firebase;

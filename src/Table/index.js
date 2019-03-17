@@ -13,10 +13,13 @@ class Table extends React.Component {
 
   constructor(props) {
     super(props)
+    this.state = {}
+  }
+
+  componentDidMount = () => {
     this.props.db.loadRecord(TABLE.TABLES,this.name(), (table) => {
       this.setState({data: table})
     })
-    this.state = {}
   }
 
   name = () => this.props.match.params.id;

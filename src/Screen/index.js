@@ -21,9 +21,12 @@ class Screen extends React.Component {
   constructor(props) {
     super(props)
 
+    this.state = {tables: {}}
+  }
+
+  componentDidMount = () => {
     this.props.db.load(TABLES.SCREEN,
       (screen) => (this.setState(screen)))
-    this.state = {tables: {}}
   }
 
   componentDidUpdate = (prevProps, prevState) => {

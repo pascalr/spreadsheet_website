@@ -34,9 +34,12 @@ class TablesGridLayout extends React.Component {
   constructor(props) {
     super(props)
 
+    this.state = {editMode: false}
+  }
+
+  componentDidMount = () => {
     this.props.db.load(TABLES.LAYOUT,
       (layout) => (this.setState({layout: layout})))
-    this.state = {editMode: false}
   }
 
   gridLayout = () => (

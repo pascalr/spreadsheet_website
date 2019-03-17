@@ -21,7 +21,7 @@ class DatasheetTableBase extends Component {
     }
   }
   
-  renderSheet = (props) => ( // FIXME: {...props}
+  renderSheet = (props) => (
     <SheetRenderer tableDef={this.props.tableDef} columns={this.props.tableDef.columns} onColumnDrop={onClickMenu} {...props} />
   )
   
@@ -57,11 +57,11 @@ class DatasheetTableBase extends Component {
     if (cols && !cell.readOnly) {
       let col = this.column(j);
       if (col && col.type) {
-        if (col.type == "link" && cell.value) {
+        if (col.type === "link" && cell.value) {
           return (<a href={cell.value}>{cell.value}</a>);
-        } else if (col.type == "bullet") {
+        } else if (col.type === "bullet") {
           return (<span>&bull;</span>)
-        } else if (col.type == "checkbox") {
+        } else if (col.type === "checkbox") {
           //return (<input type="checkbox">)
         }
       }

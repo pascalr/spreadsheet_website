@@ -2,7 +2,6 @@ import React from 'react'
 
 import 'fixed-data-table-2/dist/fixed-data-table.css';
 
-const { DateCell, ImageCell, LinkCell, TextCell } = require('./cells');
 const { Table, Column, Cell } = require('fixed-data-table-2');
 
 const MyCustomCell = (props) => {
