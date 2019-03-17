@@ -27,7 +27,7 @@ class Table extends React.Component {
 
   renderDatasheetTable = () => (
         <DatasheetTable
-          tableDef={this.props.defs[this.name()]}
+          def={this.props.defs[this.name()]}
           table={this.state.data}
         />);
 

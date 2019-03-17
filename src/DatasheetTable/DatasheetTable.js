@@ -2,6 +2,12 @@ import React from 'react'
 
 import { colDragSource, colDropTarget } from './drag-drop.js'
 
+import { MenuProvider } from 'react-contexify'
+
+import TableMenu from '../Table/TableMenu'
+
+const onClickMenu = ({ event, props }) => console.log(event,props);
+
 const Header = colDropTarget(colDragSource((props) => {
   const { tableDef, col, connectDragSource, connectDropTarget, isOver} = props
   const className = 'rTableHead cell read-only' + (isOver ? 'drop-target' : '')
@@ -14,22 +20,33 @@ const Header = colDropTarget(colDragSource((props) => {
       )))
 }))
 
+class MenuSheetRenderer extends React.Component {
+  render = () => (
+    <React.Fragment>
+      <MenuProvider id="tableMenu" data={{test: 1}} className="tableMenu">
+        <SheetRenderer {...this.props}/>
+      </MenuProvider>
+      <TableMenu {...this.props} />
+    </React.Fragment>
+  );
+}
+
 class SheetRenderer extends React.PureComponent {
   render () {
-    const { className, columns, onColumnDrop, tableDef } = this.props
+    const { className, def } = this.props
     return (
       <div className={"rTable "+className}
-           style={{backgroundColor: this.props.tableDef.backgroundColor}}>
+           style={{backgroundColor: this.props.def.backgroundColor}}>
         <div className="rCaption">
-          {tableDef.name}
+          {def.name}
         </div>
         <div className="rTableHeading">
           <div className="rTableRow">
             <div className='rTableHead cell read-only row-handle' key='$$actionCell' />
             {
-              columns.map((col, index) => (
-                <Header key={col.name} col={col} tableDef={tableDef} className="data-header"
-                  columnIndex={index} onColumnDrop={onColumnDrop}
+              def.columns.map((col, index) => (
+                <Header key={col.name} col={col} def={def} className="data-header"
+                  columnIndex={index} onColumnDrop={onClickMenu}
                 />
               ))
             }
@@ -69,4 +86,4 @@ const CellRenderer = props => {
   )
 }
 
-export { SheetRenderer, RowRenderer, CellRenderer }
+export { SheetRenderer, RowRenderer, CellRenderer, MenuSheetRenderer }

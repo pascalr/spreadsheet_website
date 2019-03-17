@@ -9,20 +9,14 @@ import Command from '../Command'
 
 import { Menu, MenuProvider, Item, Separator, Submenu } from 'react-contexify'
 
-import { SheetRenderer, RowRenderer, CellRenderer } from './DatasheetTable'
+import { MenuSheetRenderer, RowRenderer, CellRenderer } from './DatasheetTable'
 
 const onClickMenu = ({ event, props }) => console.log(event,props);
 
-class DatasheetTableBase extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      grid: this.generateGrid(this.props.tableDef)
-    }
-  }
+class DatasheetTable extends Component {
   
   renderSheet = (props) => (
-    <SheetRenderer tableDef={this.props.tableDef} columns={this.props.tableDef.columns} onColumnDrop={onClickMenu} {...props} />
+    <MenuSheetRenderer def={this.props.def} {...props} />
   )
   
   generateGrid = (def) => {
@@ -43,14 +37,14 @@ class DatasheetTableBase extends Component {
   }
 
   column = (col) => {
-    if (this.props.tableDef.showLineNumbers != false) {
+    if (this.props.def.showLineNumbers != false) {
       return this.columns()[col-1]
     } else {
       return this.columns()[col]
     }
   }
 
-  columns = () => ((this.props.tableDef || {})["columns"])
+  columns = () => ((this.props.def || {})["columns"])
 
   valueFromCell = (cell,i,j) => {
     let cols = this.columns()
@@ -77,48 +71,21 @@ class DatasheetTableBase extends Component {
     return cell.value;
   }
   
-  customValueRenderer = (cell,i,j) => {
-    if (j == 0 && this.props.tableDef) {
-      return (this.valueFromCell(cell,i,j))
-    } else {
-      return this.valueFromCell(cell,i,j)
-    }
-  }
-
-  renderCell (props) {
-    return <CellRenderer {...props} />
-  }
-
-  renderRow (props) {
-    const {row, cells, ...rest} = props
-    return <RowRenderer rowIndex={row} className="data-row" {...rest} />
-  }
-
-    render() {
+  render() {
     return (
-        <div>
+      <div>
         <ReactDataSheet
-          data={this.generateGrid(this.props.tableDef)}
+          data={this.generateGrid(this.props.def)}
           sheetRenderer={this.renderSheet}
-          rowRenderer={this.renderRow}
-          cellRenderer={this.renderCell}
-          valueRenderer={this.customValueRenderer}
+          rowRenderer={RowRenderer}
+          cellRenderer={CellRenderer}
+          valueRenderer={this.valueFromCell}
           dataRenderer={(cell) => cell.expr}
           onCellsChanged={onClickMenu}
-        /></div>
-      )
+        />
+      </div>
+    );
   }
-    /*render() {
-    return (
-        <div>
-        <ReactDataSheet
-          data={this.generateGrid(this.props.tableDef)}
-          valueRenderer={(cell) => cell.value}
-        /></div>
-      )
-  }*/
 }
-
-const DatasheetTable = DatasheetTableBase;
 
 export default DatasheetTable;
