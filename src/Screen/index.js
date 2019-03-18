@@ -11,7 +11,7 @@ import * as TABLES from '../constants/tables'
 
 const mapStateToProps = state => ({
   db: state.db,
-  editMode: state.editMode,
+  editMode: state.ui.editMode,
 })
 
 const mapDispatchToProps = dispatch => ({
