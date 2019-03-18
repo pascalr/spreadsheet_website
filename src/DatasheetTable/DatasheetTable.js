@@ -23,7 +23,7 @@ const Header = colDropTarget(colDragSource((props) => {
 class MenuSheetRenderer extends React.Component {
   render = () => (
     <React.Fragment>
-      <MenuProvider id="tableMenu" data={{test: 1}} className="tableMenu">
+      <MenuProvider id="tableMenu" data={{def: this.props.def}} className="tableMenu">
         <SheetRenderer {...this.props}/>
       </MenuProvider>
       <TableMenu {...this.props} />

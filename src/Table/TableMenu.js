@@ -14,7 +14,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  addColumn: () => dispatch(addColumn()),
+  addColumn: (def) => () => dispatch(addColumn(def)),
   deleteColumn: (name) => () => dispatch(deleteColumn(name)),
   deleteTable: () => dispatch(deleteTable()),
 });
@@ -23,7 +23,7 @@ class TableMenu extends React.Component {
   render() {
     return(
       <Menu id="tableMenu">
-        <Item onClick={this.props.addColumn}>add column</Item>
+        <Item onClick={this.props.addColumn(this.props.data.def)}>add column</Item>
         <Item onClick={this.props.deleteTable}>delete table</Item>
       </Menu>
     );

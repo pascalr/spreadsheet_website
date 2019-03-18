@@ -1,6 +1,6 @@
 import * as ACTION from "../constants/action-types"
 
-import Helper from '../Helper'
+import Helper, {nextColumnName} from '../Helper'
 
 import * as TABLES from '../constants/tables'
 
@@ -23,8 +23,9 @@ export function columnDropped(payload) {
   return { type: ACTION.COLUMN_DROPPED, payload };
 };
 
-export function addColumn(payload) {
-  return { type: ACTION.ADD_COLUMN, payload };
+export function addColumn(def) {
+  //this.props.firebase.tableDefs().set(defs)
+  return { type: ACTION.ADD_COLUMN, def: def, name: nextColumnName(def)};
 };
 
 export function deleteColumn(payload) {

@@ -6,4 +6,8 @@ class Helper {
   }
 }
 
+export function nextColumnName(def) {
+  return String.fromCharCode(65 + def.columns.length);
+}
+
 export default Helper;
