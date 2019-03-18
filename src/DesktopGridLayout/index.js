@@ -7,6 +7,7 @@ import GridLayout from 'react-grid-layout';
 
 import {Link} from 'react-router-dom';
 
+import ByPass from '../lib/ByPass';
 
 // A GridItem is selectable with a click
 // When a GridItem is selected and another click happens, the
@@ -16,25 +17,34 @@ import {Link} from 'react-router-dom';
 // The table will be opened in another page
 // For a text:
 // The text will be editable
-class GridItem extends React.Component {
+class IconGridItem extends React.Component {
   render() {
+    const {name, width, height} = this.props;
     return (
-      <div>
-        <Link to={`/tables/${this.props.name}`}>{this.props.name}</Link>
+      <div className="icon" style={{width, height}}>
+        <ByPass if={this.props.editMode}>
+          <Link to={`/tables/${name}`}>
+            <div className="iconName">
+              {name}
+            </div>
+            <div className="iconImage">
+              <img src={`musique.png`} width="52" height="52" />
+            </div>
+          </Link>
+        </ByPass>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return { editMode: state.editMode };
+  return { editMode: state.ui.editMode };
 };
 
 class DesktopGridLayout extends React.Component {
   constructor(props) {
     super(props)
-
-    this.state = {editMode: false}
+    this.state = {}
   }
 
   componentDidMount = () => {
@@ -76,11 +86,11 @@ class DesktopGridLayout extends React.Component {
                     width={100*20}>
           {Object.keys(this.props.tables || {}).map(t => (
             /* isResizable="false" dependemment du type */
-            <div key={t} className="gridTable" style={{
-              width: (this.state.layout[t] ? this.state.layout[t].w : 2)*20,
-              height: (this.state.layout[t] ? this.state.layout[t].h : 2)*20,}}
-            >
-              <GridItem name={t}/>
+            <div key={t} className="gridTable">
+              <IconGridItem name={t} editMode={this.props.editMode}
+                width={(this.state.layout[t] ? this.state.layout[t].w : 2)*20}
+                height={(this.state.layout[t] ? this.state.layout[t].h : 2)*20}
+              />
             </div>
           ))}
         </GridLayout>

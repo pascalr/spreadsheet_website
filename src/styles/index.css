@@ -20,6 +20,16 @@ html, body, #root, #screen, #root > div {
   background-image: linear-gradient(to right, whitesmoke 1px, transparent 1px), linear-gradient(to bottom, whitesmoke 1px, transparent 1px);
 }
 
+.iconName {
+  padding-bottom: 5px;
+}
+
+.icon > a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
 .rTable {  /* <table> */
   	display: table;
   	width: 100%;
