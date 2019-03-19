@@ -45,6 +45,9 @@ class Firebase {
   set = (table,values) => {
     this.db.ref(table).set(values)
   }
+  setRecord = (table,id,values) => {
+    this.db.ref(`${table}/${id}`).set(values)
+  }
 
   /*
   doCreateUserWithEmailAndPassword = (email, password) =>
