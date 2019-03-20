@@ -10,10 +10,14 @@ import store from "./store"
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContextProvider } from 'react-dnd'
 
+import {BrowserRouter as Router, Route, withRouter} from 'react-router-dom';
+
 ReactDOM.render(
   <Provider store={store}>
     <DragDropContextProvider backend={HTML5Backend}>
-      <ImprovedApp />
+      <Router>
+        <ImprovedApp />
+      </Router>
     </DragDropContextProvider>
   </Provider>,
   document.getElementById('root')

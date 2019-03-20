@@ -2,7 +2,7 @@ import React from "react"
 import { connect } from "react-redux";
 import { Menu, Item, Submenu } from 'react-contexify'
 
-import { deleteTable } from '../actions'
+import { deleteTable, changePath } from '../actions'
 
 import { toggleEditMode } from "../actions";
 
@@ -13,7 +13,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteTable: (db,def) => ({props}) => dispatch(deleteTable(db,props.name)),
+  deleteTable: (db) => ({props}) => dispatch(deleteTable(db,props.name)),
+  changePath: ({props}) => dispatch(changePath("edit/" + props.name)),
 });
 
 class IconMenu extends React.Component {
@@ -22,6 +23,7 @@ class IconMenu extends React.Component {
     return(
       <Menu id="iconMenu">
         <Item onClick={this.props.deleteTable(db)}>delete table</Item>
+        <Item onClick={this.props.changePath}>edit</Item>
       </Menu>
     );
   }

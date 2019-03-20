@@ -8,6 +8,8 @@ export const DELETE_COLUMN = "DELETE_COLUMN";
 export const UPDATE_DEF = "UPDATE_DEF";
 export const UPDATE_DEFS = "UPDATE_DEFS";
 
+export const CHANGE_PATH = "CHANGE_PATH";
+
 export const CACHE = {
   LIST: "CACHE_LIST",
   SET: "CACHE_SET",

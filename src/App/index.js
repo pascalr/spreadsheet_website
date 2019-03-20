@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from "react-redux";
 
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route, withRouter, Redirect} from 'react-router-dom';
 
 import {Link} from 'react-router-dom';
 
@@ -15,9 +15,11 @@ import { defsLoaded } from '../actions'
 
 import Table from '../Table'
 import Screen from '../Screen'
+import Edit from '../Edit'
 
 const mapStateToProps = state => ({
-  db: state.db
+  db: state.db,
+  path: state.path,
 })
 
 const mapDistpatchToProps = dispatch => ({
@@ -31,16 +33,18 @@ class ImprovedApp extends React.Component {
     this.props.db.load(TABLES.DEFS, defs => (this.props.defsLoaded(defs)))
   }
   render() {
+    if (this.props.path !== this.props.location.pathname) {
+      return <Redirect to={this.props.path} />
+    }
     return(
-      <Router>
         <React.Fragment>
           <Link to={'/'}>Home</Link>
           <Route exact path="/" component={Screen}/>
           <Route path={`/tables/:id`} render={props => (<Table {...props} />)} />
+          <Route path={`/edit/:table`} render={props => (<Edit {...props} />)} />
         </React.Fragment>
-      </Router>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDistpatchToProps)(ImprovedApp);
+export default withRouter(connect(mapStateToProps, mapDistpatchToProps)(ImprovedApp));

@@ -57,3 +57,7 @@ export function addTableToScreen(screen, name) {
   const val = {...screen.tables, [name]: true}
   return { type: ACTION.CACHE.UPDATE, path: [TABLES.SCREEN, "tables"], val }
 };
+
+export function changePath(path) {
+  return { type: ACTION.CHANGE_PATH, path }
+}

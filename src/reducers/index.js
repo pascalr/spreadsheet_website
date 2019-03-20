@@ -74,6 +74,13 @@ function defs(state = {}, action) {
   return state;
 }
 
+function path(state = "/", action) {
+  if (action.type === ACTION.CHANGE_PATH) {
+    return action.path;
+  }
+  return state
+}
+
 const initialState = {
   db: new Firebase(),
 };
@@ -85,6 +92,7 @@ export default function combination(state = initialState, action) {
     ui: ui(state.ui, action),
     defs: defs(state.defs, action),
     cache: cache(state.cache, action),
+    path: path(state.path, action),
   }
   return vals;
 }
