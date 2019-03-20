@@ -15,6 +15,26 @@ function ui(state = uiInitialState, action) {
   return state;
 }
 
+function updateNested(obj, path, val) {
+  return {...obj, [path[0]]: path.length > 1 ? updateNested(obj, path.slice(1), val) : val}
+}
+
+// The cache is the local version of the db.
+// It is a generic way of accessing models.
+function cache(state = {}, action) {
+  if (action.type === ACTION.CACHE.SET) {
+    return {...state, [action.table]: action.val}
+
+  } else if (action.type === ACTION.CACHE.NEW) {
+  } else if (action.type === ACTION.CACHE.LIST) {
+  } else if (action.type === ACTION.CACHE.DEL) {
+  } else if (action.type === ACTION.CACHE.UPDATE) {
+    return updateNested(state, action.path, action.val)
+
+  }
+  return state;
+}
+
 function defs(state = {}, action) {
   if (action.type === ACTION.DEFS_LOADED) {
     const defs = {...action.payload};
@@ -27,8 +47,19 @@ function defs(state = {}, action) {
     },{})
     return vals
 
-  } else if (action.type === ACTION.COLUMN_DROPPED) {
   } else if (action.type === ACTION.DELETE_TABLE) {
+    return Object.keys(state)
+        .filter(k => k !== action.id)
+        .reduce((acc, k) => {
+          return {
+            ...acc,
+            [k]: state[k]
+          };
+        }, {});
+
+  } else if (action.type === ACTION.UPDATE_DEFS) {
+    return action.defs
+
   } else if (action.type === ACTION.UPDATE_DEF) {
     const defs = {...state}
     defs[action.def.name] = action.def
@@ -53,6 +84,7 @@ export default function combination(state = initialState, action) {
     //...combineReducers({ //WHY THE FUCK THIS DOESNT WORK!!!!!!
     ui: ui(state.ui, action),
     defs: defs(state.defs, action),
+    cache: cache(state.cache, action),
   }
   return vals;
 }

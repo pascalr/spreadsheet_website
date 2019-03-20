@@ -16,6 +16,7 @@ export function newTable(db, defs) {
 };
 
 export function defsLoaded(payload) {
+  console.log("defs loaded")
   return { type: ACTION.DEFS_LOADED, payload };
 };
 
@@ -44,6 +45,15 @@ export function deleteColumn(db, theDef, columnName) {
   return { type: ACTION.UPDATE_DEF, def };
 };
 
-export function deleteTable(payload) {
-  return { type: ACTION.DELETE_TABLE, payload };
+export function deleteTable(db, id) {
+  return { type: ACTION.DELETE_TABLE, id };
+};
+
+export function modelLoaded(table, val) {
+  return { type: ACTION.CACHE.SET, table, val };
+};
+
+export function addTableToScreen(screen, name) {
+  const val = {...screen.tables, [name]: true}
+  return { type: ACTION.CACHE.UPDATE, path: [TABLES.SCREEN, "tables"], val }
 };
