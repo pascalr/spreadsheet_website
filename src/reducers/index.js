@@ -17,11 +17,23 @@ function ui(state = uiInitialState, action) {
 
 function defs(state = {}, action) {
   if (action.type === ACTION.DEFS_LOADED) {
-    return {...action.payload}
+    const defs = {...action.payload};
+    // Add the id of the def to itself
+    const vals = Object.keys(defs).reduce((acc,k) => {
+      const v = defs[k];
+      v.id = k;
+      acc[k] = v;
+      return acc;
+    },{})
+    return vals
 
   } else if (action.type === ACTION.COLUMN_DROPPED) {
   } else if (action.type === ACTION.DELETE_TABLE) {
-  } else if (action.type === ACTION.ADD_COLUMN) {
+  } else if (action.type === ACTION.UPDATE_DEF) {
+    const defs = {...state}
+    defs[action.def.name] = action.def
+    return defs
+
   } else if (action.type === ACTION.DELETE_COLUMN) {
   } else if (action.type === ACTION.NEW_TABLE) {
     const d = {...state}

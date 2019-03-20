@@ -23,9 +23,12 @@ export function columnDropped(payload) {
   return { type: ACTION.COLUMN_DROPPED, payload };
 };
 
-export function addColumn(def) {
-  //this.props.firebase.tableDefs().set(defs)
-  return { type: ACTION.ADD_COLUMN, def: def, name: nextColumnName(def)};
+export function addColumn(db, theDef) {
+  const def = {...theDef}
+  const columns = [...def.columns, {name: nextColumnName(def), type: ""}]
+  def.columns = columns
+  db.setRecord(TABLES.DEFS,def.id,def)
+  return { type: ACTION.UPDATE_DEF, def };
 };
 
 export function deleteColumn(payload) {

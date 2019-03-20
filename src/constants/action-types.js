@@ -6,3 +6,5 @@ export const COLUMN_DROPPED = "COLUMN_DROPPED";
 export const ADD_COLUMN = "ADD_COLUMN";
 export const DELETE_TABLE = "DELETE_TABLE";
 export const DELETE_COLUMN = "DELETE_COLUMN";
+
+export const UPDATE_DEF = "UPDATE_DEF";

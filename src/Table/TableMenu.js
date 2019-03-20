@@ -10,11 +10,10 @@ const onClickMenu = ({ event, props }) => console.log(event,props);
 
 const mapStateToProps = state => ({
   db: state.db,
-  defs: state.defs,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  addColumn: (def) => () => dispatch(addColumn(def)),
+  addColumn: (db, def) => (() => dispatch(addColumn(db, def))),
   deleteColumn: (name) => () => dispatch(deleteColumn(name)),
   deleteTable: () => dispatch(deleteTable()),
 });
@@ -23,7 +22,7 @@ class TableMenu extends React.Component {
   render() {
     return(
       <Menu id="tableMenu">
-        <Item onClick={this.props.addColumn(this.props.data.def)}>add column</Item>
+        <Item onClick={this.props.addColumn(this.props.db,this.props.def)}>add column</Item>
         <Item onClick={this.props.deleteTable}>delete table</Item>
       </Menu>
     );
