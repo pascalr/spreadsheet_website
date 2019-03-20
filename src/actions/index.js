@@ -19,8 +19,13 @@ export function defsLoaded(payload) {
   return { type: ACTION.DEFS_LOADED, payload };
 };
 
-export function columnDropped(payload) {
-  return { type: ACTION.COLUMN_DROPPED, payload };
+export function columnDropped(db, theDef, from, to) {
+  let def = {...theDef}
+  let columns = [...def.columns]
+  columns.splice(to, 0, ...columns.splice(from, 1))
+  def.columns = columns
+  db.setRecord(TABLES.DEFS,def.id,def)
+  return { type: ACTION.UPDATE_DEF, def };
 };
 
 export function addColumn(db, theDef) {
@@ -31,8 +36,12 @@ export function addColumn(db, theDef) {
   return { type: ACTION.UPDATE_DEF, def };
 };
 
-export function deleteColumn(payload) {
-  return { type: ACTION.DELETE_COLUMN, payload };
+export function deleteColumn(db, theDef, columnName) {
+  const def = {...theDef}
+  const columns = [...def.columns].filter(e => e.name !== columnName)
+  def.columns = columns
+  db.setRecord(TABLES.DEFS,def.id,def)
+  return { type: ACTION.UPDATE_DEF, def };
 };
 
 export function deleteTable(payload) {

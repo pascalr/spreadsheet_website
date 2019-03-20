@@ -20,6 +20,11 @@ html, body, #root, #screen, #root > div {
   background-image: linear-gradient(to right, whitesmoke 1px, transparent 1px), linear-gradient(to bottom, whitesmoke 1px, transparent 1px);
 }
 
+div.menu {
+  width: 100%;
+  height: 100%;
+}
+
 .iconName {
   padding-bottom: 5px;
 }
