@@ -30,7 +30,7 @@ class ImprovedApp extends React.Component {
   constructor(props) {
     super(props)
 
-    this.props.db.load(TABLES.DEFS, defs => (this.props.defsLoaded(defs)))
+    this.props.db.load(TABLES.DEFS, this.props.defsLoaded)
   }
   render() {
     if (this.props.path !== this.props.location.pathname) {

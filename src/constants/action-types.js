@@ -15,5 +15,4 @@ export const CACHE = {
   SET: "CACHE_SET",
   NEW: "CACHE_NEW",
   DEL: "CACHE_DELETE",
-  UPDATE: "CACHE_UPDATE",
 }

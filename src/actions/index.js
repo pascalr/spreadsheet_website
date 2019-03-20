@@ -15,9 +15,9 @@ export function newTable(db, defs) {
   return { type: ACTION.NEW_TABLE, name, def: EMPTY_DEF};
 };
 
-export function defsLoaded(payload) {
+export function defsLoaded(defs) {
   console.log("defs loaded")
-  return { type: ACTION.DEFS_LOADED, payload };
+  return { type: ACTION.DEFS_LOADED, defs };
 };
 
 export function columnDropped(db, theDef, from, to) {
@@ -49,13 +49,13 @@ export function deleteTable(db, id) {
   return { type: ACTION.DELETE_TABLE, id };
 };
 
-export function modelLoaded(table, val) {
-  return { type: ACTION.CACHE.SET, table, val };
+export function modelLoaded(path, val) {
+  return { type: ACTION.CACHE.SET, path, val };
 };
 
 export function addTableToScreen(screen, name) {
   const val = {...screen.tables, [name]: true}
-  return { type: ACTION.CACHE.UPDATE, path: [TABLES.SCREEN, "tables"], val }
+  return { type: ACTION.CACHE.SET, path: [TABLES.SCREEN, "tables"], val }
 };
 
 export function changePath(path) {

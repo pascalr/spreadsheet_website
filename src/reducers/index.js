@@ -16,21 +16,24 @@ function ui(state = uiInitialState, action) {
 }
 
 function updateNested(obj, path, val) {
-  return {...obj, [path[0]]: path.length > 1 ? updateNested(obj, path.slice(1), val) : val}
+  if (path.constructor === Array) {
+    return {...obj, [path[0]]: path.length > 1 ? updateNested(obj, path.slice(1), val) : val}
+  } else if (typeof path === 'string') {
+    return {...obj, [path]: val}
+  } else {
+    throw new Error("Unsupported path type to set for a model.");
+  }
 }
 
 // The cache is the local version of the db.
 // It is a generic way of accessing models.
 function cache(state = {}, action) {
   if (action.type === ACTION.CACHE.SET) {
-    return {...state, [action.table]: action.val}
+    return updateNested(state, action.path, action.val)
 
   } else if (action.type === ACTION.CACHE.NEW) {
   } else if (action.type === ACTION.CACHE.LIST) {
   } else if (action.type === ACTION.CACHE.DEL) {
-  } else if (action.type === ACTION.CACHE.UPDATE) {
-    return updateNested(state, action.path, action.val)
-
   }
   return state;
 }
