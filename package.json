@@ -22,6 +22,7 @@
     "react-scripts": "2.1.5",
     "react-select": "^2.4.1",
     "redux": "^4.0.1",
+    "riek": "^1.1.0",
     "typescript": "^3.3.3333"
   },
   "scripts": {

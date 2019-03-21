@@ -21,7 +21,8 @@ class DatasheetTable extends Component {
   
   generateGrid = (def) => {
     let columns = def.columns || []
-    let rawGrid = (this.props.table || []).slice(0,20).map((row, j) => (
+    //let rawGrid = (this.props.table || []).slice(0,20).map((row, j) => (
+    let rawGrid = (this.props.table || []).map((row, j) => (
                               columns.map(col => ({value: row[col.name]}) )
                         ))
     let emptyLine = new Array(def.columns.length).fill({value: ""})

@@ -74,16 +74,21 @@ function defs(state = {root: {}}, action) {
   return state;
 }
 
-const initialState = {
-  db: new Firebase(),
-  history: createBrowserHistory(),
-};
-
-function saveToDb(oldState, newState) {
-  //if (oldState.cache !===)
+function saveToDb(oldState, newState, action) {
+  if (action.type === ACTION.CACHE.SET) {
+    console.log('Saving cache to db.');
+    const path = action.path.constructor === Array ? action.path.join('/') : action.path
+    newState.db.set("cache/"+path, action.val)
+  }
 }
 
-export default function combination(state = initialState, action) {
+export default function combination(state, action) {
+  if (state === undefined) {
+    state = {
+      db: new Firebase(),
+      history: createBrowserHistory(),
+    };
+  }
   const vals = {
     ...state,
     //...combineReducers({ //WHY THE FUCK THIS DOESNT WORK!!!!!!
@@ -92,7 +97,7 @@ export default function combination(state = initialState, action) {
     cache: cache(state.cache, action),
   }
   // FIXME: This function has side effect and should not belong in a reducer.
-  //saveToDb(state,vals);
+  //saveToDb(state,vals, action);
   return vals;
 }
 
