@@ -7,7 +7,7 @@ import { MenuProvider } from 'react-contexify'
 
 import GridLayout from 'react-grid-layout';
 
-import {Link} from 'react-router-dom';
+import Link from '../Link';
 
 import ByPass from '../lib/ByPass';
 

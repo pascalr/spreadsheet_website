@@ -15,9 +15,9 @@ import {BrowserRouter as Router, Route, withRouter} from 'react-router-dom';
 ReactDOM.render(
   <Provider store={store}>
     <DragDropContextProvider backend={HTML5Backend}>
-      <Router>
+      {/*<Router>*/}
         <ImprovedApp />
-      </Router>
+        {/*</Router>*/}
     </DragDropContextProvider>
   </Provider>,
   document.getElementById('root')

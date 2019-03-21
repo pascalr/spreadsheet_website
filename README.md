@@ -1,4 +1,5 @@
 Feature list:
+- Partition de musique
 - Avoir un menu customizable avec des icons que je click, que je peux deplacer.
 - Voir la liste de mes bookmarks.
 - Voir mes todos listes directement dans ma page d'acceuil.
@@ -12,6 +13,7 @@ Feature list:
 Ex:
 https://www.npr.org/sections/goatsandsoda/2019/03/13/685533353/a-playful-way-to-teach-kids-to-control-their-anger
 Les parents inuits eduquent leur enfants sans jamais se facher, lever la voix ou les envoyer dans le coin. Au lieu, ils utilisent le pouvoir des histoires et du jeux. Si tu vas dans la riviere le monstre de la riviere va te prendre, t'emmener au fond de l'eau et d'adopter dans une nouvelle famille. Aussi, ils font rejoue un mauvais comportement a l'enfant lorsque ses emotions sont abaisses et lui posent des questions: Why don't you hit me? Owww, that hurts. Does that mean you don't like me?
+- Un calendrier du bonheur: Il faut que j'optimise mon bonheur.
 
 TODO:
 (Dans longtemps): Mettre toutes les donnees sous un utilisateur dans firebase.

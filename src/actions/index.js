@@ -16,8 +16,9 @@ export function newTable(db, defs) {
 };
 
 export function defsLoaded(defs) {
-  console.log("defs loaded")
-  return { type: ACTION.DEFS_LOADED, defs };
+  console.log('Loading defs')
+  return { type: ACTION.DEFS_LOADED, payload: defs };
+  //return { type: ACTION.CACHE.SET, path: TABLES.DEFS, defs };
 };
 
 export function columnDropped(db, theDef, from, to) {

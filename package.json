@@ -5,6 +5,8 @@
   "dependencies": {
     "firebase": "^5.8.5",
     "fixed-data-table-2": "^0.8.20",
+    "history": "^4.9.0",
+    "path-to-regexp": "^3.0.0",
     "re-resizable": "^4.11.0",
     "react": "^16.8.3",
     "react-contexify": "^4.0.2",

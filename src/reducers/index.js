@@ -2,6 +2,8 @@ import * as ACTION from "../constants/action-types";
 
 import { combineReducers } from 'redux'
 
+import { createBrowserHistory } from 'history';
+
 import Firebase from '../Firebase'
 
 const uiInitialState = {
@@ -39,6 +41,7 @@ function cache(state = {}, action) {
 }
 
 function defs(state = {}, action) {
+  debugger
   if (action.type === ACTION.DEFS_LOADED) {
     const defs = {...action.payload};
     // Add the id of the def to itself
@@ -86,6 +89,7 @@ function path(state = "/", action) {
 
 const initialState = {
   db: new Firebase(),
+  history: createBrowserHistory(),
 };
 
 export default function combination(state = initialState, action) {
