@@ -13,15 +13,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  defsLoaded: defs => dispatch(defsLoaded(defs))
 })
 
 class Table extends React.Component {
 
   constructor(props) {
     super(props)
-    debugger
-    this.props.db.load(TABLES.DEFS, this.props.defsLoaded)
     this.state = {}
   }
 

@@ -6,6 +6,8 @@ import { createBrowserHistory } from 'history';
 
 import Firebase from '../Firebase'
 
+import { Map } from 'immutable';
+
 const uiInitialState = {
   editMode: false,
 };
@@ -17,22 +19,15 @@ function ui(state = uiInitialState, action) {
   return state;
 }
 
-function updateNested(obj, path, val) {
-  if (path.constructor === Array) {
-    return {...obj, [path[0]]: path.length > 1 ? updateNested(obj, path.slice(1), val) : val}
-  } else if (typeof path === 'string') {
-    return {...obj, [path]: val}
-  } else {
-    throw new Error("Unsupported path type to set for a model.");
-  }
-}
-
 // The cache is the local version of the db.
 // It is a generic way of accessing models.
 function cache(state = {}, action) {
   if (action.type === ACTION.CACHE.SET) {
-    return updateNested(state, action.path, action.val)
+    console.log(`Cache: Set: path:${action.path}, val:${action.val}`);
+    const path = action.path.constructor === Array ? action.path : [action.path]
+    return Map(state).setIn(path, action.val).toJS()
 
+  } else if (action.type === ACTION.CACHE.PUSH) {
   } else if (action.type === ACTION.CACHE.NEW) {
   } else if (action.type === ACTION.CACHE.LIST) {
   } else if (action.type === ACTION.CACHE.DEL) {
@@ -40,8 +35,7 @@ function cache(state = {}, action) {
   return state;
 }
 
-function defs(state = {}, action) {
-  debugger
+function defs(state = {root: {}}, action) {
   if (action.type === ACTION.DEFS_LOADED) {
     const defs = {...action.payload};
     // Add the id of the def to itself
@@ -80,17 +74,14 @@ function defs(state = {}, action) {
   return state;
 }
 
-function path(state = "/", action) {
-  if (action.type === ACTION.CHANGE_PATH) {
-    return action.path;
-  }
-  return state
-}
-
 const initialState = {
   db: new Firebase(),
   history: createBrowserHistory(),
 };
+
+function saveToDb(oldState, newState) {
+  //if (oldState.cache !===)
+}
 
 export default function combination(state = initialState, action) {
   const vals = {
@@ -99,8 +90,9 @@ export default function combination(state = initialState, action) {
     ui: ui(state.ui, action),
     defs: defs(state.defs, action),
     cache: cache(state.cache, action),
-    path: path(state.path, action),
   }
+  // FIXME: This function has side effect and should not belong in a reducer.
+  //saveToDb(state,vals);
   return vals;
 }
 

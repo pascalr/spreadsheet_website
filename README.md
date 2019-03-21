@@ -22,6 +22,8 @@ AVOIR UNE BARRE DE COMMANDE POUR AVOIR LE CONTROLE A FOND.
 
 mapDispatchToProps is so very ugly
 
+https://medium.freecodecamp.org/you-might-not-need-react-router-38673620f3d
+
 Pour avoir acces a des variables ou des fonctions pour tester, je peux faire:
 window.variable = variable;
 ou
