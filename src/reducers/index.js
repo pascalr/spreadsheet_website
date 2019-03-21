@@ -21,9 +21,9 @@ function ui(state = uiInitialState, action) {
 
 // The cache is the local version of the db.
 // It is a generic way of accessing models.
-function cache(state = {}, action) {
+function cache(state = {root: {}}, action) {
   if (action.type === ACTION.CACHE.SET) {
-    console.log(`Cache: Set: path:${action.path}, val:${action.val}`);
+    console.log(`Cache: Set: path:${action.path}`);
     const path = action.path.constructor === Array ? action.path : [action.path]
     return Map(state).setIn(path, action.val).toJS()
 
@@ -35,7 +35,7 @@ function cache(state = {}, action) {
   return state;
 }
 
-function defs(state = {root: {}}, action) {
+function defs(state = {}, action) {
   if (action.type === ACTION.DEFS_LOADED) {
     const defs = {...action.payload};
     // Add the id of the def to itself

@@ -4,35 +4,33 @@ import * as TABLE from '../constants/tables'
 import DatasheetTable from '../DatasheetTable'
 import FixedDataTable from '../FixedDataTable'
 
+import { RIEToggle, RIEInput, RIETextArea, RIENumber, RIETags, RIESelect } from 'riek'
 import * as TABLES from '../constants/tables'
-import { defsLoaded } from '../actions'
+import { set } from '../actions'
+import _ from 'lodash'
 
 const mapStateToProps = state => ({
   db: state.db,
   defs: state.defs,
+  dataRoot: state.cache.root.tables,
 });
 
 const mapDispatchToProps = dispatch => ({
+  set: path => val => dispatch(set(path,val))
 })
 
 class Table extends React.Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
-
   componentDidMount = () => {
-    this.props.db.loadRecord(TABLE.TABLES,this.name(), (table) => {
-      this.setState({data: table})
-    })
+    this.props.db.loadRecord(TABLE.TABLES,this.name(),this.props.set([TABLE.TABLES, this.name()]))
   }
 
   name = () => this.props.params.id;
   def = () => this.props.defs[this.name()];
+  data = () => this.props.dataRoot[this.name()];
   
   onCellsChanged = (changes, additions) => {
-    let data = [...this.state.data]
+    let data = [...this.data()]
     const def = this.def()
     changes.concat(additions || []).forEach(({cell, row, col, value}) => {
       let rowVal = {...data[row]}
@@ -56,23 +54,46 @@ class Table extends React.Component {
     return (
         <DatasheetTable
           def={this.props.defs[this.name()]}
-          table={this.state.data}
+          table={this.data()}
           onCellsChanged={this.onCellsChanged}
         />);
   }
 
+  updateDef = () => {
+    let def = null;
+    if (this.data()[0]) {
+      def = {columns: Object.keys(this.data()[0]).map(c => (
+        {name: c}
+      ))}
+    } else {
+      def = {columns: []}
+    }
+  }
+
+  onTitleChange = (props) => {
+    //console.log(JSON.stringify(props))
+    //this.props.db.setRecord(TABLE.TABLES,props.title,data)
+    return null
+  }
+
   render() {
-    if (!this.state.data || !this.def()) {return null;}
+    if (!this.props.dataRoot || !this.data() || !this.def()) {return null;}
     return (
       <div className="Table">
-        <h1>{this.name()}</h1>
+        <h1>
+          <RIEInput
+            value={this.name()}
+            change={this.onTitleChange}
+            propName='title'
+            validate={_.isString} />
+        </h1>
         {this.renderDatasheetTable()}
       </div>
     );
   }
 
   renderFixedDataTable = () => (
-    <FixedDataTable {...this.props} data={this.state.data} def={this.def()}/>);
+    <FixedDataTable {...this.props} data={this.data()} def={this.def()}/>);
 
 }
 
