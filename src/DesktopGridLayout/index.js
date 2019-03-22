@@ -23,14 +23,14 @@ import IconMenu from './IconMenu';
 // The text will be editable
 class IconGridItem extends React.Component {
   render() {
-    const {name, width, height} = this.props;
+    const {id, width, height, def} = this.props;
     return (
-      <MenuProvider id="iconMenu" className="menu" data={{name}}>
+      <MenuProvider id="iconMenu" className="menu" data={{id}}>
         <div className="icon" style={{width, height}}>
           <ByPass if={this.props.editMode}>
-            <Link to={`/tables/${name}`}>
+            <Link to={`/tables/${id}`}>
               <div className="iconName">
-                {name}
+                {def.name}
               </div>
               <div className="iconImage">
                 <img src={`musique.png`} width="52" height="52" />
@@ -46,6 +46,7 @@ class IconGridItem extends React.Component {
 const mapStateToProps = state => ({
   editMode: state.ui.editMode,
   db: state.db,
+  defs: state.defs,
 });
 
 class DesktopGridLayout extends React.Component {
@@ -96,9 +97,10 @@ class DesktopGridLayout extends React.Component {
             {Object.keys(this.props.tables || {}).map(t => (
               /* isResizable="false" dependemment du type */
               <div key={t} className="gridTable">
-                <IconGridItem name={t} editMode={this.props.editMode}
+                <IconGridItem id={t} editMode={this.props.editMode}
                   width={(this.state.layout[t] ? this.state.layout[t].w : 2)*20}
                   height={(this.state.layout[t] ? this.state.layout[t].h : 2)*20}
+                  def={this.props.defs[t]}
                 />
               </div>
             ))}

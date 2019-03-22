@@ -22,12 +22,12 @@ const mapDispatchToProps = dispatch => ({
 class Table extends React.Component {
 
   componentDidMount = () => {
-    this.props.db.loadRecord(TABLE.TABLES,this.name(),this.props.set([TABLE.TABLES, this.name()]))
+    this.props.db.loadRecord(TABLE.TABLES,this.id,this.props.set([TABLE.TABLES, this.id]))
   }
 
-  name = () => this.props.params.id;
-  def = () => this.props.defs[this.name()];
-  data = () => this.props.dataRoot[this.name()];
+  id = this.props.params.id;
+  def = () => this.props.defs[this.id];
+  data = () => this.props.dataRoot[this.id];
   
   onCellsChanged = (changes, additions) => {
     let data = [...this.data()]
@@ -46,43 +46,23 @@ class Table extends React.Component {
       }
       data[row] = rowVal;
     })
-    this.props.db.setRecord(TABLE.TABLES,this.name(),data)
+    this.props.db.setRecord(TABLE.TABLES,this.id,data)
     this.setState({data})
   }
 
   renderDatasheetTable = () => {
     return (
         <DatasheetTable
-          def={this.props.defs[this.name()]}
+          def={this.def()}
           table={this.data()}
           onCellsChanged={this.onCellsChanged}
         />);
   }
 
-  updateDef = (newName) => {
-    let def = null;
-    if (this.data()[0]) {
-      def = {columns: Object.keys(this.data()[0]).map(c => (
-        {name: c}
-      ))}
-    } else {
-      def = {columns: []}
-    }
-    this.props.db.setRecord(TABLE.DEFS,newName,def)
-    this.props.db.deleteRecord(TABLE.DEFS,this.name(),def)
-  }
-
   onTitleChange = (props) => {
     //console.log(JSON.stringify(props))
-    this.props.db.setRecord(TABLE.TABLES,props.title,this.data(), (error) => {
-      if (error) {
-        // The write failed...
-      } else {
-        this.updateDef(props.title)
-        this.props.db.deleteRecord(TABLE.TABLES,this.name())
-      }
-    })
-    return null
+    this.props.db.setAttr(TABLE.DEFS,this.id,'name',props.title,
+      this.props.set([TABLE.DEFS,this.id,'name'], props.title));
   }
 
   render() {
@@ -91,7 +71,7 @@ class Table extends React.Component {
       <div className="Table">
         <h1>
           <RIEInput
-            value={this.name()}
+            value={this.def().name}
             change={this.onTitleChange}
             propName='title'
             validate={_.isString} />
