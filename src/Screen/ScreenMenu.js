@@ -24,7 +24,9 @@ class ScreenMenu extends React.Component {
         <Submenu label="add table">
           <Item onClick={onClickMenu}><input type='text' /></Item>
           {Object.keys(this.props.defs || {}).map(d => (
-            <Item onClick={this.props.addTableToScreen(this.props.screen, d)} key={d}>{d}</Item>
+            <Item onClick={this.props.addTableToScreen(this.props.screen, d)} key={d}>
+              {this.props.defs[d].name}
+            </Item>
           ))}
         </Submenu>
         <Item onClick={this.props.newTable(this.props.db,this.props.defs)}

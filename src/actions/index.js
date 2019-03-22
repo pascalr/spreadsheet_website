@@ -4,6 +4,8 @@ import Helper, {nextColumnName} from '../Helper'
 
 import * as TABLES from '../constants/tables'
 
+import uuidv1 from 'uuid/v1'
+
 export function toggleEditMode() {
   return { type: ACTION.TOGGLE_EDIT_MODE };
 };
@@ -11,8 +13,9 @@ export function toggleEditMode() {
 const EMPTY_DEF = {backgroundColor: "", columns: {},showLineNumbers: true}
 export function newTable(db, defs) {
   const name = Helper.nextTableName(defs)
+  const id = uuidv1();
   db.set(TABLES.DEFS,defs)
-  return { type: ACTION.NEW_TABLE, name, def: EMPTY_DEF};
+  return { type: ACTION.NEW_TABLE, name: id, def: {...EMPTY_DEF, name: name}};
 };
 
 export function defsLoaded(defs) {

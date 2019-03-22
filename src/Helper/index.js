@@ -1,7 +1,11 @@
 class Helper {
   static nextTableName(defs) {
     let i = 1;
-    while (defs["table" + i]) {i++}
+    const defsName = Object.keys(defs).reduce((acc,k) => {
+      acc[defs[k].name] = true
+      return acc;
+    }, {})
+    while (defsName["table" + i]) {i++}
     return "table" + i
   }
 }

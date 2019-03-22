@@ -14,6 +14,14 @@ Ex:
 https://www.npr.org/sections/goatsandsoda/2019/03/13/685533353/a-playful-way-to-teach-kids-to-control-their-anger
 Les parents inuits eduquent leur enfants sans jamais se facher, lever la voix ou les envoyer dans le coin. Au lieu, ils utilisent le pouvoir des histoires et du jeux. Si tu vas dans la riviere le monstre de la riviere va te prendre, t'emmener au fond de l'eau et d'adopter dans une nouvelle famille. Aussi, ils font rejoue un mauvais comportement a l'enfant lorsque ses emotions sont abaisses et lui posent des questions: Why don't you hit me? Owww, that hurts. Does that mean you don't like me?
 - Un calendrier du bonheur: Il faut que j'optimise mon bonheur.
+- Conditional rendering: Je peux afficher une cellule de plein de maniere differente:
+- Latex
+- Partition de musique
+- Maths
+- Image
+- ...
+- Une ligne sur deux c'est une partition de piano, l'autre de guitare... etc...
+NO FOLDERS: Une grosse map c'est tout! et un search bar!
 
 TODO:
 (Dans longtemps): Mettre toutes les donnees sous un utilisateur dans firebase.

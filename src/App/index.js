@@ -55,13 +55,13 @@ function generateDefs(db) {
 }
 
 function addUUIDS(db) {
-  db.load(TABLES.TABLES, (tables) => {
-    const withUUID = Object.keys(tables).reduce((acc,k) => {
+  db.load(TABLES.TABLES2, (tables) => {
+    /*const withUUID = Object.keys(tables).reduce((acc,k) => {
       const id = uuidv1();
       acc[id] = tables[k];
       return acc;
-    }, {})
-    db.set(TABLES.TABLES2, withUUID);
+    }, {})*/
+    db.set(TABLES.TABLES, tables);
   })
 }
 
