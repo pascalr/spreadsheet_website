@@ -19,6 +19,8 @@ import Edit from '../Edit'
 
 import router from '../router'
 
+const uuidv1 = require('uuid/v1');
+
 const mapStateToProps = state => ({
   db: state.db,
   history: state.history,
@@ -37,18 +39,29 @@ const routes = [
 // Loads all the tables and generates defs
 // Wont work when I will have a lot of data...
 function generateDefs(db) {
-  db.load(TABLES.TABLES, (tables) => {
+  db.load(TABLES.TABLES2, (tables) => {
     const defs = Object.keys(tables).reduce((acc,k) => {
       if (tables[k][0]) {
-        acc[k] = {columns: Object.keys(tables[k][0]).map(c => (
+        acc[k] = {name: "fixme", columns: Object.keys(tables[k][0]).map(c => (
           {name: c}
         ))}
       } else {
-        acc[k] = {columns: []}
+        acc[k] = {name: "fixme", columns: []}
       }
       return acc;
     }, {})
     db.set(TABLES.DEFS, defs);
+  })
+}
+
+function addUUIDS(db) {
+  db.load(TABLES.TABLES, (tables) => {
+    const withUUID = Object.keys(tables).reduce((acc,k) => {
+      const id = uuidv1();
+      acc[id] = tables[k];
+      return acc;
+    }, {})
+    db.set(TABLES.TABLES2, withUUID);
   })
 }
 
@@ -77,6 +90,8 @@ class App extends React.Component {
       <div className="app">
         <Link to='/'>Home</Link>
         <hr />
+        <button onClick={() => generateDefs(this.props.db)}>gen defs</button>
+        <button onClick={() => addUUIDS(this.props.db)}>add uuids</button>
         {router.resolve(routes, this.props.history.location)}
       </div>
     );

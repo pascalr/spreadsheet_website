@@ -16,6 +16,7 @@ const mapStateToProps = state => ({
   editMode: state.ui.editMode,
   tables: ((state.cache.screen || {}).tables || {}),
   screen: state.cache.screen,
+  defs: state.defs,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -36,11 +37,12 @@ class Screen extends React.Component {
   }
 
   render() {
+    const tables = this.props.defs
     return (
       <React.Fragment>
         <MenuProvider id="screen_menu" data={{test2: 12}} className="screen_menu">
           <div id="screen" className={this.props.editMode ? "editMode" : "notEditMode"}>
-            <DesktopGridLayout db={this.props.db} tables={this.props.tables}/>
+            <DesktopGridLayout db={this.props.db} tables={tables}/>
           </div>
         </MenuProvider>
         <ScreenMenu {...this.props} screen={this.props.screen} />

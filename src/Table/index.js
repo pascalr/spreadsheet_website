@@ -12,7 +12,7 @@ import _ from 'lodash'
 const mapStateToProps = state => ({
   db: state.db,
   defs: state.defs,
-  dataRoot: state.cache.root.tables,
+  dataRoot: state.cache.root[TABLE.TABLES],
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -59,7 +59,7 @@ class Table extends React.Component {
         />);
   }
 
-  updateDef = () => {
+  updateDef = (newName) => {
     let def = null;
     if (this.data()[0]) {
       def = {columns: Object.keys(this.data()[0]).map(c => (
@@ -68,11 +68,20 @@ class Table extends React.Component {
     } else {
       def = {columns: []}
     }
+    this.props.db.setRecord(TABLE.DEFS,newName,def)
+    this.props.db.deleteRecord(TABLE.DEFS,this.name(),def)
   }
 
   onTitleChange = (props) => {
     //console.log(JSON.stringify(props))
-    //this.props.db.setRecord(TABLE.TABLES,props.title,data)
+    this.props.db.setRecord(TABLE.TABLES,props.title,this.data(), (error) => {
+      if (error) {
+        // The write failed...
+      } else {
+        this.updateDef(props.title)
+        this.props.db.deleteRecord(TABLE.TABLES,this.name())
+      }
+    })
     return null
   }
 

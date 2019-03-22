@@ -40,13 +40,16 @@ class Firebase {
     this.db.ref(table).on('value', s => (callback(s.val())))
   )
   loadRecord = (table,id,callback) => {
-    this.db.ref(`${table}/${id}`).on('value', s => (callback(s.val())))
+    return this.db.ref(`${table}/${id}`).on('value', s => (callback(s.val())))
   }
-  set = (table,values) => {
-    this.db.ref(table).set(values)
+  set = (table,values,callback) => {
+    return this.db.ref(table).set(values,callback)
   }
-  setRecord = (table,id,values) => {
-    this.db.ref(`${table}/${id}`).set(values)
+  setRecord = (table,id,values,callback) => {
+    return this.db.ref(`${table}/${id}`).set(values,callback)
+  }
+  deleteRecord = (table,id) => {
+    return this.db.ref(`${table}/${id}`).remove()
   }
 
   /*

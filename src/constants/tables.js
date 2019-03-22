@@ -1,4 +1,5 @@
-export const TABLES = 'tables';
+export const TABLES = 'tables2';
+export const TABLES2 = 'tables2';
 export const DEFS = 'defs';
 export const SCREEN = 'screen';
 export const LAYOUT = 'layout';
