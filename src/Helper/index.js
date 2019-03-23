@@ -11,6 +11,7 @@ class Helper {
 }
 
 export function nextColumnName(def) {
+  if (!def.columns) { return 'A' }
   return String.fromCharCode(65 + def.columns.length);
 }
 

@@ -10,12 +10,13 @@ export function toggleEditMode() {
   return { type: ACTION.TOGGLE_EDIT_MODE };
 };
 
-const EMPTY_DEF = {backgroundColor: "", columns: {},showLineNumbers: true}
+const EMPTY_DEF = {backgroundColor: "", columns: [{name: "A"}], showLineNumbers: true}
 export function newTable(db, defs) {
   const name = Helper.nextTableName(defs)
   const id = uuidv1();
-  db.set(TABLES.DEFS,defs)
-  return { type: ACTION.NEW_TABLE, name: id, def: {...EMPTY_DEF, name: name}};
+  const def = {...EMPTY_DEF, name: name}
+  db.setRecord(TABLES.DEFS,id,def)
+  return { type: ACTION.NEW_TABLE, name: id, def };
 };
 
 export function defsLoaded(defs) {
@@ -35,7 +36,7 @@ export function columnDropped(db, theDef, from, to) {
 
 export function addColumn(db, theDef) {
   const def = {...theDef}
-  const columns = [...def.columns, {name: nextColumnName(def), type: ""}]
+  const columns = [...(def.columns || []), {name: nextColumnName(def), type: ""}]
   def.columns = columns
   db.setRecord(TABLES.DEFS,def.id,def)
   return { type: ACTION.UPDATE_DEF, def };

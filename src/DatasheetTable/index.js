@@ -22,10 +22,10 @@ class DatasheetTable extends Component {
   generateGrid = (def) => {
     let columns = def.columns || []
     //let rawGrid = (this.props.table || []).slice(0,20).map((row, j) => (
-    let rawGrid = (this.props.table || []).map((row, j) => (
+    let rawGrid = (this.props.table || []).filter(e => e ? 1 : 0).map((row, j) => (
                               columns.map(col => ({value: row[col.name]}) )
                         ))
-    let emptyLine = new Array(def.columns.length).fill({value: ""})
+    let emptyLine = new Array(def.columns ? def.columns.length : 0).fill({value: ""})
     let grid = []
     for (var i = 0; i < rawGrid.length; ++i) {
        grid.push(rawGrid[i] ? rawGrid[i] : emptyLine)

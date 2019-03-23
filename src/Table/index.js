@@ -27,10 +27,10 @@ class Table extends React.Component {
 
   id = this.props.params.id;
   def = () => this.props.defs[this.id];
-  data = () => this.props.dataRoot[this.id];
+  data = () => this.props.dataRoot ? this.props.dataRoot[this.id] : null;
   
   onCellsChanged = (changes, additions) => {
-    let data = [...this.data()]
+    let data = this.data() ? [...this.data()] : [[]]
     const def = this.def()
     changes.concat(additions || []).forEach(({cell, row, col, value}) => {
       let rowVal = {...data[row]}
@@ -66,7 +66,8 @@ class Table extends React.Component {
   }
 
   render() {
-    if (!this.props.dataRoot || !this.data() || !this.def()) {return null;}
+    //if (!this.props.dataRoot || !this.data() || !this.def()) {return null;}
+    if (!this.def()) {return null;}
     return (
       <div className="Table">
         <h1>
