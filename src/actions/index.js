@@ -51,6 +51,8 @@ export function deleteColumn(db, theDef, columnName) {
 };
 
 export function deleteTable(db, id) {
+  db.deleteRecord(TABLES.DEFS,id)
+  db.deleteRecord(TABLES.TABLES,id)
   return { type: ACTION.DELETE_TABLE, id };
 };
 

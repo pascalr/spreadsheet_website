@@ -85,13 +85,13 @@ class App extends React.Component {
   componentWillUnmount = () => {
     this.unlisten();
   }
+    //    <button onClick={() => generateDefs(this.props.db)}>gen defs</button>
+    //    <button onClick={() => addUUIDS(this.props.db)}>add uuids</button>
   render() {
     return (
       <div className="app">
         <Link to='/'>Home</Link>
         <hr />
-        <button onClick={() => generateDefs(this.props.db)}>gen defs</button>
-        <button onClick={() => addUUIDS(this.props.db)}>add uuids</button>
         {router.resolve(routes, this.props.history.location)}
       </div>
     );

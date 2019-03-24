@@ -8,6 +8,7 @@ import { RIEToggle, RIEInput, RIETextArea, RIENumber, RIETags, RIESelect } from 
 import * as TABLES from '../constants/tables'
 import { set } from '../actions'
 import _ from 'lodash'
+import Emoji from '../Emoji'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -60,9 +61,13 @@ class Table extends React.Component {
   }
 
   onTitleChange = (props) => {
-    //console.log(JSON.stringify(props))
     this.props.db.setAttr(TABLE.DEFS,this.id,'name',props.title,
       this.props.set([TABLE.DEFS,this.id,'name'], props.title));
+  }
+  
+  onIconChange = (props) => {
+    this.props.db.setAttr(TABLE.DEFS,this.id,'icon',props.icon,
+      this.props.set([TABLE.DEFS,this.id,'icon'], props.icon));
   }
 
   render() {
@@ -71,6 +76,11 @@ class Table extends React.Component {
     return (
       <div className="Table">
         <h1>
+          <RIEInput
+            value={<Emoji symbol={this.def().icon || "📁"}/>}
+            change={this.onIconChange}
+            propName='icon'
+            validate={_.isString} />
           <RIEInput
             value={this.def().name}
             change={this.onTitleChange}

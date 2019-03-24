@@ -14,11 +14,19 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteTable: (db) => ({props}) => dispatch(deleteTable(db,props.name)),
+  deleteTable: (db) => ({props}) => dispatch(deleteTable(db,props.id)),
 });
 
 const edit = history => ({event, props}) => {
   history.push('/edit/' + props.name)
+}
+
+function confirmDelete(func) {
+  return (args) => {
+    if (window.confirm('Are you sure you wish to delete this item?')) {
+      func(args)
+    }
+  }
 }
 
 class IconMenu extends React.Component {
@@ -26,7 +34,7 @@ class IconMenu extends React.Component {
     const {db} = this.props;
     return(
       <Menu id="iconMenu">
-        <Item onClick={this.props.deleteTable(db)}>delete table</Item>
+        <Item onClick={confirmDelete(this.props.deleteTable(db))}>delete table</Item>
         <Item onClick={edit(this.props.history)}>edit</Item>
       </Menu>
     );

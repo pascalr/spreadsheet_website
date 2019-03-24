@@ -13,6 +13,8 @@ import ByPass from '../lib/ByPass';
 
 import IconMenu from './IconMenu';
 
+import ScaleText from "react-scale-text";
+
 // A GridItem is selectable with a click
 // When a GridItem is selected and another click happens, the
 // actions will depend on the type of the component.
@@ -27,16 +29,20 @@ class IconGridItem extends React.Component {
     return (
       <MenuProvider id="iconMenu" className="menu" data={{id}}>
         <div className="icon" style={{width, height}}>
-          <ByPass if={this.props.editMode}>
-            <Link to={`/tables/${id}`}>
-              <div className="iconName">
-                {def.name}
-              </div>
-              <div className="iconImage">
-                <img src={`musique.png`} width="52" height="52" />
-              </div>
-            </Link>
-          </ByPass>
+          <ScaleText>
+            <ByPass if={this.props.editMode}>
+              <Link to={`/tables/${id}`}>
+                <div className="scale">
+                  <div className="iconName" style={{fontSize: 18, textAlign: 'center'}}>
+                    {def.name}
+                  </div>
+                  <div className="iconImage" style={{textAlign: 'center'}}>
+                    {def.icon || "📁"}
+                  </div>
+                </div>
+              </Link>
+            </ByPass>
+          </ScaleText>
         </div>
       </MenuProvider>
     );
@@ -62,7 +68,7 @@ class DesktopGridLayout extends React.Component {
 
   gridLayout = () => (
     (Object.keys(this.props.tables) || []).map(t => (
-      {...(this.state.layout[t] || {x: 0, y:0, w: 2, h: 2, i: t}),
+      {...(this.state.layout[t] || {x: 0, y:0, w: 3, h: 4, i: t}),
         static: !this.props.editMode}
     ))
   )
