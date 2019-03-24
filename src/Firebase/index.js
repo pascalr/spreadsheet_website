@@ -51,6 +51,9 @@ class Firebase {
   setAttr = (table,id,attr,values,callback) => {
     return this.db.ref(`${table}/${id}/${attr}`).set(values,callback)
   }
+  setPath = (path,values,callback) => {
+    return this.db.ref(path.join('/')).set(values,callback)
+  }
   deleteRecord = (table,id) => {
     return this.db.ref(`${table}/${id}`).remove()
   }

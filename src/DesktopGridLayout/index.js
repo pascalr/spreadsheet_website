@@ -29,6 +29,7 @@ class IconGridItem extends React.Component {
     return (
       <MenuProvider id="iconMenu" className="menu" data={{id}}>
         <div className="icon" style={{width, height}}>
+            <ByPass if={true}>
           <ScaleText>
             <ByPass if={this.props.editMode}>
               <Link to={`/tables/${id}`}>
@@ -43,6 +44,7 @@ class IconGridItem extends React.Component {
               </Link>
             </ByPass>
           </ScaleText>
+            </ByPass>
         </div>
       </MenuProvider>
     );
