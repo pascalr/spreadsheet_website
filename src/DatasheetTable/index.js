@@ -11,6 +11,20 @@ import { Menu, MenuProvider, Item, Separator, Submenu } from 'react-contexify'
 
 import { MenuSheetRenderer, RowRenderer, CellRenderer } from './DatasheetTable'
 
+import { connect } from "react-redux";
+
+import { set } from '../actions'
+
+import * as TABLE from '../constants/tables'
+
+const mapStateToProps = state => ({
+  db: state.db,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  set: path => val => dispatch(set(path,val)),
+});
+
 const onClickMenu = ({ event, props }) => console.log(event,props);
 
 class DatasheetTable extends Component {
@@ -34,6 +48,7 @@ class DatasheetTable extends Component {
     if (def.showLineNumbers != false) {
       grid = grid.map((l,j) => [{readOnly: true, value:j+1}, ...l])
     }
+    debugger
     return grid
   }
 
@@ -57,7 +72,12 @@ class DatasheetTable extends Component {
         } else if (col.type === "bullet") {
           return (<span>&bull;</span>)
         } else if (col.type === "checkbox") {
-          //return (<input type="checkbox">)
+          debugger
+          return (<input type="checkbox" defaultChecked={cell.value} onChange={() => {
+            const path = [TABLE.TABLES,this.props.def.id,i,col.name]
+            const val = cell.value ? !cell.value : 1;
+            this.props.db.setPath(path, val, this.props.set(path))
+          }}/>)
         }
       }
       if (cell.value && cell.value[0] === '=') { // Command
@@ -89,4 +109,4 @@ class DatasheetTable extends Component {
   }
 }
 
-export default DatasheetTable;
+export default connect(mapStateToProps, mapDispatchToProps)(DatasheetTable);

@@ -31,7 +31,9 @@ class ColumnMenu extends React.Component {
       <Menu id="columnMenu">
         <Item onClick={this.props.deleteColumn(db,def)}>delete column</Item>
         <Submenu label="type">
+          <Item onClick={this.onTypeChange(def,'')}>none</Item>
           <Item onClick={this.onTypeChange(def,'link')}>link</Item>
+          <Item onClick={this.onTypeChange(def,'checkbox')}>checkbox</Item>
         </Submenu>
       </Menu>
     );
