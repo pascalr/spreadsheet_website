@@ -131,12 +131,12 @@ class App extends React.Component {
     this.unlisten();
   }
     //    <button onClick={() => generateDefs(this.props.db)}>gen defs</button>
+  //    <button onClick={() => addUUIDS(this.props.db)}>add uuids</button>
+  //      <button onClick={() => addColLayout(this.props.db)}>add col layout</button>
   render() {
     return (
       <div className="app">
         <Link to='/'>Home</Link>
-        <button onClick={() => addUUIDS(this.props.db)}>add uuids</button>
-        <button onClick={() => addColLayout(this.props.db)}>add col layout</button>
         <hr />
         {router.resolve(routes, this.props.history.location)}
       </div>

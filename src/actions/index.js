@@ -40,14 +40,18 @@ export function columnDropped(db, theDef, from, to) {
   return { type: ACTION.UPDATE_DEF, def };
 };
 
-export function addColumn(db, theDef) {
-  // FIXME: I think this function is not pure and modifies theDef
+function withColumn(theDef) {
   const def = {...theDef}
   const id = uuidv1();
   const oldCols = def.cols || {}
   const cols = {...oldCols, [id]: {name: nextColumnName(def), type: ""}}
   def.cols = cols
   def.layout[0] = [...def.layout[0], id]
+  return def
+}
+
+export function addColumn(db, theDef) {
+  const def = withColumn(theDef)
   db.setRecord(TABLES.DEFS,def.id,def)
   return { type: ACTION.UPDATE_DEF, def };
 };
