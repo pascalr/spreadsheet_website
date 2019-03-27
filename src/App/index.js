@@ -101,7 +101,6 @@ function addUUIDS(db) {
 function addColLayout(db) {
   db.load(TABLES.DEFS, (defs) => {
     const withUUID = Object.keys(defs).reduce((acc,k) => {
-      debugger
       const def = defs[k];
       def.layout = [_.keys(def.cols)]
       acc[k] = def;
