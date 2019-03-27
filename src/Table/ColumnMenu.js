@@ -13,15 +13,14 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteColumn: (db,def) => ({props}) => dispatch(deleteColumn(db,def,props.name)),
+  deleteColumn: (db,def) => ({props}) => dispatch(deleteColumn(db,def,props.id)),
   set: path => val => dispatch(set(path,val)),
 });
 
 class ColumnMenu extends React.Component {
 
   onTypeChange = (def, type) => ({props}) => {
-    const index = def.columns.findIndex(e => e.name === props.name)
-    const path = [TABLE.DEFS,def.id,'columns',index,'type']
+    const path = [TABLE.DEFS,def.id,'cols',props.id,'type']
     this.props.db.setPath(path,type, this.props.set(path, type));
   }
 

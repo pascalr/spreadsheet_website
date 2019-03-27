@@ -14,7 +14,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => ({
   addColumn: (db, def) => (() => dispatch(addColumn(db, def))),
-  deleteColumn: (name) => () => dispatch(deleteColumn(name)),
   deleteTable: () => dispatch(deleteTable()),
 });
 

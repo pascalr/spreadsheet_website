@@ -17,7 +17,7 @@ const Header = colDropTarget(colDragSource((props) => {
       connectDragSource(
         <div className={className} style={{ width: col.width }}>
           <MenuProvider id="columnMenu"
-            data={{name: col.name}}
+            data={{id: col.id}}
             className="columnMenu menu"
           >
             {col.name}
@@ -50,8 +50,8 @@ class SheetRenderer extends React.PureComponent {
               style={{width: 30/*FIXME: The width varies with the nb of rows*/}}
             />
             {
-              (def.cols) ?
-                Object.keys(def.cols).map((id, index) => {
+              (def.layout && def.cols) ?
+                def.layout[0].map((id, index) => {
                   const col = def.cols[id]
                   return (
                     <Header key={col.name} col={col} def={def} className="data-header"

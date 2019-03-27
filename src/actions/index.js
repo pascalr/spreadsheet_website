@@ -1,4 +1,5 @@
 import * as ACTION from "../constants/action-types"
+import _ from 'lodash'
 
 import Helper, {nextColumnName} from '../Helper'
 
@@ -6,16 +7,20 @@ import * as TABLES from '../constants/tables'
 
 import uuidv1 from 'uuid/v1'
 
+import { Map } from 'immutable'
+
 export function toggleEditMode() {
   return { type: ACTION.TOGGLE_EDIT_MODE };
 };
 
-const EMPTY_DEF = {backgroundColor: "", showLineNumbers: true}
+const EMPTY_DEF = {backgroundColor: "", showLineNumbers: true, layout: [[""]]}
 export function newTable(db, defs) {
   const name = Helper.nextTableName(defs)
   const id = uuidv1();
   const idCol = uuidv1();
-  const def = {...EMPTY_DEF, name, cols: {name: "A", id: idCol}}
+  const def = {...EMPTY_DEF, name, cols: {}}
+  def.cols[idCol] = {name: "A", id: idCol}
+  def.layout = [[idCol]]
   db.setRecord(TABLES.DEFS,id,def)
   return { type: ACTION.NEW_TABLE, name: id, def };
 };
@@ -28,30 +33,38 @@ export function defsLoaded(defs) {
 
 export function columnDropped(db, theDef, from, to) {
   let def = {...theDef}
-  let cols = [...Object.keys(def.cols)]
+  let cols = [...def.layout[0]]
   cols.splice(to, 0, ...cols.splice(from, 1))
-  def.cols = cols.reduce((acc,k) => ({...acc, k: def.cols[k]}),{})
-  //db.setRecord(TABLES.DEFS,def.id,def)
+  def.layout[0] = cols
+  db.setRecord(TABLES.DEFS,def.id,def)
   return { type: ACTION.UPDATE_DEF, def };
 };
 
 export function addColumn(db, theDef) {
+  // FIXME: I think this function is not pure and modifies theDef
   const def = {...theDef}
   const id = uuidv1();
   const oldCols = def.cols || {}
-  const cols = {...{oldCols}, id: {name: nextColumnName(def), type: ""}}
+  const cols = {...oldCols, [id]: {name: nextColumnName(def), type: ""}}
   def.cols = cols
-  //db.setRecord(TABLES.DEFS,def.id,def)
+  def.layout[0] = [...def.layout[0], id]
+  db.setRecord(TABLES.DEFS,def.id,def)
   return { type: ACTION.UPDATE_DEF, def };
 };
 
-export function deleteColumn(db, theDef, columnName) {
+function withoutColumn(theDef, columnId) {
   const def = {...theDef}
-  const cols = Object.keys(def.cols)
-    .filter(c => def.cols[c].name !== columnName)
-    .reduce((acc,k) => ({k: def.cols[k]}),{})
+  const cols = _.keys(def.cols)
+    .filter(c => c !== columnId)
+    .reduce((acc,k) => ({...acc, [k]: def.cols[k]}),{})
   def.cols = cols
-  //db.setRecord(TABLES.DEFS,def.id,def)
+  def.layout[0] = def.layout[0].filter(e => e !== columnId)
+  return def
+}
+
+export function deleteColumn(db, theDef, columnId) {
+  const def = withoutColumn(theDef, columnId)
+  db.setRecord(TABLES.DEFS,def.id,def)
   return { type: ACTION.UPDATE_DEF, def };
 };
 

@@ -48,7 +48,6 @@ function addIds(obj) {
 
 function defs(state = {}, action) {
   if (action.type === ACTION.DEFS_LOADED) {
-    debugger
     const defs = addIds(action.payload)
     return _.keys(action.payload).reduce((acc,k) => {
       acc[k] = {...defs[k], cols: addIds(defs[k].cols)}

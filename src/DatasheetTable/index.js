@@ -35,7 +35,6 @@ class DatasheetTable extends Component {
   )
   
   generateGrid = (def) => {
-    debugger
     let colIds = def.layout[0];
     let rawGrid = (this.props.table || []).filter(e => e ? 1 : 0).map((row, j) => (
                               colIds.map(col => ({value: row[col]}) )

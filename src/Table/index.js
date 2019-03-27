@@ -36,7 +36,7 @@ class Table extends React.Component {
     changes.concat(additions || []).forEach(({cell, row, col, value}) => {
       let rowVal = {...data[row]}
       if (!rowVal) {
-        let empty = def.columns.reduce((acc,currVal) => {acc[currVal.name] = ""; return acc}, {})
+        let empty = _.keys(def.cols).reduce((acc,currVal) => {acc[currVal.name] = ""; return acc}, {})
         data[row] = empty
         rowVal = empty
       }
