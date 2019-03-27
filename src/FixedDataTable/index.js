@@ -27,15 +27,18 @@ class FixedDataTable extends React.Component {
         width={1920}
         height={1000}
         {...this.props}>
-        {this.props.def.columns.map(e => (
-          <Column
-            key={e.name}
-            columnKey={e.name}
-            header={<Cell>{e.name}</Cell>}
-            cell={<MyCustomCell data={this.props.data} />}
-            width={500}
-          />
-        ))}
+        {Object.keys(this.props.def.cols).map(id => {
+          const name = this.props.def.cols[id].name
+          return (
+            <Column
+              key={name}
+              columnKey={name}
+              header={<Cell>{name}</Cell>}
+              cell={<MyCustomCell data={this.props.data} />}
+              width={500}
+            />
+          );
+        })}
       </Table>
     );
   }

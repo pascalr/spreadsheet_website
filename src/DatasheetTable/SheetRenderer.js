@@ -50,13 +50,16 @@ class SheetRenderer extends React.PureComponent {
               style={{width: 30/*FIXME: The width varies with the nb of rows*/}}
             />
             {
-              (def.columns) ?
-                def.columns.map((col, index) => (
+              (def.cols) ?
+                Object.keys(def.cols).map((id, index) => {
+                  const col = def.cols[id]
+                  return (
                     <Header key={col.name} col={col} def={def} className="data-header"
                       columnIndex={index}
                       onColumnDrop={this.props.onColumnDrop(this.props.db, def)}
                     />
-                )) : null
+                  );
+                }) : null
             }
           </div>
         </div>

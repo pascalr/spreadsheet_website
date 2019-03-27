@@ -8,6 +8,8 @@ import Firebase from '../Firebase'
 
 import { Map } from 'immutable';
 
+import _ from 'lodash'
+
 const uiInitialState = {
   editMode: false,
 };
@@ -35,17 +37,23 @@ function cache(state = {root: {}}, action) {
   return state;
 }
 
+function addIds(obj) {
+  return _.keys(obj).reduce((acc,k) => {
+    const v = obj[k];
+    v.id = k;
+    acc[k] = v;
+    return acc;
+  },{})
+}
+
 function defs(state = {}, action) {
   if (action.type === ACTION.DEFS_LOADED) {
-    const defs = {...action.payload};
-    // Add the id of the def to itself
-    const vals = Object.keys(defs).reduce((acc,k) => {
-      const v = defs[k];
-      v.id = k;
-      acc[k] = v;
+    debugger
+    const defs = addIds(action.payload)
+    return _.keys(action.payload).reduce((acc,k) => {
+      acc[k] = {...defs[k], cols: addIds(defs[k].cols)}
       return acc;
-    },{})
-    return vals
+    }, {})
 
   } else if (action.type === ACTION.DELETE_TABLE) {
     return Object.keys(state)
@@ -88,6 +96,9 @@ export default function combination(state, action) {
       db: new Firebase(),
       history: createBrowserHistory(),
     };
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+      window.db = state.db;
+    }
   }
   const vals = {
     ...state,

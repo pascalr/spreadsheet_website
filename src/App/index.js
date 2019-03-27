@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from "react-redux";
+import _ from 'lodash'
 
 import {BrowserRouter as Router, Route, withRouter, Redirect} from 'react-router-dom';
 
@@ -54,14 +55,59 @@ function generateDefs(db) {
   })
 }
 
+  /*function addUUIDS2(db) {
+  db.load(TABLES.DEFS, (defs) => {
+  db.load(TABLES.TABLES, (tables) => {
+    const withUUID = Object.keys(tables).map(k => {
+      debugger
+      const table = tables[k];
+      const def = defs[k];
+      if (def) {
+        const values = table.map(row => (
+          Object.keys(row).reduce((acc,k) => {
+            const i = Object.keys(def.columns2).findIndex(id => (def.columns2[id].name === k))
+            const theId = Object.keys(def.columns2)[i];
+            acc[theId] = row[k];
+            return acc;
+          }, {})
+        ))
+        return values
+      } else {
+        return null
+      }
+    })
+    db.set(TABLES.TABLES, withUUID);
+  })
+  })
+}*/
+
 function addUUIDS(db) {
-  db.load(TABLES.TABLES2, (tables) => {
-    /*const withUUID = Object.keys(tables).reduce((acc,k) => {
-      const id = uuidv1();
-      acc[id] = tables[k];
+  db.load(TABLES.DEFS, (defs) => {
+    const withUUID = _.keys(defs).reduce((acc,k) => {
+      const def = defs[k];
+      const columns = def.columns.reduce((acc2,k2) => {
+        //const id = uuidv1();
+        acc2[k2.name] = k2;
+        return acc2;
+      }, {})
+      def.cols = columns;
+      acc[k] = def;
       return acc;
-    }, {})*/
-    db.set(TABLES.TABLES, tables);
+    }, {})
+    db.set(TABLES.DEFS, withUUID);
+  })
+}
+
+function addColLayout(db) {
+  db.load(TABLES.DEFS, (defs) => {
+    const withUUID = Object.keys(defs).reduce((acc,k) => {
+      debugger
+      const def = defs[k];
+      def.layout = [_.keys(def.cols)]
+      acc[k] = def;
+      return acc;
+    }, {})
+    db.set(TABLES.DEFS, withUUID);
   })
 }
 
@@ -86,11 +132,12 @@ class App extends React.Component {
     this.unlisten();
   }
     //    <button onClick={() => generateDefs(this.props.db)}>gen defs</button>
-    //    <button onClick={() => addUUIDS(this.props.db)}>add uuids</button>
   render() {
     return (
       <div className="app">
         <Link to='/'>Home</Link>
+        <button onClick={() => addUUIDS(this.props.db)}>add uuids</button>
+        <button onClick={() => addColLayout(this.props.db)}>add col layout</button>
         <hr />
         {router.resolve(routes, this.props.history.location)}
       </div>

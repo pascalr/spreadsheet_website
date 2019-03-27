@@ -10,11 +10,12 @@ export function toggleEditMode() {
   return { type: ACTION.TOGGLE_EDIT_MODE };
 };
 
-const EMPTY_DEF = {backgroundColor: "", columns: [{name: "A"}], showLineNumbers: true}
+const EMPTY_DEF = {backgroundColor: "", showLineNumbers: true}
 export function newTable(db, defs) {
   const name = Helper.nextTableName(defs)
   const id = uuidv1();
-  const def = {...EMPTY_DEF, name: name}
+  const idCol = uuidv1();
+  const def = {...EMPTY_DEF, name, cols: {name: "A", id: idCol}}
   db.setRecord(TABLES.DEFS,id,def)
   return { type: ACTION.NEW_TABLE, name: id, def };
 };
@@ -27,26 +28,30 @@ export function defsLoaded(defs) {
 
 export function columnDropped(db, theDef, from, to) {
   let def = {...theDef}
-  let columns = [...def.columns]
-  columns.splice(to, 0, ...columns.splice(from, 1))
-  def.columns = columns
-  db.setRecord(TABLES.DEFS,def.id,def)
+  let cols = [...Object.keys(def.cols)]
+  cols.splice(to, 0, ...cols.splice(from, 1))
+  def.cols = cols.reduce((acc,k) => ({...acc, k: def.cols[k]}),{})
+  //db.setRecord(TABLES.DEFS,def.id,def)
   return { type: ACTION.UPDATE_DEF, def };
 };
 
 export function addColumn(db, theDef) {
   const def = {...theDef}
-  const columns = [...(def.columns || []), {name: nextColumnName(def), type: ""}]
-  def.columns = columns
-  db.setRecord(TABLES.DEFS,def.id,def)
+  const id = uuidv1();
+  const oldCols = def.cols || {}
+  const cols = {...{oldCols}, id: {name: nextColumnName(def), type: ""}}
+  def.cols = cols
+  //db.setRecord(TABLES.DEFS,def.id,def)
   return { type: ACTION.UPDATE_DEF, def };
 };
 
 export function deleteColumn(db, theDef, columnName) {
   const def = {...theDef}
-  const columns = [...def.columns].filter(e => e.name !== columnName)
-  def.columns = columns
-  db.setRecord(TABLES.DEFS,def.id,def)
+  const cols = Object.keys(def.cols)
+    .filter(c => def.cols[c].name !== columnName)
+    .reduce((acc,k) => ({k: def.cols[k]}),{})
+  def.cols = cols
+  //db.setRecord(TABLES.DEFS,def.id,def)
   return { type: ACTION.UPDATE_DEF, def };
 };
 

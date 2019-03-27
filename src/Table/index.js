@@ -41,9 +41,9 @@ class Table extends React.Component {
         rowVal = empty
       }
       if (def.showLineNumbers != false) {
-        rowVal[def.columns[col-1].name] = value
+        rowVal[def.layout[0][col-1]] = value
       } else {
-        rowVal[def.columns[col].name] = value
+        rowVal[def.layout[0][col]] = value
       }
       data[row] = rowVal;
     })

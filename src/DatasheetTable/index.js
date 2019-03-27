@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ReactDataSheet from 'react-datasheet';
+import _ from 'lodash'
 
 import { DragDropContextProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -34,12 +35,12 @@ class DatasheetTable extends Component {
   )
   
   generateGrid = (def) => {
-    let columns = def.columns || []
-    //let rawGrid = (this.props.table || []).slice(0,20).map((row, j) => (
+    debugger
+    let colIds = def.layout[0];
     let rawGrid = (this.props.table || []).filter(e => e ? 1 : 0).map((row, j) => (
-                              columns.map(col => ({value: row[col.name]}) )
+                              colIds.map(col => ({value: row[col]}) )
                         ))
-    let emptyLine = new Array(def.columns ? def.columns.length : 0).fill({value: ""})
+    let emptyLine = new Array(colIds.length).fill({value: ""})
     let grid = []
     for (var i = 0; i < rawGrid.length; ++i) {
        grid.push(rawGrid[i] ? rawGrid[i] : emptyLine)
@@ -48,23 +49,22 @@ class DatasheetTable extends Component {
     if (def.showLineNumbers != false) {
       grid = grid.map((l,j) => [{readOnly: true, value:j+1}, ...l])
     }
-    debugger
     return grid
   }
 
   column = (col) => {
     if (this.props.def.showLineNumbers != false) {
-      return this.columns()[col-1]
+      return this.cols()[this.props.def.layout[0][col-1]]
     } else {
-      return this.columns()[col]
+      return this.cols()[this.props.def.layout[0][col]]
     }
   }
 
-  columns = () => ((this.props.def || {})["columns"])
+  cols = () => ((this.props.def || {}).cols)
 
   valueFromCell = (cell,i,j) => {
-    let cols = this.columns()
-    if (cols && !cell.readOnly) {
+    let cols = this.cols()
+    if (this.cols() && !cell.readOnly) {
       let col = this.column(j);
       if (col && col.type) {
         if (col.type === "link" && cell.value) {

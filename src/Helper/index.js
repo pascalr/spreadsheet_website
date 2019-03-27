@@ -11,8 +11,8 @@ class Helper {
 }
 
 export function nextColumnName(def) {
-  if (!def.columns) { return 'A' }
-  return String.fromCharCode(65 + def.columns.length);
+  if (!def.cols) { return 'A' }
+  return String.fromCharCode(65 + Object.keys(def.cols).length);
 }
 
 export default Helper;
