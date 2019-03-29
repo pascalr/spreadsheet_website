@@ -16,6 +16,7 @@ import { defsLoaded } from '../actions'
 
 import Table from '../Table'
 import Screen from '../Screen'
+import LinkScreen from '../LinkScreen'
 import Edit from '../Edit'
 
 import router from '../router'
@@ -32,7 +33,7 @@ const mapDistpatchToProps = dispatch => ({
 })
 
 const routes = [
-  {path: '/', action: () => (<Screen />)},
+  {path: '/', action: () => (<LinkScreen />)},
   {path: '/tables/:id', action: (props) => (<Table {...props} />)},
   {path: '/edit/:id', action: (props) => (<Edit {...props} />)},
 ]

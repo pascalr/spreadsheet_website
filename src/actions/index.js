@@ -87,6 +87,15 @@ export function addTableToScreen(screen, name) {
   return { type: ACTION.CACHE.SET, path: [TABLES.SCREEN, "tables"], val }
 };
 
+export function setDb(db, path, val) {
+  db.setPath(path,val)
+  if (path.constructor === Array) {
+    return { type: ACTION.CACHE.SET, path: ["root", ...path], val };
+  } else {
+    return { type: ACTION.CACHE.SET, path: ["root", path], val };
+  }
+}
+
 export function set(path, val) {
   if (path.constructor === Array) {
     return { type: ACTION.CACHE.SET, path: ["root", ...path], val };
