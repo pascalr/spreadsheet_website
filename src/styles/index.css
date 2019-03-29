@@ -29,6 +29,10 @@ div.menu {
   padding-bottom: 5px;
 }
 
+/*.selectInput__indicators, .selectInput__indicator-separator, .selectInput__indicator {
+  display: inline;
+}*/
+
 .icon > a {
   text-decoration: none;
   color: black;

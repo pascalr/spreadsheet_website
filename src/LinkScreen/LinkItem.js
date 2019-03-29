@@ -1,13 +1,16 @@
 import _ from 'lodash'
 import React, { useState } from "react"
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 import { Menu, Item, Submenu } from 'react-contexify'
 import { MenuProvider } from 'react-contexify'
-import { setDb } from "../actions";
+import { setDb } from "../actions"
 import * as TABLE from '../constants/tables'
+import Select from 'react-select'
+import Link from '../Link'
 
 const mapStateToProps = state => ({
   db: state.db,
+  defs: state.defs,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -16,13 +19,19 @@ const mapDispatchToProps = (dispatch) => ({
 
 const handleSubmit = (props,desc,ref) => event => {
   event.preventDefault();
-  props.setDb(props.db, [TABLE.SCREEN,props.id],{desc,ref})
+  props.setDb(props.db, [TABLE.SCREEN,props.id],{desc,ref: ref.value})
   props.linkItem.toggleEditing()
+}
+
+function optionsFromDefs(defs) {
+  return _.keys(defs).map(k => (
+    {value: `/tables/${k}`, label: defs[k].name}
+  ))
 }
 
 const Form = connect(mapStateToProps, mapDispatchToProps)((props) => {
   const [desc, setDesc] = useState(props.desc || "");
-  const [ref, setRef] = useState(props.ref || "");
+  const [ref, setRef] = useState(props.linkRef || "");
 
   //<div onBlur={props.linkItem.toggleEditing}>
   return (
@@ -36,13 +45,19 @@ const Form = connect(mapStateToProps, mapDispatchToProps)((props) => {
           name="desc"
           required
         />
-        <input
+        {/*<input
           value={ref}
           onChange={e => setRef(e.target.value)}
           placeholder="Reference"
           type="text"
           name="ref"
           required
+        />*/}
+        <Select
+          value={ref}
+          options={optionsFromDefs(props.defs)}
+          onChange={e => setRef(e)}
+          classNamePrefix='selectInput'
         />
 
         <button type="submit">Update</button>
@@ -52,7 +67,7 @@ const Form = connect(mapStateToProps, mapDispatchToProps)((props) => {
   );
 })
 
-class EditLinkItemBase extends React.Component {
+class EditLinkItem extends React.Component {
   render() {
     return(
       <React.Fragment>
@@ -61,8 +76,6 @@ class EditLinkItemBase extends React.Component {
     );
   }
 }
-
-const EditLinkItem = connect(mapStateToProps, mapDispatchToProps)(EditLinkItemBase);
 
 class LinkItem extends React.Component {
   constructor(props) {
@@ -77,11 +90,16 @@ class LinkItem extends React.Component {
     return(
       <React.Fragment>
         <MenuProvider id="linkMenu" data={{linkItem: this}}>
-          <span className="linkDesc">{this.props.desc}</span>
+          {this.props.linkRef ?
+            <Link to={this.props.linkRef}>
+              <span className="linkDesc">{this.props.desc}</span>
+            </Link> :
+            <span className="linkDesc">{this.props.desc}</span>
+          }
         </MenuProvider>
       </React.Fragment>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LinkItem);
+export default LinkItem;

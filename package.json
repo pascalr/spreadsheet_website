@@ -22,7 +22,7 @@
     "react-router-dom": "^4.3.1",
     "react-scale-text": "^1.2.2",
     "react-scripts": "2.1.5",
-    "react-select": "^2.4.1",
+    "react-select": "^2.4.2",
     "redux": "^4.0.1",
     "riek": "^1.1.0",
     "shelljs": "^0.8.3",

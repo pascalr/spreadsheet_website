@@ -12,11 +12,13 @@ const mapDispatchToProps = (dispatch) => ({
 
 class Link extends React.Component {
   render() {
-    return(
+    const r = new RegExp('^(?:[a-z]+:)?//', 'i');
+    const isAbsolutePath = r.test(this.props.to)
+    return isAbsolutePath ?
+      <a href={this.props.to}>{this.props.children}</a> :
       <div onClick={() => {this.props.history.push(this.props.to)}}>
         {this.props.children}
       </div>
-    );
   }
 }
 
