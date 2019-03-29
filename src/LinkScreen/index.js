@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import _ from 'lodash'
 import { connect } from "react-redux"
 import { MenuProvider } from 'react-contexify'
-import DesktopGridLayout from '../DesktopGridLayout'
 import { modelLoaded } from '../actions'
 import ScreenMenu from '../menus/ScreenMenu'
 import LinkMenu from '../menus/LinkMenu'

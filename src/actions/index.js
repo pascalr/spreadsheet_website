@@ -7,8 +7,6 @@ import * as TABLES from '../constants/tables'
 
 import uuidv1 from 'uuid/v1'
 
-import { Map } from 'immutable'
-
 export function toggleEditMode() {
   return { type: ACTION.TOGGLE_EDIT_MODE };
 };

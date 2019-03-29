@@ -3,11 +3,7 @@ import React from "react"
 import { connect } from "react-redux";
 import { Menu, Item, Submenu } from 'react-contexify'
 
-import { addColumn, deleteColumn, deleteTable } from '../actions'
-
-import { toggleEditMode } from "../actions";
-
-const onClickMenu = ({ event, props }) => console.log(event,props);
+import { addColumn, deleteTable } from '../actions'
 
 const mapStateToProps = state => ({
   db: state.db,

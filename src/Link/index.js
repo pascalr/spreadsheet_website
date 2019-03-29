@@ -1,8 +1,6 @@
 import React from "react"
 import { connect } from "react-redux";
 
-import { changePath } from '../actions'
-
 const mapStateToProps = state => ({
   history: state.history,
 })

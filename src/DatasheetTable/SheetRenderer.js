@@ -5,7 +5,7 @@ import { MenuProvider } from 'react-contexify'
 import { columnDropped } from '../actions'
 import { colDragSource, colDropTarget } from './drag-drop.js'
 import ColumnMenu from '../Table/ColumnMenu'
-import { RIEToggle, RIEInput, RIETextArea, RIENumber, RIETags, RIESelect } from 'riek'
+import { RIEInput } from 'riek'
 import { set } from '../actions'
 import * as TABLE from '../constants/tables'
 

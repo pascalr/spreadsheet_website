@@ -1,7 +1,6 @@
 import _ from 'lodash'
 import React, { useState } from "react"
 import { connect } from "react-redux"
-import { Menu, Item, Submenu } from 'react-contexify'
 import { MenuProvider } from 'react-contexify'
 import { setDb } from "../actions"
 import * as TABLE from '../constants/tables'

@@ -2,8 +2,6 @@ import React from 'react'
 import { connect } from "react-redux";
 import _ from 'lodash'
 
-import {BrowserRouter as Router, Route, withRouter, Redirect} from 'react-router-dom';
-
 import Link from '../Link';
 
 import 'react-contexify/dist/ReactContexify.min.css';

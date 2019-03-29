@@ -6,8 +6,6 @@ import { set, deleteColumn } from '../actions'
 
 import * as TABLE from '../constants/tables'
 
-const onClickMenu = ({ event, props }) => console.log(event,props);
-
 const mapStateToProps = state => ({
   db: state.db,
 })

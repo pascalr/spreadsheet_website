@@ -2,13 +2,7 @@ import React, { Component } from 'react'
 import ReactDataSheet from 'react-datasheet';
 import _ from 'lodash'
 
-import { DragDropContextProvider } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
-import Select from 'react-select'
-
 import Command from '../Command'
-
-import { Menu, MenuProvider, Item, Separator, Submenu } from 'react-contexify'
 
 import { MenuSheetRenderer, RowRenderer, CellRenderer } from './DatasheetTable'
 
@@ -25,8 +19,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch) => ({
   set: path => val => dispatch(set(path,val)),
 });
-
-const onClickMenu = ({ event, props }) => console.log(event,props);
 
 class DatasheetTable extends Component {
   
@@ -62,7 +54,6 @@ class DatasheetTable extends Component {
   cols = () => ((this.props.def || {}).cols)
 
   valueFromCell = (cell,i,j) => {
-    let cols = this.cols()
     if (this.cols() && !cell.readOnly) {
       let col = this.column(j);
       if (col && col.type) {

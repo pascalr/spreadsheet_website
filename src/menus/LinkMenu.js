@@ -4,8 +4,6 @@ import { Menu, Item, Submenu } from 'react-contexify'
 
 import { deleteTable } from '../actions'
 
-import { toggleEditMode } from "../actions";
-
 const onClickMenu = ({ event, props }) => console.log(event,props);
 
 const mapStateToProps = state => ({
