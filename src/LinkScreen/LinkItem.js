@@ -5,6 +5,7 @@ import { MenuProvider } from 'react-contexify'
 import { setDb } from "../actions"
 import * as TABLE from '../constants/tables'
 import Select from 'react-select'
+import Autocomplete from 'react-autocomplete'
 import Link from '../Link'
 
 const mapStateToProps = state => ({
@@ -36,7 +37,7 @@ const Form = connect(mapStateToProps, mapDispatchToProps)((props) => {
   return (
     <div>
       <form onSubmit={handleSubmit(props,desc,ref)}>
-        <input
+        <textarea
           value={desc}
           onChange={e => setDesc(e.target.value)}
           placeholder="Description"
@@ -52,12 +53,24 @@ const Form = connect(mapStateToProps, mapDispatchToProps)((props) => {
           name="ref"
           required
         />*/}
-        <Select
+        <Autocomplete
+          getItemValue={(item) => item.label}
+          items={optionsFromDefs(props.defs)}
+          renderItem={(item, isHighlighted) =>
+            <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+              {item.label}
+            </div>
+          }
+          value={ref}
+          onChange={(e) => setRef(e.target.value)}
+          onSelect={(val) => setRef(val)}
+        />
+        {/*<Select
           value={ref}
           options={optionsFromDefs(props.defs)}
           onChange={e => setRef(e)}
           classNamePrefix='selectInput'
-        />
+        />*/}
 
         <button type="submit">Update</button>
         <button onClick={props.linkItem.toggleEditing}>Cancel</button>
