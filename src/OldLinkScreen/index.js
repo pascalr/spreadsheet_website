@@ -9,6 +9,7 @@ import * as TABLES from '../constants/tables'
 import { MapInteraction } from 'react-map-interaction'
 import LinkItem from './LinkItem'
 import ByPass from '../lib/ByPass'
+import { DropTarget } from 'react-dnd'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -70,43 +71,25 @@ const MapInteractionCSS = (props) => {
   );
 };
 
-const drop = (setX, setY, oldX, oldY) => (e) => {
-  e.preventDefault();
-  setX(e.screenX - oldX);
-  setY(e.screenY - oldY);
+const screenTarget = {
+  drop: (props) => {
+    console.log('here??????????????')
+    alert(`x=${props.x}, y=${props.y}`)
+  },
 }
 
-const drag = (setOldX, setOldY) => (e) => {
-  e.dataTransfer.setData("text", e.target.id);
-  setOldX(e.screenX);
-  setOldY(e.screenY);
-}
-
-function Draggable(props) {
-  const [x, setX] = useState(0)
-  const [y, setY] = useState(0)
-  const [oldX, setOldX] = useState(0)
-  const [oldY, setOldY] = useState(0)
-  return (
-    <div className="draggable"
-      onDragEnd={drop(setX, setY, oldX, oldY)}
-      onDrag={() => console.log('on drag')}
-      onDragStart={drag(setOldX, setOldY)}
-      draggable="true"
-      style={{
-        transform: `translate(${x}px, ${y}px)`
-      }}
-    >
-      {props.children}
-    </div>
-  )
+function collect(connect, monitor) {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+  }
 }
 
 class LinkScreen extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {mapDisabled: false, x: 0, y: 0}
+    this.state = {mapDisabled: false}
   }
   
   componentDidMount = () => {
@@ -116,38 +99,30 @@ class LinkScreen extends React.Component {
   componentDidUpdate = (prevProps, prevState) => {
   }
 
-  onMouseMove = (e) => {
-    this.setState({ x: e.screenX, y: e.screenY });
-  }
-
-  handleDrop = () => {
-    alert(`x = ${this.state.x}, y = ${this.state.y}`)
-  }
-
   render() {
     const tables = this.props.defs
     return (
-      <ByPass if={true || this.props.editMode}>
+      <ByPass if={this.props.editMode}>
         <MapInteractionCSS showControls={true} disabled={this.state.mapDisabled}>
           <React.Fragment>
             <MenuProvider id="link_screen_menu">
-              <div id="screen" className={this.props.editMode ? "editMode" : "notEditMode"}
-                style={{width: 1920, height: 1024}}
+              {this.props.connectDropTarget(
+                <div id="screen" className={this.props.editMode ? "editMode" : "notEditMode"}
+                  style={{width: 1920, height: 1024}}>
+                  {
+                    _.keys(this.props.screen).map((e,i) => (
+                      <div key={i}
                         onMouseEnter={() => this.setState({mapDisabled: true})}
                         onMouseLeave={() => this.setState({mapDisabled: false})}
-                        onMouseMove={this.onMouseMove}
-              >
-                  {_.keys(this.props.screen).map((e,i) => (
-                    <div key={i}
-                    >
-                      <Draggable>
+                      >
                         <LinkItem id={e}
                           desc={this.props.screen[e].desc}
                           linkRef={this.props.screen[e].ref}/>
-                      </Draggable>
-                    </div>
-                  ))}
-              </div>
+                      </div>
+                    ))
+                  }
+                </div>
+              )}
             </MenuProvider>
             <ScreenMenu {...this.props} screen={this.props.screen} />
             <LinkMenu />
@@ -158,4 +133,4 @@ class LinkScreen extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LinkScreen);
+export default DropTarget('link',screenTarget, collect)(connect(mapStateToProps, mapDispatchToProps)(LinkScreen));
