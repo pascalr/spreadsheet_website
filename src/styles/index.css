@@ -15,6 +15,26 @@ html, body, #root, #screen, #root > div {
   height: 100%;
 }
 
+#screenContainer {
+  display: flex;
+}
+
+#screen {
+  flex: 1;
+}
+
+/* The side navigation menu */
+#sidenav {
+  flex: 0 0 15%;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  border-width: 1px;
+  border-style: solid;
+}
+
+.linkDesc {
+  cursor: pointer;
+}
+
 div{
   white-space: pre-wrap;
 }

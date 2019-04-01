@@ -9,6 +9,7 @@ import * as TABLES from '../constants/tables'
 import { MapInteraction } from 'react-map-interaction'
 import LinkItem from './LinkItem'
 import ByPass from '../lib/ByPass'
+import Draggable from 'react-draggable'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -71,37 +72,29 @@ const MapInteractionCSS = (props) => {
   );
 };
 
-const drop = (setX, setY, oldX, oldY) => (e) => {
-  e.preventDefault();
-  setX(e.screenX - oldX);
-  setY(e.screenY - oldY);
+const handleDrop = (db, id, oldVals) => (e, data) => {
+  debugger
+  const copy = {...oldVals}
+  copy.x = data.x
+  copy.y = data.y
+  db.setPath([TABLES.SCREEN, id], copy)
 }
 
-const drag = (setOldX, setOldY) => (e) => {
-  e.dataTransfer.setData("text", e.target.id);
-  setOldX(e.screenX);
-  setOldY(e.screenY);
-}
+const dragLinkProps = (state) => ({
+  db: state.db
+})
 
-function Draggable(props) {
-  const [x, setX] = useState(0)
-  const [y, setY] = useState(0)
-  const [oldX, setOldX] = useState(0)
-  const [oldY, setOldY] = useState(0)
+// TODO: Specify scale: number to draggable. See https://github.com/mzabriskie/react-draggable
+const DraggableLink = connect(dragLinkProps)((props) => {
   return (
-    <div className="draggable"
-      onDragEnd={drop(setX, setY, oldX, oldY)}
-      onDrag={() => console.log('on drag')}
-      onDragStart={drag(setOldX, setOldY)}
-      draggable="true"
-      style={{
-        transform: `translate(${x}px, ${y}px)`
-      }}
-    >
-      {props.children}
-    </div>
-  )
-}
+    <Draggable onStop={handleDrop(props.db, props.id, props.vals)}
+               defaultPosition={{x: props.vals.x, y: props.vals.y}}>
+      <div>
+        <LinkItem {...props} />
+      </div>
+    </Draggable>
+  );
+})
 
 class LinkScreen extends React.Component {
 
@@ -114,17 +107,6 @@ class LinkScreen extends React.Component {
     this.props.db.load(TABLES.SCREEN, this.props.modelLoaded)
   }
 
-  componentDidUpdate = (prevProps, prevState) => {
-  }
-
-  onMouseMove = (e) => {
-    this.setState({ x: e.screenX, y: e.screenY });
-  }
-
-  handleDrop = () => {
-    alert(`x = ${this.state.x}, y = ${this.state.y}`)
-  }
-
   render() {
     const tables = this.props.defs
     return (
@@ -132,24 +114,9 @@ class LinkScreen extends React.Component {
         <MapInteractionCSS showControls={true} disabled={this.state.mapDisabled}>
           <React.Fragment>
             <MenuProvider id="link_screen_menu">
-              <div id="screen" className={this.props.editMode ? "editMode" : "notEditMode"}
-                style={{width: 1920, height: 1024}}
-                        onMouseEnter={() => this.setState({mapDisabled: true})}
-                        onMouseLeave={() => this.setState({mapDisabled: false})}
-                        onMouseMove={this.onMouseMove}
-              >
-                  {_.keys(this.props.screen).map((e,i) => (
-                    <div key={i}
-                    >
-                      <Draggable>
-                        <LinkItem id={e}
-                          desc={this.props.screen[e].desc}
-                          linkRef={this.props.screen[e].ref}/>
-                      </Draggable>
-                    </div>
-                  ))
-                }
-		<ul/>
+              <div id="screenContainer">
+                <div id="sidenav">
+                  <h3>Tables</h3>
                 {
                   _.keys(tables).map((e,i) => (
                     <div key={i}
@@ -163,6 +130,25 @@ class LinkScreen extends React.Component {
                   ))
                 }
               </div>
+              <div id="screen" className={this.props.editMode ? "editMode" : "notEditMode"}
+                style={{width: 1920, height: 1024}}
+                        onMouseEnter={() => this.setState({mapDisabled: true})}
+                        onMouseLeave={() => this.setState({mapDisabled: false})}
+                        onMouseMove={this.onMouseMove}
+              >
+                  {_.keys(this.props.screen).map((e,i) => (
+                    <div key={i}
+                    >
+                      <DraggableLink id={e}
+                            desc={this.props.screen[e].desc}
+                            linkRef={this.props.screen[e].ref}
+                            vals={this.props.screen[e]}/>
+                    </div>
+                  ))
+                  }
+		<ul/>
+               </div>
+               </div>
             </MenuProvider>
             <ScreenMenu {...this.props} screen={this.props.screen} />
             <LinkMenu />
