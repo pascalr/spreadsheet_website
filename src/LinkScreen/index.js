@@ -14,6 +14,7 @@ const mapStateToProps = state => ({
   db: state.db,
   editMode: state.ui.editMode,
   screen: state.cache.screen,
+  defs: state.defs,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -146,7 +147,21 @@ class LinkScreen extends React.Component {
                           linkRef={this.props.screen[e].ref}/>
                       </Draggable>
                     </div>
-                  ))}
+                  ))
+                }
+		<ul/>
+                {
+                  _.keys(tables).map((e,i) => (
+                    <div key={i}
+                      onMouseEnter={() => this.setState({mapDisabled: true})}
+                      onMouseLeave={() => this.setState({mapDisabled: false})}
+                    >
+                      <LinkItem
+                        desc={tables[e].name}
+                        linkRef={`/tables/${e}`}/>
+                    </div>
+                  ))
+                }
               </div>
             </MenuProvider>
             <ScreenMenu {...this.props} screen={this.props.screen} />

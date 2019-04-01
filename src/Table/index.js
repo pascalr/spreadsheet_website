@@ -4,7 +4,7 @@ import * as TABLE from '../constants/tables'
 import DatasheetTable from '../DatasheetTable'
 import FixedDataTable from '../FixedDataTable'
 
-import { RIEInput } from 'riek'
+import { RIEInput, RIETextArea } from 'riek'
 import { set } from '../actions'
 import _ from 'lodash'
 import Emoji from '../Emoji'

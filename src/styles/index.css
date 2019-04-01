@@ -15,6 +15,10 @@ html, body, #root, #screen, #root > div {
   height: 100%;
 }
 
+div{
+  white-space: pre-wrap;
+}
+
 #screen.editMode {
   background-size: 20px 20px;
   background-image: linear-gradient(to right, whitesmoke 1px, transparent 1px), linear-gradient(to bottom, whitesmoke 1px, transparent 1px);
