@@ -27,8 +27,11 @@ const DraggableLink = connect(dragLinkProps)((props) => {
                onDrag={() => setLinkDisabled(true)}
                defaultPosition={{x: x0, y: y0}}>
       <div>
-        {props.linkRef ?
-          <Link to={props.linkRef} disabled={linkDisabled}>
+        {linkDisabled ?
+          <span className="linkDesc">{props.desc}</span>
+          :
+          props.linkRef ?
+          <Link to={props.linkRef}>
             <span className="linkDesc">{props.desc}</span>
           </Link> :
           <span className="linkDesc">{props.desc}</span>
