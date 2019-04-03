@@ -12,7 +12,11 @@ class Link extends React.Component {
   render() {
     const r = new RegExp('^(?:[a-z]+:)?//', 'i');
     const isAbsolutePath = r.test(this.props.to)
-    return isAbsolutePath ?
+    return this.props.disabled ?
+      <div className="disabledLink">
+        {this.props.children}
+      </div> :
+      isAbsolutePath ?
       <a href={this.props.to}>{this.props.children}</a> :
       <div onClick={() => {this.props.history.push(this.props.to)}}>
         {this.props.children}

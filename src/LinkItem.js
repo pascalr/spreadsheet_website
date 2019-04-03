@@ -2,11 +2,12 @@ import _ from 'lodash'
 import React, { useState } from "react"
 import { connect } from "react-redux"
 import { MenuProvider } from 'react-contexify'
-import { setDb } from "../actions"
-import * as TABLE from '../constants/tables'
+import { setDb } from "./actions"
+import * as TABLE from './constants/tables'
 import Select from 'react-select'
 import Autocomplete from 'react-autocomplete'
-import Link from '../Link'
+import Link from './Link'
+import DraggableLink from './DraggableLink'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -19,7 +20,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const handleSubmit = (props,desc,ref) => event => {
   event.preventDefault();
-  props.setDb(props.db, [TABLE.SCREEN,props.id],{desc,ref: ref.value})
+  props.setDb(props.db, [TABLE.SCREEN,props.id],{desc,ref})
   props.linkItem.toggleEditing()
 }
 
@@ -29,14 +30,25 @@ function optionsFromDefs(defs) {
   ))
 }
 
+const autocompleteMenuStyle = { // FIXME: Maybe useless...
+  borderRadius: '3px',
+  boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+  background: 'rgba(255, 255, 255, 0)',
+  padding: '2px 0',
+  fontSize: '90%',
+  position: 'fixed',
+  overflow: 'auto',
+  maxHeight: '50%', // TODO: don't cheat, let it flow to the bottom
+}
+
 const Form = connect(mapStateToProps, mapDispatchToProps)((props) => {
   const [desc, setDesc] = useState(props.desc || "");
-  const [ref, setRef] = useState(props.linkRef || "");
+  const [linkRef, setLinkRef] = useState(props.linkRef || "");
 
   //<div onBlur={props.linkItem.toggleEditing}>
   return (
     <div>
-      <form onSubmit={handleSubmit(props,desc,ref)}>
+      <form onSubmit={handleSubmit(props,desc,linkRef)}>
         <textarea
           value={desc}
           onChange={e => setDesc(e.target.value)}
@@ -56,14 +68,18 @@ const Form = connect(mapStateToProps, mapDispatchToProps)((props) => {
         <Autocomplete
           getItemValue={(item) => item.label}
           items={optionsFromDefs(props.defs)}
-          renderItem={(item, isHighlighted) =>
-            <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+          renderItem={(item, isHighlighted) => (
+            <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}
+              key={item.label}
+            >
               {item.label}
             </div>
-          }
-          value={ref}
-          onChange={(e) => setRef(e.target.value)}
-          onSelect={(val) => setRef(val)}
+          )}
+          shouldItemRender={(item,str) => true}
+          value={linkRef}
+          onChange={(e) => setLinkRef(e.target.value)}
+          onSelect={(val, item) => setLinkRef(item.value)}
+          menuStyle={autocompleteMenuStyle}
         />
         {/*<Select
           value={ref}
@@ -102,12 +118,7 @@ class LinkItem extends React.Component {
     return(
       <React.Fragment>
         <MenuProvider id="linkMenu" data={{linkItem: this}}>
-          {this.props.linkRef ?
-            <Link to={this.props.linkRef}>
-              <span className="linkDesc">{this.props.desc}</span>
-            </Link> :
-            <span className="linkDesc">{this.props.desc}</span>
-          }
+          <DraggableLink {...this.props}/>
         </MenuProvider>
       </React.Fragment>
     );

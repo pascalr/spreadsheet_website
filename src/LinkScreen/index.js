@@ -7,9 +7,8 @@ import ScreenMenu from '../menus/ScreenMenu'
 import LinkMenu from '../menus/LinkMenu'
 import * as TABLES from '../constants/tables'
 import { MapInteraction } from 'react-map-interaction'
-import LinkItem from './LinkItem'
+import LinkItem from '../LinkItem'
 import ByPass from '../lib/ByPass'
-import Draggable from 'react-draggable'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -72,30 +71,6 @@ const MapInteractionCSS = (props) => {
   );
 };
 
-const handleDrop = (db, id, oldVals) => (e, data) => {
-  debugger
-  const copy = {...oldVals}
-  copy.x = data.x
-  copy.y = data.y
-  db.setPath([TABLES.SCREEN, id], copy)
-}
-
-const dragLinkProps = (state) => ({
-  db: state.db
-})
-
-// TODO: Specify scale: number to draggable. See https://github.com/mzabriskie/react-draggable
-const DraggableLink = connect(dragLinkProps)((props) => {
-  return (
-    <Draggable onStop={handleDrop(props.db, props.id, props.vals)}
-               defaultPosition={{x: props.vals.x, y: props.vals.y}}>
-      <div>
-        <LinkItem {...props} />
-      </div>
-    </Draggable>
-  );
-})
-
 class LinkScreen extends React.Component {
 
   constructor(props) {
@@ -108,6 +83,7 @@ class LinkScreen extends React.Component {
   }
 
   render() {
+    if (!this.props.screen) { return null }
     const tables = this.props.defs
     return (
       <ByPass if={true || this.props.editMode}>
@@ -139,7 +115,7 @@ class LinkScreen extends React.Component {
                   {_.keys(this.props.screen).map((e,i) => (
                     <div key={i}
                     >
-                      <DraggableLink id={e}
+                      <LinkItem id={e}
                             desc={this.props.screen[e].desc}
                             linkRef={this.props.screen[e].ref}
                             vals={this.props.screen[e]}/>
