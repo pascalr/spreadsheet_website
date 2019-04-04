@@ -18,9 +18,9 @@ const mapDispatchToProps = (dispatch) => ({
   setDb: (db,path,val) => dispatch(setDb(db,path,val)),
 });
 
-const handleSubmit = (props,desc,ref) => event => {
+const handleSubmit = (props,desc,cmd,ref) => event => {
   event.preventDefault();
-  props.setDb(props.db, [TABLE.SCREEN,props.id],{desc,ref})
+  props.setDb(props.db, [TABLE.SCREEN,props.id],{desc,ref,cmd})
   props.linkItem.toggleEditing()
 }
 
@@ -42,21 +42,22 @@ const autocompleteMenuStyle = { // FIXME: Maybe useless...
 }
 
 const Form = connect(mapStateToProps, mapDispatchToProps)((props) => {
-  const [desc, setDesc] = useState(props.desc || "");
-  const [linkRef, setLinkRef] = useState(props.linkRef || "");
+  const [desc, setDesc] = useState(props.vals.desc || "");
+  const [cmd, setCmd] = useState(props.vals.cmd || "");
+  const [linkRef, setLinkRef] = useState(props.vals.linkRef || "");
 
   //<div onBlur={props.linkItem.toggleEditing}>
   return (
     <div>
-      <form onSubmit={handleSubmit(props,desc,linkRef)}>
-        <textarea
+      <form onSubmit={handleSubmit(props,desc,cmd,linkRef)}>
+        {/*<textarea
           value={desc}
           onChange={e => setDesc(e.target.value)}
           placeholder="Description"
           type="text"
           name="desc"
           required
-        />
+        />*/}
         {/*<input
           value={ref}
           onChange={e => setRef(e.target.value)}
@@ -65,7 +66,14 @@ const Form = connect(mapStateToProps, mapDispatchToProps)((props) => {
           name="ref"
           required
         />*/}
-        <Autocomplete
+        <textarea
+          value={cmd}
+          onChange={e => setCmd(e.target.value)}
+          placeholder="Command"
+          type="text"
+          name="cmd"
+        />
+        {/*<Autocomplete
           getItemValue={(item) => item.label}
           items={optionsFromDefs(props.defs)}
           renderItem={(item, isHighlighted) => (
@@ -80,7 +88,7 @@ const Form = connect(mapStateToProps, mapDispatchToProps)((props) => {
           onChange={(e) => setLinkRef(e.target.value)}
           onSelect={(val, item) => setLinkRef(item.value)}
           menuStyle={autocompleteMenuStyle}
-        />
+        />*/}
         {/*<Select
           value={ref}
           options={optionsFromDefs(props.defs)}

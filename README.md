@@ -23,6 +23,18 @@ Les parents inuits eduquent leur enfants sans jamais se facher, lever la voix ou
 - Une ligne sur deux c'est une partition de piano, l'autre de guitare... etc...
 NO FOLDERS: Une grosse map c'est tout! et un search bar!
 
+
+Favicon image
+Studiohack has the "thorough" approach but heres a short hack:
+
+    Enter the domain name like https://superuser.com/(must end with '/')
+    Add favicon.ico to the end
+    Press enter (this should be in the URL: https://superuser.com/favicon.ico)
+    Right click on the image and click "save image as"
+
+
+ca serait nice de pouvoir naviguer les elements reacts selon lequel contient lequel
+
 TODO:
 (Dans longtemps): Mettre toutes les donnees sous un utilisateur dans firebase.
 
