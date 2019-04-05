@@ -15,9 +15,23 @@ html, body, #root, #screen, #root > div {
   height: 100%;
 }
 
+.error {
+  color: red;
+}
+
 ul {
   margin: 10px;
   padding: 10px;
+}
+
+a:hover,.link:hover {
+  background-color: #CBCBCB;
+}
+
+a,.link {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
 }
 
 a .disabled {

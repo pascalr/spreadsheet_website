@@ -14,9 +14,9 @@ class Link extends React.Component {
     const isAbsolutePath = r.test(this.props.to)
     return isAbsolutePath ?
       <a href={this.props.to}>{this.props.children}</a> :
-      <div onClick={() => {this.props.history.push(this.props.to)}}>
+      <span onClick={() => {this.props.history.push(this.props.to)}} className="link">
         {this.props.children}
-      </div>
+      </span>
   }
 }
 
