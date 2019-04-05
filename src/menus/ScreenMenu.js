@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => ({
   toggleEditMode: () => dispatch(toggleEditMode()),
-  newLink: (db) => () => dispatch(setDb(db,[TABLE.SCREEN,uuidv1()],{desc: "link"})),
+  newLink: (db) => () => dispatch(setDb(db,[TABLE.ITEMS,uuidv1()],{desc: "link"})),
 });
 
 class ScreenMenu extends React.Component {

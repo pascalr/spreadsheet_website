@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
+import _ from 'lodash'
 
 /* FIXME:
  * WARNING: Do not store any secrets (such as private API keys) in your React app!
@@ -52,10 +53,17 @@ class Firebase {
     return this.db.ref(`${table}/${id}/${attr}`).set(values,callback)
   }
   setPath = (path,values,callback) => {
-    return this.db.ref(path.join('/')).set(values,callback)
+    return this.db.ref(_.castArray(path).join('/')).set(values,callback)
   }
   deleteRecord = (table,id) => {
     return this.db.ref(`${table}/${id}`).remove()
+  }
+  delete = (path) => {
+    console.log(`Firebase: deleting path=${path}`);
+    //return this.db.ref(_.castArray(path).join('/')).remove()
+  }
+  update = (path, updates) => {
+    return this.db.ref(_.castArray(path).join('/')).update(updates)
   }
 
   /*

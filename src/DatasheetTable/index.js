@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import ReactDataSheet from 'react-datasheet';
 import _ from 'lodash'
 
-import Command from '../Command'
-
 import { MenuSheetRenderer, RowRenderer, CellRenderer } from './DatasheetTable'
 
 import { connect } from "react-redux";
@@ -68,14 +66,6 @@ class DatasheetTable extends Component {
             const val = cell.value ? !cell.value : 1;
             this.props.db.setPath(path, val, this.props.set(path))
           }}/>)
-        }
-      }
-      if (cell.value && cell.value[0] === '=') { // Command
-        let cmd = cell.value.substr(1)
-        try {
-          return Command[cmd]() // TODO: A lot...
-        } catch {
-          return <span style={{color: 'red'}}>#Erreur!</span>
         }
       }
     }

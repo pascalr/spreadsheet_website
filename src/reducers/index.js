@@ -1,13 +1,8 @@
 import * as ACTION from "../constants/action-types";
-
 import { combineReducers } from 'redux'
-
 import { createBrowserHistory } from 'history';
-
 import Firebase from '../Firebase'
-
 import { Map } from 'immutable';
-
 import _ from 'lodash'
 
 const uiInitialState = {

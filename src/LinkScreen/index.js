@@ -5,7 +5,7 @@ import { MenuProvider } from 'react-contexify'
 import { modelLoaded } from '../actions'
 import ScreenMenu from '../menus/ScreenMenu'
 import LinkMenu from '../menus/LinkMenu'
-import * as TABLES from '../constants/tables'
+import * as TABLE from '../constants/tables'
 import { MapInteraction } from 'react-map-interaction'
 import LinkItem from '../LinkItem'
 import ByPass from '../lib/ByPass'
@@ -14,12 +14,12 @@ import Link from '../Link'
 const mapStateToProps = state => ({
   db: state.db,
   editMode: state.ui.editMode,
-  screen: state.cache.screen,
+  items: state.cache[TABLE.ITEMS],
   defs: state.defs,
 })
 
 const mapDispatchToProps = dispatch => ({
-  modelLoaded: (model) => dispatch(modelLoaded(TABLES.SCREEN, model))
+  modelLoaded: (model) => dispatch(modelLoaded(TABLE.ITEMS, model))
 })
 
 /*
@@ -80,11 +80,11 @@ class LinkScreen extends React.Component {
   }
   
   componentDidMount = () => {
-    this.props.db.load(TABLES.SCREEN, this.props.modelLoaded)
+    this.props.db.load(TABLE.ITEMS, this.props.modelLoaded)
   }
 
   render() {
-    if (!this.props.screen) { return null }
+    if (!this.props.items) { return null }
     const tables = this.props.defs
     return (
       <ByPass if={true || this.props.editMode}>
@@ -115,13 +115,13 @@ class LinkScreen extends React.Component {
                         onMouseLeave={() => this.setState({mapDisabled: false})}
                         onMouseMove={this.onMouseMove}
               >
-                  {_.keys(this.props.screen).map((e,i) => (
+                  {_.keys(this.props.items).map((e,i) => (
                     <div key={i}
                     >
                       <LinkItem id={e}
-                            desc={this.props.screen[e].desc}
-                            cmd={this.props.screen[e].cmd}
-                            vals={this.props.screen[e]}/>
+                            desc={this.props.items[e].desc}
+                            cmd={this.props.items[e].cmd}
+                            vals={this.props.items[e]}/>
                     </div>
                   ))
                   }
@@ -129,7 +129,7 @@ class LinkScreen extends React.Component {
                </div>
                </div>
             </MenuProvider>
-            <ScreenMenu {...this.props} screen={this.props.screen} />
+            <ScreenMenu {...this.props} screen={this.props.items} />
             <LinkMenu />
           </React.Fragment>
         </MapInteractionCSS>

@@ -64,6 +64,12 @@ function withoutColumn(theDef, columnId) {
   return def
 }
 
+export function deletePath(db, path) {
+  debugger
+  db.delete(path)
+  return { type: ACTION.CACHE.SET, path: ["root", ..._.castArray(path)], val: null };
+}
+
 export function deleteColumn(db, theDef, columnId) {
   const def = withoutColumn(theDef, columnId)
   db.setRecord(TABLES.DEFS,def.id,def)
@@ -82,11 +88,18 @@ export function modelLoaded(path, val) {
 
 export function addTableToScreen(screen, name) {
   const val = {...screen.tables, [name]: true}
-  return { type: ACTION.CACHE.SET, path: [TABLES.SCREEN, "tables"], val }
+  return { type: ACTION.CACHE.SET, path: ['screen', "tables"], val }
 };
+
+export function updateDb(db,path,vals) {
+  db.update(path, vals)
+  return { type: ACTION.CACHE.SET, path: ["root", ..._.castArray(path)], vals };
+}
 
 export function setDb(db, path, val) {
   db.setPath(path,val)
+  // TODO: Try this replacement
+  //return { type: ACTION.CACHE.SET, path: ["root", ..._.castArray(path)], val };
   if (path.constructor === Array) {
     return { type: ACTION.CACHE.SET, path: ["root", ...path], val };
   } else {

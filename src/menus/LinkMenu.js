@@ -1,8 +1,8 @@
 import React from "react"
 import { connect } from "react-redux";
 import { Menu, Item, Submenu } from 'react-contexify'
-
-import { deleteTable } from '../actions'
+import { deletePath } from '../actions'
+import * as TABLE from '../constants/tables'
 
 const onClickMenu = ({ event, props }) => console.log(event,props);
 
@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteTable: (db) => ({props}) => dispatch(deleteTable(db,props.id)),
+  deleteLinkItem: (db) => ({props}) => dispatch(deletePath(db,[TABLE.ITEMS, props.id])),
 });
 
 const edit = history => ({event, props}) => {
@@ -30,6 +30,7 @@ class LinkMenu extends React.Component {
     return(
       <Menu id="linkMenu">
         <Item onClick={this.onToggleEditing}>edit</Item>
+        <Item onClick={this.props.deleteLinkItem(this.props.db)}>delete</Item>
       </Menu>
     );
   }

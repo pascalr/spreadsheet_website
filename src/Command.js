@@ -11,7 +11,7 @@ const handleDrop = (db, id, oldVals, setLinkDisabled) => (e, data) => {
   const copy = {...oldVals}
   copy.x = data.x
   copy.y = data.y
-  db.setPath([TABLE.SCREEN, id], copy)
+  db.setPath([TABLE.ITEMS, id], copy)
   setLinkDisabled(false)
 }
 
@@ -46,10 +46,10 @@ const cmd_a = (args) => {
 }
 
 //const parseCmd = (str) => {
-const Command = ({str}) => {
-  if (!str) { return <span className='error'>empty cmd</span>}
-  if (str.charAt(0) === '=') {
-    const sub = str.slice(1)
+const Command = ({cmd}) => {
+  if (!cmd) { return <span className='error'>empty cmd</span>}
+  if (cmd.charAt(0) === '=') {
+    const sub = cmd.slice(1)
     //const r = /^[a-zA-Z]*/;
     //const cmdName = r.exec(sub)
     const vals = sub.split(',')
@@ -62,34 +62,8 @@ const Command = ({str}) => {
       return <span className='error'>unkown command</span>
     }
   } else {
-    return <span>{str}</span>
+    return <span>{cmd}</span>
   }
 }
 
-const dragLinkProps = (state) => ({
-  db: state.db
-})
-
-// TODO: Specify scale: number to draggable. See https://github.com/mzabriskie/react-draggable
-const DraggableLink = connect(dragLinkProps)((props) => {
-  const [linkDisabled, setLinkDisabled] = useState(false)
-  const x0 = props.vals ? (props.vals.x || 0) : 0
-  const y0 = props.vals ? (props.vals.y || 0) : 0
-              /*parseCmd(props.cmd)*/
-  return (
-    <Draggable onStop={handleDrop(props.db, props.id, props.vals, setLinkDisabled)}
-               grid={[5,5]}
-               onDrag={() => setLinkDisabled(true)}
-               defaultPosition={{x: x0, y: y0}}>
-      <div>
-        {linkDisabled ?
-          <span className="linkDesc">{props.desc}</span>
-            :
-        <Command str={props.cmd}/>
-        }
-        </div>
-      </Draggable>
-    );
-})
-
-export default DraggableLink
+export default Command

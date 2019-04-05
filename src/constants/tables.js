@@ -1,7 +1,8 @@
 export const TABLES = 'tables';
 export const TABLES2 = 'tables2';
 export const DEFS = 'defs';
-export const SCREEN = 'screen';
+export const ITEMS = 'items';
+export const SCREEN = 'items';// Screen should be deleted...
 export const LAYOUT = 'layout';
 
 // A Table contains all the data

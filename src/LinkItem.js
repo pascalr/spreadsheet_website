@@ -2,12 +2,13 @@ import _ from 'lodash'
 import React, { useState } from "react"
 import { connect } from "react-redux"
 import { MenuProvider } from 'react-contexify'
-import { setDb } from "./actions"
+import { updateDb } from "./actions"
 import * as TABLE from './constants/tables'
 import Select from 'react-select'
 import Autocomplete from 'react-autocomplete'
 import Link from './Link'
-import DraggableLink from './DraggableLink'
+import Draggable from './Draggable'
+import Command from './Command'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -15,12 +16,12 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  setDb: (db,path,val) => dispatch(setDb(db,path,val)),
+  updateDb: (db,path,val) => dispatch(updateDb(db,path,val)),
 });
 
 const handleSubmit = (props,desc,cmd,ref) => event => {
   event.preventDefault();
-  props.setDb(props.db, [TABLE.SCREEN,props.id],{desc,ref,cmd})
+  props.updateDb(props.db, [TABLE.ITEMS,props.id],{desc,ref,cmd})
   props.linkItem.toggleEditing()
 }
 
@@ -122,13 +123,21 @@ class LinkItem extends React.Component {
     this.setState({editing: !this.state.editing})
   }
   render() {
-    if (this.state.editing) { return <EditLinkItem {...this.props} linkItem={this} /> }
     return(
-      <React.Fragment>
-        <MenuProvider id="linkMenu" data={{linkItem: this}}>
-          <DraggableLink {...this.props}/>
-        </MenuProvider>
-      </React.Fragment>
+      <Draggable
+        path={[TABLE.ITEMS, this.props.id]}
+        x0={this.props.vals ? (this.props.vals.x || 0) : 0}
+        y0={this.props.vals ? (this.props.vals.y || 0) : 0}
+        disabled={this.state.editing}
+      >
+        {this.state.editing ?
+          <EditLinkItem {...this.props} linkItem={this} />
+        :
+          <MenuProvider id="linkMenu" data={{linkItem: this}} component='span'>
+            <Command {...this.props}/>
+          </MenuProvider>
+        }
+      </Draggable>
     );
   }
 }

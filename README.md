@@ -24,6 +24,9 @@ Les parents inuits eduquent leur enfants sans jamais se facher, lever la voix ou
 NO FOLDERS: Une grosse map c'est tout! et un search bar!
 
 
+Une commande est un objet javascript. Tu peux lui rajouter des valeurs a onClick, onDrag, ...
+
+
 Favicon image
 Studiohack has the "thorough" approach but heres a short hack:
 
