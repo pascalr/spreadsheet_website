@@ -1,24 +1,24 @@
 import React from 'react'
 import { connect } from "react-redux";
 import _ from 'lodash'
-import Console from '../Console'
+import Console from './Console'
 
-import Link from '../Link';
+import Link from './Link';
 
 import 'react-contexify/dist/ReactContexify.min.css';
-import '../styles/react-grid-layout-style.css'
+import './styles/react-grid-layout-style.css'
 import 'react-resizable/css/styles.css'
 
-import * as TABLES from '../constants/tables'
+import * as TABLES from './constants/tables'
 
-import { defsLoaded } from '../actions'
+import { defsLoaded } from './actions'
 
-import Table from '../Table'
-import Screen from '../Screen'
-import LinkScreen from '../LinkScreen'
-import Edit from '../Edit'
+import Table from './Table'
+import Screen from './Screen'
+import LinkScreen from './LinkScreen'
+import Edit from './Edit'
 
-import router from '../router'
+import router from './router'
 
 const uuidv1 = require('uuid/v1');
 
