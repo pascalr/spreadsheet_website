@@ -4,6 +4,7 @@ import { createBrowserHistory } from 'history';
 import Firebase from '../Firebase'
 import { Map } from 'immutable';
 import _ from 'lodash'
+import Sandbox from '../Sandbox'
 
 const uiInitialState = {
   editMode: false,
@@ -89,6 +90,7 @@ export default function combination(state, action) {
     state = {
       db: new Firebase(),
       history: createBrowserHistory(),
+      sandbox: new Sandbox(),
     };
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
       window.db = state.db;

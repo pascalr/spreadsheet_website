@@ -9,6 +9,7 @@ import Autocomplete from 'react-autocomplete'
 import Link from './Link'
 import Draggable from './Draggable'
 import Command from './Command'
+import ErrorBoundary from './ErrorBoundary'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -134,7 +135,9 @@ class LinkItem extends React.Component {
           <EditLinkItem {...this.props} linkItem={this} />
         :
           <MenuProvider id="linkMenu" data={{linkItem: this}} component='span'>
-            <Command {...this.props}/>
+            <ErrorBoundary>
+              <Command {...this.props}/>
+            </ErrorBoundary>
           </MenuProvider>
         }
       </Draggable>

@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@nx-js/compiler-util": "github:nx-js/compiler-util",
     "firebase": "^5.8.5",
     "fixed-data-table-2": "^0.8.20",
     "history": "^4.9.0",
     "immutable": "^4.0.0-rc.12",
+    "parenthesis": "^3.1.6",
     "path-to-regexp": "^3.0.0",
+    "prettier": "^1.16.4",
     "re-resizable": "^4.11.0",
     "react": "^16.8.3",
     "react-autocomplete": "^1.8.1",
@@ -18,6 +21,7 @@
     "react-dom": "^16.8.3",
     "react-draggable": "^3.2.1",
     "react-grid-layout": "^0.16.6",
+    "react-latex": "^1.2.0",
     "react-live-clock": "^3.1.0",
     "react-map-interaction": "^1.2.1",
     "react-redux": "^6.0.1",
@@ -36,7 +40,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -46,5 +51,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "cypress": "^3.2.0"
+  }
 }

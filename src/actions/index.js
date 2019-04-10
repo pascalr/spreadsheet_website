@@ -65,7 +65,6 @@ function withoutColumn(theDef, columnId) {
 }
 
 export function deletePath(db, path) {
-  debugger
   db.delete(path)
   return { type: ACTION.CACHE.SET, path: ["root", ..._.castArray(path)], val: null };
 }

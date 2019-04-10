@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from "react-redux";
 import _ from 'lodash'
+import Console from '../Console'
 
 import Link from '../Link';
 
@@ -136,6 +137,8 @@ class App extends React.Component {
     return (
       <div className="app">
         <Link to='/'>Home</Link>
+        <hr />
+        <Console/>
         <hr />
         {router.resolve(routes, this.props.history.location)}
       </div>

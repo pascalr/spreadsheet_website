@@ -26,6 +26,11 @@ NO FOLDERS: Une grosse map c'est tout! et un search bar!
 
 Une commande est un objet javascript. Tu peux lui rajouter des valeurs a onClick, onDrag, ...
 
+https://drivy.engineering/setting-up-vim-for-react/
+
+
+FIXME: Remove from public index.html file
+<link href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css" rel="stylesheet">
 
 Favicon image
 Studiohack has the "thorough" approach but heres a short hack:
