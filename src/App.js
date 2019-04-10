@@ -138,8 +138,8 @@ class App extends React.Component {
       <div className="app">
         <Link to='/'>Home</Link>
         <hr />
-        <Console/>
-        <hr />
+        {/*<Console/>
+        <hr />*/}
         {router.resolve(routes, this.props.history.location)}
       </div>
     );

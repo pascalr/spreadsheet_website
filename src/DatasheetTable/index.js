@@ -10,6 +10,13 @@ import { set } from '../actions'
 
 import * as TABLE from '../constants/tables'
 
+const stringify = function(obj) {
+	try {
+		return JSON.stringify(obj);
+	} catch(e) {
+		return obj.toString();
+	}
+}
 const mapStateToProps = state => ({
   db: state.db,
 })
@@ -19,6 +26,11 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 class DatasheetTable extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {reload: false}
+  }
   
   renderSheet = (props) => (
     <MenuSheetRenderer def={this.props.def} {...props} />
@@ -53,6 +65,22 @@ class DatasheetTable extends Component {
 
   valueFromCell = (cell,i,j) => {
     if (this.cols() && !cell.readOnly) {
+      if (cell.value && cell.value[0] === '=') { // = should be pure
+        try {
+          const result = eval.call(window, cell.value.slice(1)); // FIXME: In onCellsChanged, eval there, set type to "function"
+          return stringify(result)
+        } catch(error) {
+				  return error.toString();
+        }
+      }
+      if (cell.value && cell.value[0] === ':') { // : has side effects
+        return (<button onClick={() => {
+          eval.call(window, cell.value.slice(1))
+          this.setState({reload: !this.state.reload})
+        }}>
+          {cell.value.slice(1)}
+        </button>)
+      }
       let col = this.column(j);
       if (col && col.type) {
         if (col.type === "link" && cell.value) {
@@ -60,7 +88,6 @@ class DatasheetTable extends Component {
         } else if (col.type === "bullet") {
           return (<span>&bull;</span>)
         } else if (col.type === "checkbox") {
-          debugger
           return (<input type="checkbox" defaultChecked={cell.value} onChange={() => {
             const path = [TABLE.TABLES,this.props.def.id,i,col.name]
             const val = cell.value ? !cell.value : 1;
@@ -70,6 +97,13 @@ class DatasheetTable extends Component {
       }
     }
     return cell.value;
+  }
+
+  dataRenderer = (def) => (cell,i,j) => {
+    return cell.value;
+    let colIds = def.layout[0];
+    let val = (this.props.table || []).filter(e => e && e === colIds[j] ? 1 : 0)[i]
+    return val;
   }
   
   render() {
@@ -81,7 +115,7 @@ class DatasheetTable extends Component {
           rowRenderer={RowRenderer}
           cellRenderer={CellRenderer}
           valueRenderer={this.valueFromCell}
-          dataRenderer={(cell) => cell.expr}
+          dataRenderer={this.dataRenderer(this.props.def)}
           onCellsChanged={this.props.onCellsChanged}
         />
       </div>
