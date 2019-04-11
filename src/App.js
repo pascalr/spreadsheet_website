@@ -1,11 +1,11 @@
 import React from 'react'
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 import _ from 'lodash'
 import Console from './Console'
 
-import Link from './Link';
+import Link from './Link'
 
-import 'react-contexify/dist/ReactContexify.min.css';
+import 'react-contexify/dist/ReactContexify.min.css'
 import './styles/react-grid-layout-style.css'
 import 'react-resizable/css/styles.css'
 
@@ -15,7 +15,6 @@ import { defsLoaded } from './actions'
 
 import Table from './Table'
 import Screen from './Screen'
-import LinkScreen from './LinkScreen'
 import Edit from './Edit'
 
 import router from './router'
@@ -32,7 +31,7 @@ const mapDistpatchToProps = dispatch => ({
 })
 
 const routes = [
-  {path: '/', action: () => (<LinkScreen />)},
+  {path: '/', action: () => (<Screen />)},
   {path: '/tables/:id', action: (props) => (<Table {...props} />)},
   {path: '/edit/:id', action: (props) => (<Edit {...props} />)},
 ]

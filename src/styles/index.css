@@ -226,3 +226,11 @@ span.data-grid-container, span.data-grid-container:focus {
   background: none;
   display: block;
 }
+
+#selectionRectangle {
+  pointer-events: none;
+  transition: opacity .4s;
+  position: absolute;
+  background-color: rgba(0,0,255,.2);
+  border: 1px solid #ccc;
+}

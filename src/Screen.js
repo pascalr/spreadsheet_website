@@ -2,14 +2,14 @@ import React, {useState} from 'react'
 import _ from 'lodash'
 import { connect } from "react-redux"
 import { MenuProvider } from 'react-contexify'
-import { modelLoaded } from '../actions'
-import ScreenMenu from '../menus/ScreenMenu'
-import LinkMenu from '../menus/LinkMenu'
-import * as TABLE from '../constants/tables'
+import { modelLoaded } from './actions'
+import ScreenMenu from './menus/ScreenMenu'
+import LinkMenu from './menus/LinkMenu'
+import * as TABLE from './constants/tables'
 import { MapInteraction } from 'react-map-interaction'
-import LinkItem from '../LinkItem'
-import ByPass from '../lib/ByPass'
-import Link from '../Link'
+import LinkItem from './LinkItem'
+import ByPass from './lib/ByPass'
+import Link from './Link'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -114,7 +114,7 @@ class LinkScreen extends React.Component {
                         onMouseEnter={() => this.setState({mapDisabled: true})}
                         onMouseLeave={() => this.setState({mapDisabled: false})}
                         onMouseMove={this.onMouseMove}
-              >
+                      >
                   {_.keys(this.props.items).map((e,i) => (
                     <div key={i}
                     >
@@ -125,7 +125,6 @@ class LinkScreen extends React.Component {
                     </div>
                   ))
                   }
-		<ul/>
                </div>
                </div>
             </MenuProvider>
