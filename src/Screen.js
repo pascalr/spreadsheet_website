@@ -10,6 +10,7 @@ import { MapInteraction } from 'react-map-interaction'
 import LinkItem from './LinkItem'
 import ByPass from './lib/ByPass'
 import Link from './Link'
+import {PreviewSelection} from './Preview'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -109,24 +110,8 @@ class LinkScreen extends React.Component {
                 }
               </ul>
               </div>
-              <div id="screen" className={this.props.editMode ? "editMode" : "notEditMode"}
-                style={{width: 1920, height: 1024}}
-                        onMouseEnter={() => this.setState({mapDisabled: true})}
-                        onMouseLeave={() => this.setState({mapDisabled: false})}
-                        onMouseMove={this.onMouseMove}
-                      >
-                  {_.keys(this.props.items).map((e,i) => (
-                    <div key={i}
-                    >
-                      <LinkItem id={e}
-                            desc={this.props.items[e].desc}
-                            cmd={this.props.items[e].cmd}
-                            vals={this.props.items[e]}/>
-                    </div>
-                  ))
-                  }
-               </div>
-               </div>
+              <PreviewSelection/>
+              </div>
             </MenuProvider>
             <ScreenMenu {...this.props} screen={this.props.items} />
             <LinkMenu />

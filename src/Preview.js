@@ -1,12 +1,42 @@
-import React from 'react'
+import React, {useState} from 'react'
 import _ from 'lodash'
 import { connect } from "react-redux"
 import Selection from './Selection'
+import uuidv1 from 'uuid/v1'
+import * as TABLE from './constants/tables'
 
-const mapStateToProps = state => ({
+const formProps = state => ({
 })
 
-const mapDispatchToProps = dispatch => ({
+const formDispatch = dispatch => ({
+})
+
+const handleSubmit = (props,desc,cmd,ref) => event => {
+  event.preventDefault();
+  //props.updateDb(props.db, [TABLE.ITEMS,props.id],{desc,ref,cmd})
+  //props.linkItem.toggleEditing()
+}
+
+const Form = connect(formProps, formDispatch)((props) => {
+  const [desc, setDesc] = useState(props.desc || "");
+  const [cmd, setCmd] = useState(props.cmd || "");
+  const [linkRef, setLinkRef] = useState(props.linkRef || "");
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit(props,desc,cmd,linkRef)}>
+        <textarea
+          value={cmd}
+          onChange={e => setCmd(e.target.value)}
+          placeholder="Command"
+          type="text"
+          name="cmd"
+        />
+        <button type="submit">Update</button>
+        <button onClick={() => (null)}>Cancel</button>
+      </form>
+    </div>
+  );
 })
 
 class Preview extends React.Component {
@@ -15,19 +45,75 @@ class Preview extends React.Component {
   }
   render = () => {
     return (
-      null
+      <div style={{
+        position: 'absolute',
+        width: this.props.width,
+        height: this.props.height,
+        left: this.props.x,
+        top: this.props.y,
+        backgroundColor: 'rgba(0,0,255,.2)',
+        border: '1px solid #ccc',
+      }}>
+        <Form/>
+      </div>
     );
   }
 }
 
+const clickIsOutside = (e,box) => {
+  return (e.clientX < box.x || e.clientY < box.y ||
+    e.clientX > box.x + box.width ||
+    e.clientY > box.y + box.height)
+}
+
+const mapStateToProps = state => ({
+})
+
+const mapDispatchToProps = dispatch => ({
+})
+
 class PreviewSelection extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {previews: {}, selection: []}
   }
+  // If the selection includes at least one preview, select it.
+  // Else, create a new empty preview.
+  onSelect = (x0,x1,y0,y1) => {
+    const id = uuidv1()
+    const p = {id, width: x1-x0,height: y1-y0,x: x0, y:y0}
+    this.setState({previews: {...this.state.previews, [id]: p}, selection: [id]})
+  }
+  onMouseDown = (e) => {
+    if (this.state.selection.length === 1) {
+      const s = this.state.selection[0];
+      if (!s.value && clickIsOutside(e,this.state.previews[s])) {
+        debugger
+        const previews = {...this.state.previews}
+        const f = _.keys(previews).reduce((acc,e) => {
+          if (e !== s) {
+            acc[e] = previews[e]
+          }
+          return acc
+        },{})
+        this.setState({previews: f})
+      }
+    }
+  }
+
   render = () => {
     return (
-      <Selection>
-        {this.props.children}
+      <Selection onSelect={this.onSelect} onMouseDown={this.onMouseDown}>
+        <div id="screen" className={this.props.editMode ? "editMode" : "notEditMode"}
+          style={{width: 1920, height: 1024}}
+          onMouseUp={this.onMouseUp}
+        >
+          { _.keys(this.state.previews).map((p,i) => (
+            <div key={i}>
+              <Preview {...this.state.previews[p]}/>
+            </div>
+          ))}
+        </div>
       </Selection>
     );
   }
