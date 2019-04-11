@@ -23,13 +23,15 @@ class Selection extends React.Component {
       this.setState({style,hidden: false})
   }
   onMouseDown = (e) => {
-    this.x1 = e.clientX; //Set the initial X
-    this.y1 = e.clientY; //Set the initial Y
-    this.x2 = e.clientX;
-    this.y2 = e.clientY;
-    this.reCalc();
-    if (this.props.onMouseDown) {
-      this.props.onMouseDown(e)
+    if (!this.props.canStart || this.props.canStart(e)) {
+      this.x1 = e.clientX; //Set the initial X
+      this.y1 = e.clientY; //Set the initial Y
+      this.x2 = e.clientX;
+      this.y2 = e.clientY;
+      this.reCalc();
+      if (this.props.onMouseDown) {
+        this.props.onMouseDown(e)
+      }
     }
   };
   onMouseMove = (e) => {
@@ -40,9 +42,11 @@ class Selection extends React.Component {
     }
   };
   onMouseUp = (e) => {
-    this.setState({hidden:true})
-    if (this.props.onSelect) {
-      this.props.onSelect(this.smallerX(),this.largerX(),this.smallerY(),this.largerY())
+    if (!this.state.hidden) {
+      this.setState({hidden:true})
+      if (this.props.onSelect) {
+        this.props.onSelect(this.smallerX(),this.largerX(),this.smallerY(),this.largerY())
+      }
     }
   };
 

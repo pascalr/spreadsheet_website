@@ -12,9 +12,9 @@ export function toggleEditMode() {
 };
 
 const EMPTY_DEF = {backgroundColor: "", showLineNumbers: true, layout: [[""]]}
-export function newTable(db, defs, theName) {
+export function newTable(db, defs, theName,theId) {
   const name = theName || Helper.nextTableName(defs)
-  const id = uuidv1();
+  const id = theId || uuidv1();
   const idCol = uuidv1();
   const def = {...EMPTY_DEF, name, cols: {}}
   def.cols[idCol] = {name: "A", id: idCol}

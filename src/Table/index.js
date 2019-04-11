@@ -19,13 +19,18 @@ const mapDispatchToProps = dispatch => ({
   set: path => val => dispatch(set(path,val))
 })
 
+class DetailedTable extends React.Component {
+}
+class TablePreview extends React.Component {
+}
+
 class Table extends React.Component {
 
   componentDidMount = () => {
     this.props.db.loadRecord(TABLE.TABLES,this.id,this.props.set([TABLE.TABLES, this.id]))
   }
 
-  id = this.props.params.id;
+  id = this.props.id || this.props.params.id;
   def = () => this.props.defs[this.id];
   data = () => this.props.dataRoot ? this.props.dataRoot[this.id] : null;
   
