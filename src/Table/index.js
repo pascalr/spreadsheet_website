@@ -61,6 +61,7 @@ class Table extends React.Component {
           def={this.def()}
           table={this.data()}
           onCellsChanged={this.onCellsChanged}
+          {...this.props}
         />);
   }
 
@@ -79,18 +80,14 @@ class Table extends React.Component {
     if (!this.def()) {return null;}
     return (
       <div className="Table">
-        <h1>
-          <RIEInput
-            value={<Emoji symbol={this.def().icon || "📁"}/>}
-            change={this.onIconChange}
-            propName='icon'
-            validate={_.isString} />
-          <RIEInput
-            value={this.def().name}
-            change={this.onTitleChange}
-            propName='title'
-            validate={_.isString} />
-        </h1>
+        { this.props.hideTableName ? null :
+          <h1>
+            <RIEInput
+              value={this.def().name}
+              change={this.onTitleChange}
+              propName='title'
+              validate={_.isString} />
+          </h1>}
         {this.renderDatasheetTable()}
       </div>
     );

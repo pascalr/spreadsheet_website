@@ -234,3 +234,10 @@ span.data-grid-container, span.data-grid-container:focus {
   background-color: rgba(0,0,255,.2);
   border: 1px solid #ccc;
 }
+
+input[type="text"] {
+     width: 100%; 
+     box-sizing: border-box;
+     -webkit-box-sizing:border-box;
+     -moz-box-sizing: border-box;
+}

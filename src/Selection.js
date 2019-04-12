@@ -15,6 +15,7 @@ class Selection extends React.Component {
   largerY = () => Math.max(this.y1,this.y2); //Larger Y
 
   reCalc = () => { //This will restyle the div
+    console.log('recalc')
       const style = {}
       style.left = this.smallerX() + 'px';
       style.top = this.smallerY() + 'px';

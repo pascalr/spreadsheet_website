@@ -33,7 +33,7 @@ class DatasheetTable extends Component {
   }
   
   renderSheet = (props) => (
-    <MenuSheetRenderer def={this.props.def} {...props} />
+    <MenuSheetRenderer {...props} {...this.props} />
   )
   
   generateGrid = (def) => {

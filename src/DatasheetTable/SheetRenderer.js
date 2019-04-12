@@ -68,14 +68,17 @@ const mapDispatchToProps = (dispatch) => ({
 
 class SheetRenderer extends React.PureComponent {
   render () {
+    console.log(this.props)
     const { db, className, def } = this.props
     return (
       <div className={"rTable "+className}
            style={{backgroundColor: this.props.def.backgroundColor}}>
         <ColumnMenu db={db} def={def} />
+        { this.props.hideTableName ? null :
         <div className="rCaption">
           {def.name}
-        </div>
+        </div>}
+        { this.props.hideColumnNames ? null :
         <div className="rTableHeading">
           <div className="rTableRow">
             <div className='rTableHead cell read-only row-handle' key='$$actionCell'
@@ -94,7 +97,7 @@ class SheetRenderer extends React.PureComponent {
                 }) : null
             }
           </div>
-        </div>
+        </div>}
         <div className="rTableBody data-body">
           {this.props.children}
         </div>
