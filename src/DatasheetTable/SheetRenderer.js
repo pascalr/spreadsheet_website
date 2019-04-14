@@ -68,7 +68,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 class SheetRenderer extends React.PureComponent {
   render () {
-    console.log(this.props)
     const { db, className, def } = this.props
     return (
       <div className={"rTable "+className}
