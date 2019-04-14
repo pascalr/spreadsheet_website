@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { connect } from "react-redux"
 import Selection from './Selection'
 import uuidv1 from 'uuid/v1'
-import { newTable, set, modelLoaded } from "./actions"
+import { newTable, set, modelLoaded, setDb } from "./actions"
 import * as TABLE from './constants/tables'
 import Table from './Table'
 
@@ -64,21 +64,6 @@ const persistentDispatch = dispatch => ({
   set: path => val => dispatch(set(path,val)),
 })
 
-class RawPersistent extends React.Component {
-  render = () => {
-    console.log('persisting...')
-    const {table,key,children,ref,set,db,id,...rest} = this.props
-    if (!table) {throw new Error("In order to persist, table is required.");}
-    if (!id) {throw new Error("In order to persist, id is required.");}
-    const path = [table,id]
-    // FIXME: db.setPath(path, rest, set(path))
-    db.setPath(path, rest)
-    set(path)(rest)
-    return children
-  }
-}
-const Persistent = connect(persistentProps, persistentDispatch)(RawPersistent)
-
 const LocatedPreview = (props) => {
   return (
     <div style={{
@@ -96,26 +81,6 @@ const LocatedPreview = (props) => {
   )
 }
 
-// A table preview is in limbo until it is confirmed.
-const LimboTable = connect(formProps, formDispatch)((props) => {
-  const [confirmed, setConfirmed] = useState(false)
-  const [cancelled, setCancelled] = useState(false)
-  if (cancelled) {return null}
-  return (
-    !props.selected && !confirmed ? null :
-    <LocatedPreview>
-      {
-        confirmed
-        ? <Table {...props} id={props.tableId} hideColumnNames={true} hideTableName={true}/>
-        : <TemporaryTable {...props} setCancelled={setCancelled}
-            setConfirmed={() => {setConfirmed(true)
-              newTable(props.db,props.defs,null,props.tableId)}}
-          />
-      }
-    </LocatedPreview>
-  )
-})
-
 const clickIsOutside = (e,box) => {
   return (e.clientX < box.x || e.clientY < box.y ||
     e.clientX > box.x + box.width ||
@@ -129,13 +94,14 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  modelLoaded: (model) => dispatch(modelLoaded(TABLE.PREVIEW, model))
+  modelLoaded: (model) => dispatch(modelLoaded(TABLE.PREVIEW, model)),
+  setDb: (db, path, val) => dispatch(setDb(db, path,val)),
 })
 
 class PreviewSelection extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {previews: {}, selection: []}
+    this.state = {tempPreview: null, selection: []}
   }
   componentDidMount = () => {
     this.props.db.load(TABLE.PREVIEW, this.props.modelLoaded)
@@ -148,20 +114,19 @@ class PreviewSelection extends React.Component {
     // Create a new empty preview if it is a real selection (wide enough)
     if (width > 20 || height > 20) {
       const id = uuidv1()
-      const p = {id, width, height, x: x0, y:y0}
-      // TODO: Create a new def, create a new table
       const tableId = uuidv1()
-      p.tableId = tableId;
-      this.setState({previews: {...this.state.previews, [id]: p}, selection: [id]})
+      const p = {id, width, height, x: x0, y:y0, tableId}
+      this.setState({selection: [id], tempPreview: p})
+      //
     }
   }
   onMouseDown = (e) => {
-    this.setState({selection: []})
+    this.setState({selection: [], tempPreview: null})
   }
 
   canStartSelection = (e) => {
     let can = true
-    _.values(this.state.previews).map(p => {
+    _.values(this.props.previews).map(p => {
       if (!clickIsOutside(e,p)) {
         can = false
       }
@@ -186,13 +151,16 @@ class PreviewSelection extends React.Component {
                 </LocatedPreview>
             </div>)
           })}
-          { _.keys(this.state.previews).map((p,i) => (
-            <div key={i}>
-              <Persistent {...this.state.previews[p]} table={TABLE.PREVIEW}>
-                <LimboTable {...this.state.previews[p]} selected={this.state.selection.includes(p)}/>
-              </Persistent>
-            </div>
-          ))}
+          { !this.state.tempPreview ? null :
+          <LocatedPreview {...this.state.tempPreview}>
+            <TemporaryTable
+              setCancelled={() => {this.setState({selection: [], tempPreview: null})}}
+              setConfirmed={() => {this.setState({selection: [], tempPreview: null});
+                this.props.setDb(this.props.db, [TABLE.PREVIEW, this.state.tempPreview.id], this.state.tempPreview);
+                newTable(this.props.db,this.props.defs,null,this.state.tempPreview.tableId)}}
+            />
+          </LocatedPreview>
+          }
         </div>
       </Selection>
     );
