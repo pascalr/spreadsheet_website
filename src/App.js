@@ -15,6 +15,7 @@ import Edit from './Edit'
 import router from './router'
 import StatusBar from './StatusBar'
 import SearchBar from './SearchBar'
+import PreviewMenu from './menus/PreviewMenu';
 
 const uuidv1 = require('uuid/v1');
 
@@ -137,6 +138,7 @@ class App extends React.Component {
         {/*<Console/>
         <hr />*/}
         {router.resolve(routes, this.props.history.location)}
+        <PreviewMenu />
       </div>
     );
   }

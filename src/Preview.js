@@ -7,6 +7,7 @@ import { newTable, set, modelLoaded, setDb } from "./actions"
 import * as TABLE from './constants/tables'
 import * as PATH from './constants/paths'
 import Table from './Table'
+import { MenuProvider } from 'react-contexify'
 
 const formProps = state => ({
   db: state.db,
@@ -153,7 +154,9 @@ class PreviewSelection extends React.Component {
             return (
               <div key={i}>
                 <LocatedPreview {...p}>
-                  <Table id={p.tableId} hideColumnNames={true} hideTableName={true}/>
+      <MenuProvider id="previewMenu" className="menu" data={{tableId: p.tableId}}>
+        <Table id={p.tableId} hideColumnNames={true} hideTableName={true}/>
+      </MenuProvider>
                 </LocatedPreview>
             </div>)
           })}

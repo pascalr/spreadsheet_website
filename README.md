@@ -23,6 +23,10 @@ Les parents inuits eduquent leur enfants sans jamais se facher, lever la voix ou
 - Une ligne sur deux c'est une partition de piano, l'autre de guitare... etc...
 NO FOLDERS: Une grosse map c'est tout! et un search bar!
 
+FIXME: Il y a un bug quand il y a un menu provider dans un autre. Pourtant avec ca marchait. je sais pas...
+
+Idealement, meme pas de click gauche...
+
 TODO: Chicken and egg. An egg has a chicken. A chicken has an egg.
 Il ne faut pas que mon programme plante, malgre une def circulaire.
 
@@ -32,10 +36,6 @@ Une commande est un objet javascript. Tu peux lui rajouter des valeurs a onClick
 
 https://drivy.engineering/setting-up-vim-for-react/
 
-
-FIXME: Remove from public index.html file
-<link href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css" rel="stylesheet">
-
 Favicon image
 Studiohack has the "thorough" approach but heres a short hack:
 
@@ -43,7 +43,6 @@ Studiohack has the "thorough" approach but heres a short hack:
     Add favicon.ico to the end
     Press enter (this should be in the URL: https://superuser.com/favicon.ico)
     Right click on the image and click "save image as"
-
 
 ca serait nice de pouvoir naviguer les elements reacts selon lequel contient lequel
 
