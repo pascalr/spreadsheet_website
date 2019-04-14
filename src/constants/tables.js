@@ -5,6 +5,7 @@ export const ITEMS = 'items';
 export const SCREEN = 'items';// Screen should be deleted...
 export const LAYOUT = 'layout';
 export const PREVIEW = 'preview';
+export const UI = 'ui';
 
 // A Table contains all the data
 // A Table has one Def

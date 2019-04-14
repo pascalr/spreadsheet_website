@@ -2,8 +2,10 @@ import React from 'react'
 import _ from 'lodash'
 import { connect } from "react-redux"
 import Link from './Link'
+import * as PATH from './constants/paths'
 
 const mapStateToProps = state => ({
+  loading: _.get(state.cache, PATH.UI_LOADING),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -22,7 +24,10 @@ class StatusBar extends React.Component {
       <React.Fragment>
         <div className='displayFlex' style={{display: `'flex'`}}>
           <Link to='/'>Home</Link>
-          <span>Everything is up to date</span>
+          { this.props.loading
+            ? <span>Loading...</span>
+            : <span>Everything is up to date</span>
+          }
           <span></span>
         </div>
         <hr />

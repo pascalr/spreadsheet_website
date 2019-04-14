@@ -5,6 +5,7 @@ import Selection from './Selection'
 import uuidv1 from 'uuid/v1'
 import { newTable, set, modelLoaded, setDb } from "./actions"
 import * as TABLE from './constants/tables'
+import * as PATH from './constants/paths'
 import Table from './Table'
 
 const formProps = state => ({
@@ -96,6 +97,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   modelLoaded: (model) => dispatch(modelLoaded(TABLE.PREVIEW, model)),
   setDb: (db, path, val) => dispatch(setDb(db, path,val)),
+  set: (path, val) => dispatch(set(path,val)),
 })
 
 class PreviewSelection extends React.Component {
@@ -104,7 +106,11 @@ class PreviewSelection extends React.Component {
     this.state = {tempPreview: null, selection: []}
   }
   componentDidMount = () => {
-    this.props.db.load(TABLE.PREVIEW, this.props.modelLoaded)
+    this.props.set(PATH.UI_LOADING, true)
+    this.props.db.load(TABLE.PREVIEW, (model) => {
+      this.props.modelLoaded(model);
+      this.props.set(PATH.UI_LOADING, false)
+    })
   }
   // If the selection includes at least one preview, select it.
   // Else, create a new empty preview.
