@@ -31,7 +31,12 @@ class TemporaryTable extends React.Component {
   }
   onKeyUp = (e) => {
     // Enter key confirms the Table
-    if (e.which === 13) { 
+    if (e.which === 13) {
+      // TODO: Get the value of the input field.
+      // If the input field matches an existing table,
+      // create a preview that links to the table
+      // TODO: Make the input value inserted inside the table
+      // Or just create a table everytime???
       this.props.setConfirmed(true)
     // ESC key cancels
     } else if (e.which === 27) {
@@ -89,10 +94,12 @@ const LimboTable = connect(formProps, formDispatch)((props) => {
   const [cancelled, setCancelled] = useState(false)
   if (cancelled) {return null}
   return (
+    !props.selected && !confirmed ? null :
     <div style={{
       position: 'absolute',
       width: props.width,
       height: props.height,
+      maxHeight: props.height,/*FIXME: Does not seem to work as I expected*/
       left: props.x,
       top: props.y,
       backgroundColor: 'rgba(0,0,255,.2)',
@@ -102,9 +109,9 @@ const LimboTable = connect(formProps, formDispatch)((props) => {
       confirmed
       ? <Table {...props} id={props.tableId} hideColumnNames={true} hideTableName={true}/>
       : <TemporaryTable {...props} setCancelled={setCancelled}
-        setConfirmed={() => {setConfirmed(true)
-          newTable(props.db,props.defs,null,props.tableId)
-        }} />
+          setConfirmed={() => {setConfirmed(true)
+            newTable(props.db,props.defs,null,props.tableId)}}
+        />
     }
     </div>
   )
@@ -137,28 +144,20 @@ class PreviewSelection extends React.Component {
   // If the selection includes at least one preview, select it.
   // Else, create a new empty preview.
   onSelect = (x0,x1,y0,y1) => {
-    const id = uuidv1()
-    const p = {id, width: x1-x0,height: y1-y0,x: x0, y:y0}
-    // TODO: Create a new def, create a new table
-    const tableId = uuidv1()
-    p.tableId = tableId;
-    this.setState({previews: {...this.state.previews, [id]: p}, selection: [id]})
+    const width = x1-x0
+    const height = y1-y0
+    // Create a new empty preview if it is a real selection (wide enough)
+    if (width > 20 || height > 20) {
+      const id = uuidv1()
+      const p = {id, width, height, x: x0, y:y0}
+      // TODO: Create a new def, create a new table
+      const tableId = uuidv1()
+      p.tableId = tableId;
+      this.setState({previews: {...this.state.previews, [id]: p}, selection: [id]})
+    }
   }
   onMouseDown = (e) => {
-    // Checks if the previously created table is empty and delete if so
-    if (this.state.selection.length === 1) {
-      const s = this.state.selection[0];
-      if (!s.value && clickIsOutside(e,this.state.previews[s])) {
-        const previews = {...this.state.previews}
-        const f = _.keys(previews).reduce((acc,e) => {
-          if (e !== s) {
-            acc[e] = previews[e]
-          }
-          return acc
-        },{})
-        this.setState({previews: f})
-      }
-    }
+    this.setState({selection: []})
   }
 
   canStartSelection = (e) => {
@@ -187,7 +186,7 @@ class PreviewSelection extends React.Component {
           { _.keys(this.state.previews).map((p,i) => (
             <div key={i}>
               <Persistent {...this.state.previews[p]} table={TABLE.PREVIEW}>
-                <LimboTable {...this.state.previews[p]}/>
+                <LimboTable {...this.state.previews[p]} selected={this.state.selection.includes(p)}/>
               </Persistent>
             </div>
           ))}

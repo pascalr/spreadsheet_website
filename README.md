@@ -23,6 +23,9 @@ Les parents inuits eduquent leur enfants sans jamais se facher, lever la voix ou
 - Une ligne sur deux c'est une partition de piano, l'autre de guitare... etc...
 NO FOLDERS: Une grosse map c'est tout! et un search bar!
 
+TODO: Chicken and egg. An egg has a chicken. A chicken has an egg.
+Il ne faut pas que mon programme plante, malgre une def circulaire.
+
 
 Une commande est un objet javascript. Tu peux lui rajouter des valeurs a onClick, onDrag, ...
 

@@ -92,26 +92,7 @@ class LinkScreen extends React.Component {
         <MapInteractionCSS showControls={true} disabled={this.state.mapDisabled}>
           <React.Fragment>
             <MenuProvider id="link_screen_menu">
-              <div id="screenContainer">
-                <div id="sidenav">
-                  <h3>Tables</h3>
-                  <ul>
-                {
-                  _.keys(tables).map((e,i) => (
-                    <li key={i}
-                      onMouseEnter={() => this.setState({mapDisabled: true})}
-                      onMouseLeave={() => this.setState({mapDisabled: false})}
-                    >
-                      <Link to={`/tables/${e}`}>
-                        {tables[e].name}
-                      </Link>
-                    </li>
-                  ))
-                }
-              </ul>
-              </div>
               <PreviewSelection/>
-              </div>
             </MenuProvider>
             <ScreenMenu {...this.props} screen={this.props.items} />
             <LinkMenu />

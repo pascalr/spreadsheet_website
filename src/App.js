@@ -3,21 +3,18 @@ import { connect } from "react-redux"
 import _ from 'lodash'
 import Console from './Console'
 
-import Link from './Link'
-
 import 'react-contexify/dist/ReactContexify.min.css'
 import './styles/react-grid-layout-style.css'
 import 'react-resizable/css/styles.css'
 
 import * as TABLES from './constants/tables'
-
 import { defsLoaded } from './actions'
-
 import Table from './Table'
 import Screen from './Screen'
 import Edit from './Edit'
-
 import router from './router'
+import StatusBar from './StatusBar'
+import SearchBar from './SearchBar'
 
 const uuidv1 = require('uuid/v1');
 
@@ -135,8 +132,8 @@ class App extends React.Component {
   render() {
     return (
       <div className="app">
-        <Link to='/'>Home</Link>
-        <hr />
+        <StatusBar/>
+        <SearchBar/>
         {/*<Console/>
         <hr />*/}
         {router.resolve(routes, this.props.history.location)}
