@@ -67,6 +67,19 @@ const mapDispatchToProps = dispatch => ({
   deletePath: (db,path) => dispatch(deletePath(db, path)),
 })
 
+const OverBar = (props) => {
+  const [over, setOver] = useState(false)
+  return (
+    <div
+      onMouseEnter={() => {setOver(true)}}
+      onMouseLeave={() => {setOver(false)}}
+    >
+      {over ? props.overValue : null}
+      {props.children}
+    </div>
+  );
+}
+
 class PreviewSelection extends React.Component {
   constructor(props) {
     super(props)
@@ -149,24 +162,31 @@ class PreviewSelection extends React.Component {
             const p = this.props.previews[k]
             return (
               <div key={k}>
-                    <Draggable
-                      path={[TABLE.PREVIEW, k]}
-                      x={p.x}
-                      y={p.y}
-                      disabled={false}
-                    >
-                <LocatedPreview {...p} selected={this.state.selection.includes(k)}>
+                <Draggable
+                  path={[TABLE.PREVIEW, k]}
+                  x={p.x}
+                  y={p.y}
+                  disabled={false}
+                >
                   <MenuProvider id="previewMenu" className="menu" data={{tableId: p.tableId}}>
-                    <div className='flexHandles'>
-                      <div className='clickHandle'
-                        onClick={() => this.props.history.push(`/tables/${p.tableId}`)}
-                      />
-                      <div className='dragHandle'/>
-                      <div className='resizeHandle'/>
-                    </div>
-                    <Table id={p.tableId} hideColumnNames={true} hideTableName={true}/>
-                  </MenuProvider>
+                  <div
+                    onMouseEnter={() => {this.setState({over:k})}}
+                    onMouseLeave={() => {this.setState({over:null})}}
+                  >
+                <LocatedPreview {...p} selected={this.state.selection.includes(k)}>
+                     { k !== this.state.over ? null :
+                        <div className='flexHandles'>
+                          <div className='clickHandle'
+                            onClick={() => this.props.history.push(`/tables/${p.tableId}`)}
+                          />
+                          <div className='dragHandle'/>
+                          <div className='resizeHandle'/>
+                        </div>
+                     }
+                    <Table id={p.tableId} hideColumnNames={true} hideTableName={true} hideLineNumbers={true}/>
                 </LocatedPreview>
+                  </div>
+                  </MenuProvider>
                     </Draggable>
             </div>)
           })}

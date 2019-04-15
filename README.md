@@ -7,6 +7,7 @@ x delete previews
 - drag and drop tables on desktop
 - single file able to run everywhere
 - think about how to structure, table inside table?, columns defined by a function?
+- // Inside command is used to print the command: a('https://youtube.com') // youtube
 
 FIXME:
 - Remove all places where I did map(k,i) => key={i}

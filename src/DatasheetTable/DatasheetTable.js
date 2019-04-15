@@ -30,7 +30,7 @@ const RowRenderer = (props) => {
 }
 
 const CellRenderer = props => {
-  const {cell, row, col, columns, attributesRenderer,
+  const {cell, row, col, columns, attributesRenderer, hideLineNumbers,
     selected, editing, updated, style, ...rest } = props
 
   // hey, how about some custom attributes on our cell?
@@ -40,6 +40,9 @@ const CellRenderer = props => {
   //if (col === 0) {
   //  attributes.title = cell.label
   //}
+  if (hideLineNumbers && col === 0) {
+    return null
+  }
   return (
       <div {...rest} {...attributes}>
         {props.children}

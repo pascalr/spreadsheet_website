@@ -61,6 +61,7 @@ class Table extends React.Component {
           def={this.def()}
           table={this.data()}
           onCellsChanged={this.onCellsChanged}
+          hideLineNumbers={this.props.hideLineNumbers}
           {...this.props}
         />);
   }

@@ -47,23 +47,19 @@ class DatasheetTable extends Component {
        grid.push(rawGrid[i] ? rawGrid[i] : emptyLine)
     }
     grid.push(emptyLine)
-    if (def.showLineNumbers != false) {
-      grid = grid.map((l,j) => [{readOnly: true, value:j+1}, ...l])
-    }
+    // Add a column for line numbers
+    grid = grid.map((l,j) => [{readOnly: true, value:j+1}, ...l])
     return grid
   }
 
   column = (col) => {
-    if (this.props.def.showLineNumbers != false) {
-      return this.cols()[this.props.def.layout[0][col-1]]
-    } else {
-      return this.cols()[this.props.def.layout[0][col]]
-    }
+    return this.cols()[this.props.def.layout[0][col-1]]
   }
 
   cols = () => ((this.props.def || {}).cols)
 
   valueFromCell = (cell,i,j) => {
+    if (j === 0 && this.props.hideLineNumbers) {return <span></span>}
     if (this.cols() && !cell.readOnly) {
       if (cell.value && cell.value[0] === '=') { // = should be pure
         try {
@@ -105,6 +101,10 @@ class DatasheetTable extends Component {
     let val = (this.props.table || []).filter(e => e && e === colIds[j] ? 1 : 0)[i]
     return val;
   }
+
+  cellRenderer = (props) => {
+    return <CellRenderer {...props} hideLineNumbers={this.props.hideLineNumbers}/>
+  }
   
   render() {
     return (
@@ -113,7 +113,7 @@ class DatasheetTable extends Component {
           data={this.generateGrid(this.props.def)}
           sheetRenderer={this.renderSheet}
           rowRenderer={RowRenderer}
-          cellRenderer={CellRenderer}
+          cellRenderer={this.cellRenderer}
           valueRenderer={this.valueFromCell}
           dataRenderer={this.dataRenderer(this.props.def)}
           onCellsChanged={this.props.onCellsChanged}

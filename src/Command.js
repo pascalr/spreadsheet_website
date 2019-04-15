@@ -46,6 +46,19 @@ const COMMANDS = {
   a: cmd_a,
 }
 
+window.a = (link) => {
+  return <a href={link}>{link}</a>
+}
+
+  /*window.a = (link) => {
+  const r = new RegExp('^(?:[a-z]+:)?//', 'i');
+  const isAbsolutePath = r.test(link)
+  if (isAbsolutePath) {
+    window.location = link;
+  } else {
+    window.location = 'http://' + link;
+  }
+}*/
 
 // TODO: Pipes
 // eg: Hello | fontSize(40px)
