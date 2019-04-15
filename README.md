@@ -1,3 +1,14 @@
+TODO:
+- select previews
+- delete previews
+- drag and drop previews
+- resize previews
+- hide line numbers
+- drag and drop tables on desktop
+- single file able to run everywhere
+- think about how to structure, table inside table?, columns defined by a function?
+
+
 Feature list:
 - Partition de musique
 - Avoir un menu customizable avec des icons que je click, que je peux deplacer.

@@ -9,21 +9,6 @@ import * as PATH from './constants/paths'
 import Table from './Table'
 import { MenuProvider } from 'react-contexify'
 
-const formProps = state => ({
-  db: state.db,
-  defs: state.defs,
-})
-
-const formDispatch = dispatch => ({
-  newTable: (db, defs, name) => () => dispatch(newTable(db,defs,name)),
-})
-
-const handleSubmit = (props,desc,cmd,ref) => event => {
-  event.preventDefault();
-  //props.updateDb(props.db, [TABLE.ITEMS,props.id],{desc,ref,cmd})
-  //props.linkItem.toggleEditing()
-}
-
 // When the user makes it a selection, it creates a temporaty table.
 // If the user takes the focus away from the text field, delete it
 // If the user writes something, make a table
@@ -58,14 +43,6 @@ class TemporaryTable extends React.Component {
   }
 }
 
-const persistentProps = state => ({
-  db: state.db,
-})
-
-const persistentDispatch = dispatch => ({
-  set: path => val => dispatch(set(path,val)),
-})
-
 const LocatedPreview = (props) => {
   return (
     <div style={{
@@ -77,15 +54,21 @@ const LocatedPreview = (props) => {
       overflowX: 'hidden',
       left: props.x,
       top: props.y,
-      backgroundColor: 'rgb(250,250,250)',
-      border: '1px solid #ccc',
-    }}>
+    }} className={props.selected ? 'selected' : 'notSelected'}>
       { props.children }
     </div>
   )
 }
-
+const xyToBox = (x0,y0,x1,y1) => {
+  return {x: x0, y: y0, width: x1-x0, height: y1-y0}
+}
+const selectionIsOutside = (x,y,box) => {
+  return (x < box.x || y < box.y ||
+    x > box.x + box.width ||
+    y > box.y + box.height)
+}
 const clickIsOutside = (e,box) => {
+  return selectionIsOutside(e.clientX,e.clientY,box)
   return (e.clientX < box.x || e.clientY < box.y ||
     e.clientX > box.x + box.width ||
     e.clientY > box.y + box.height)
@@ -118,15 +101,33 @@ class PreviewSelection extends React.Component {
   // If the selection includes at least one preview, select it.
   // Else, create a new empty preview.
   onSelect = (x0,x1,y0,y1) => {
-    const width = x1-x0
-    const height = y1-y0
-    // Create a new empty preview if it is a real selection (wide enough)
-    if (width > 20 || height > 20) {
-      const id = uuidv1()
-      const tableId = uuidv1()
-      const p = {id, width, height, x: x0, y:y0, tableId}
-      this.setState({selection: [id], tempPreview: p})
-      //
+    // If the selection includes at least one preview, select it.
+    const ids = _.keys(this.props.previews).map(k => {
+      const p = this.props.previews[k]
+      const box = xyToBox(x0,y0,x1,y1)
+      const x_c = p.x + p.width/2
+      const y_c = p.y + p.height/2
+      // The preview is selection if the box includes the center of the preview.
+      if (!selectionIsOutside(x_c,y_c,box)) {
+        return k
+      }
+      return null
+    }).filter(e => (e!==null))
+    
+    if (ids && ids.length !== 0) {
+      this.setState({selection: ids})
+    } else {
+  
+      const width = x1-x0
+      const height = y1-y0
+      // Create a new empty preview if it is a real selection (wide enough)
+      if (width > 20 || height > 20) {
+        const id = uuidv1()
+        const tableId = uuidv1()
+        const p = {id, width, height, x: x0, y:y0, tableId}
+        this.setState({selection: [id], tempPreview: p})
+        //
+      }
     }
   }
   onMouseDown = (e) => {
@@ -155,10 +156,10 @@ class PreviewSelection extends React.Component {
             const p = this.props.previews[k]
             return (
               <div key={i}>
-                <LocatedPreview {...p}>
-      <MenuProvider id="previewMenu" className="menu" data={{tableId: p.tableId}}>
-        <Table id={p.tableId} hideColumnNames={true} hideTableName={true}/>
-      </MenuProvider>
+                <LocatedPreview {...p} selected={this.state.selection.includes(k)}>
+                  <MenuProvider id="previewMenu" className="menu" data={{tableId: p.tableId}}>
+                    <Table id={p.tableId} hideColumnNames={true} hideTableName={true}/>
+                  </MenuProvider>
                 </LocatedPreview>
             </div>)
           })}

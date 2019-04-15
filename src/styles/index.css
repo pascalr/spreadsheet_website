@@ -247,3 +247,13 @@ input[type="text"] {
      -webkit-box-sizing:border-box;
      -moz-box-sizing: border-box;
 }
+
+.selected {
+  background-color: rgba(200,200,200,0.5);
+  border: 2px solid rgb(0,0,255);
+}
+
+.notSelected {
+  background-color: rgb(250,250,250);
+  border: 1px solid #ccc;
+}
