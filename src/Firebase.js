@@ -60,7 +60,7 @@ class Firebase {
   }
   delete = (path) => {
     console.log(`Firebase: deleting path=${path}`);
-    //return this.db.ref(_.castArray(path).join('/')).remove()
+    return this.db.ref(_.castArray(path).join('/')).remove()
   }
   update = (path, updates) => {
     return this.db.ref(_.castArray(path).join('/')).update(updates)

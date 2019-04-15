@@ -1,6 +1,6 @@
 TODO:
-- select previews
-- delete previews
+x select previews
+x delete previews
 - drag and drop previews
 - resize previews
 - hide line numbers
@@ -8,6 +8,8 @@ TODO:
 - single file able to run everywhere
 - think about how to structure, table inside table?, columns defined by a function?
 
+FIXME:
+- Remove all places where I did map(k,i) => key={i}
 
 Feature list:
 - Partition de musique
@@ -33,6 +35,8 @@ Les parents inuits eduquent leur enfants sans jamais se facher, lever la voix ou
 - ...
 - Une ligne sur deux c'est une partition de piano, l'autre de guitare... etc...
 NO FOLDERS: Une grosse map c'est tout! et un search bar!
+
+Idee pas rapport: Dans le but d'aider l'environment, travailler à distance. Mais, pas à la maison. Faire un office space où le monde travail à distance dans le même building. Idéalement 1 aux 2 3 coins de rues, pour être proche des maisons où le monde travail. Ça comblerait le besoin de social du monde, et l'office space pourrait fournir des salles de meeting que tu peux réserver.
 
 FIXME: Il y a un bug quand il y a un menu provider dans un autre. Pourtant avec ca marchait. je sais pas...
 

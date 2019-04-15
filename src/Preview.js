@@ -3,11 +3,12 @@ import _ from 'lodash'
 import { connect } from "react-redux"
 import Selection from './Selection'
 import uuidv1 from 'uuid/v1'
-import { newTable, set, modelLoaded, setDb } from "./actions"
+import { deletePath, newTable, set, modelLoaded, setDb } from "./actions"
 import * as TABLE from './constants/tables'
 import * as PATH from './constants/paths'
 import Table from './Table'
 import { MenuProvider } from 'react-contexify'
+import Draggable from './Draggable'
 
 // When the user makes it a selection, it creates a temporaty table.
 // If the user takes the focus away from the text field, delete it
@@ -19,15 +20,10 @@ class TemporaryTable extends React.Component {
   onKeyUp = (e) => {
     // Enter key confirms the Table
     if (e.which === 13) {
-      // TODO: Get the value of the input field.
-      // If the input field matches an existing table,
-      // create a preview that links to the table
-      // TODO: Make the input value inserted inside the table
-      // Or just create a table everytime???
-      this.props.setConfirmed(true)
+      this.props.setConfirmed(this.nameInput.value)
     // ESC key cancels
     } else if (e.which === 27) {
-      this.props.setCancelled(true)
+      this.props.setCancelled()
     }
   }
   render = () => {
@@ -49,7 +45,7 @@ const LocatedPreview = (props) => {
       position: 'absolute',
       width: props.width,
       height: props.height,
-      maxHeight: props.height,/*FIXME: Does not seem to work as I expected*/
+      maxHeight: props.height,
       overflowY: 'auto',
       overflowX: 'hidden',
       left: props.x,
@@ -69,9 +65,6 @@ const selectionIsOutside = (x,y,box) => {
 }
 const clickIsOutside = (e,box) => {
   return selectionIsOutside(e.clientX,e.clientY,box)
-  return (e.clientX < box.x || e.clientY < box.y ||
-    e.clientX > box.x + box.width ||
-    e.clientY > box.y + box.height)
 }
 
 const mapStateToProps = state => ({
@@ -84,6 +77,7 @@ const mapDispatchToProps = dispatch => ({
   modelLoaded: (model) => dispatch(modelLoaded(TABLE.PREVIEW, model)),
   setDb: (db, path, val) => dispatch(setDb(db, path,val)),
   set: (path, val) => dispatch(set(path,val)),
+  deletePath: (db,path) => dispatch(deletePath(db, path)),
 })
 
 class PreviewSelection extends React.Component {
@@ -133,6 +127,15 @@ class PreviewSelection extends React.Component {
   onMouseDown = (e) => {
     this.setState({selection: [], tempPreview: null})
   }
+  onKeyUp = (e) => {
+    // Delete key deletes selected previews
+    console.log(`onKeyUp which=${e.which}`)
+    if (e.which === 46) {
+      this.state.selection.forEach(s => {
+        this.props.deletePath(this.props.db,[TABLE.PREVIEW,s])
+      })
+    }
+  }
 
   canStartSelection = (e) => {
     let can = true
@@ -151,25 +154,44 @@ class PreviewSelection extends React.Component {
         <div id="screen" className={this.props.editMode ? "editMode" : "notEditMode"}
           style={{width: 1920, height: 1024}}
           onMouseUp={this.onMouseUp}
+          onKeyUp={this.onKeyUp}
         >
-          { _.keys(this.props.previews).map((k,i) => {
+          { _.keys(this.props.previews).map(k => {
             const p = this.props.previews[k]
             return (
-              <div key={i}>
+              <div key={k}>
+                    <Draggable
+                      path={[TABLE.PREVIEW, k]}
+                      x={p.x}
+                      y={p.y}
+                      disabled={false}
+                    >
                 <LocatedPreview {...p} selected={this.state.selection.includes(k)}>
                   <MenuProvider id="previewMenu" className="menu" data={{tableId: p.tableId}}>
+                    <div className='dragHandle'/>
                     <Table id={p.tableId} hideColumnNames={true} hideTableName={true}/>
                   </MenuProvider>
                 </LocatedPreview>
+                    </Draggable>
             </div>)
           })}
           { !this.state.tempPreview ? null :
           <LocatedPreview {...this.state.tempPreview}>
             <TemporaryTable
               setCancelled={() => {this.setState({selection: [], tempPreview: null})}}
-              setConfirmed={() => {this.setState({selection: [], tempPreview: null});
-                this.props.setDb(this.props.db, [TABLE.PREVIEW, this.state.tempPreview.id], this.state.tempPreview);
-                newTable(this.props.db,this.props.defs,null,this.state.tempPreview.tableId)}}
+              setConfirmed={(tableName) => {this.setState({selection: [], tempPreview: null});
+                const preview = this.state.tempPreview
+                const path = [TABLE.PREVIEW, this.state.tempPreview.id]
+                const ids = _.keys(this.props.defs).filter(k => (
+                  this.props.defs[k].name === tableName
+                ))
+                if (ids && ids.length === 1) {
+                  preview.tableId = ids[0]
+                } else {
+                  newTable(this.props.db,this.props.defs,null,this.state.tempPreview.tableId)
+                }
+                this.props.setDb(this.props.db, path, preview);
+              }}
             />
           </LocatedPreview>
           }
