@@ -9,13 +9,14 @@ import * as PATH from './constants/paths'
 import Table from './Table'
 import { MenuProvider } from 'react-contexify'
 import Draggable from './Draggable'
+import TableAutocomplete from './TableAutocomplete'
 
 // When the user makes it a selection, it creates a temporaty table.
 // If the user takes the focus away from the text field, delete it
 // If the user writes something, make a table
 class TemporaryTable extends React.Component {
   componentDidMount = () => {
-    this.nameInput.focus();
+    //this.nameInput.focus();
   }
   onKeyUp = (e) => {
     // Enter key confirms the Table
@@ -27,13 +28,14 @@ class TemporaryTable extends React.Component {
     }
   }
   render = () => {
-    return(
-      <div onKeyUp={this.onKeyUp}>
-        <input
+    /*<input
           type="text"
           ref={(input) => { this.nameInput = input; }}
           defaultValue=""
-        />
+        />*/
+    return(
+      <div onKeyUp={this.onKeyUp}>
+        <TableAutocomplete onSelect={this.props.setConfirmed}/>
       </div>
     );
   }
@@ -125,7 +127,9 @@ class PreviewSelection extends React.Component {
     }
   }
   onMouseDown = (e) => {
-    this.setState({selection: [], tempPreview: null})
+    if (this.state.tempPreview && clickIsOutside(e,this.state.tempPreview)) {
+      this.setState({selection: [], tempPreview: null})
+    }
   }
   onKeyUp = (e) => {
     // Delete key deletes selected previews

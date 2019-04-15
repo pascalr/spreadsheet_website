@@ -37,10 +37,6 @@ class SearchBar extends React.Component {
     super(props)
   }
   render = () => {
-    // TODO: No internet connection
-    // TODO: Not logged in, all changes are local
-    // TODO: Loading...
-    // TODO: Saving changes...
     return (
       <React.Fragment>
         <div style={{textAlign: 'center'}}>
