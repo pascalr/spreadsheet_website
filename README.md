@@ -36,6 +36,8 @@ Les parents inuits eduquent leur enfants sans jamais se facher, lever la voix ou
 - Une ligne sur deux c'est une partition de piano, l'autre de guitare... etc...
 NO FOLDERS: Une grosse map c'est tout! et un search bar!
 
+Dans la barre de controle d'un preview, mettre un background beau, mais qui indique clairement que c'est draggable, que c'est resizable, que c'est clickable.
+
 Idee pas rapport: Dans le but d'aider l'environment, travailler à distance. Mais, pas à la maison. Faire un office space où le monde travail à distance dans le même building. Idéalement 1 aux 2 3 coins de rues, pour être proche des maisons où le monde travail. Ça comblerait le besoin de social du monde, et l'office space pourrait fournir des salles de meeting que tu peux réserver.
 
 FIXME: Il y a un bug quand il y a un menu provider dans un autre. Pourtant avec ca marchait. je sais pas...

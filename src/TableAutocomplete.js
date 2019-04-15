@@ -45,8 +45,8 @@ class TableAutocomplete extends React.Component {
               </div>
             )}
             ref={el => this.input = el}
-            shouldItemRender={(item,str) => true}
-            getItemValue={(item) => item}
+            open={this.state.value !== ''}
+            shouldItemRender={_.includes}
             value={this.state.value}
             onChange={e => this.setState({ value: e.target.value })}
             onSelect={this.props.onSelect}

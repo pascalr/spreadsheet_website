@@ -258,7 +258,24 @@ input[type="text"] {
   border: 1px solid #ccc;
 }
 
+.flexHandles {
+  display: flex;
+  height: 14px;
+  justify-content: space-between;
+}
+.clickHandle {
+  width: 20%;
+  height: 100%;
+  cursor: pointer;
+}
 .dragHandle {
+  width: 60%;
+  height: 100%;
   cursor: move;
-  height: 10px;
+}
+
+.resizeHandle {
+  width: 20%;
+  height: 100%;
+  cursor: nesw-resize;
 }

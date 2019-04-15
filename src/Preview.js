@@ -57,6 +57,7 @@ const mapStateToProps = state => ({
   db: state.db,
   defs: state.defs,
   previews: state.cache[TABLE.PREVIEW],
+  history: state.history,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -156,7 +157,13 @@ class PreviewSelection extends React.Component {
                     >
                 <LocatedPreview {...p} selected={this.state.selection.includes(k)}>
                   <MenuProvider id="previewMenu" className="menu" data={{tableId: p.tableId}}>
-                    <div className='dragHandle'/>
+                    <div className='flexHandles'>
+                      <div className='clickHandle'
+                        onClick={() => this.props.history.push(`/tables/${p.tableId}`)}
+                      />
+                      <div className='dragHandle'/>
+                      <div className='resizeHandle'/>
+                    </div>
                     <Table id={p.tableId} hideColumnNames={true} hideTableName={true}/>
                   </MenuProvider>
                 </LocatedPreview>
