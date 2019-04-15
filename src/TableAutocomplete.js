@@ -15,12 +15,27 @@ const mapDispatchToProps = dispatch => ({
 })
 
 class TableAutocomplete extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {value: ''}
+  }
   componentDidMount = () => {
     this.input.focus();
   }
+  onKeyUp = (e) => {
+    // Enter key confirms the Table
+    if (e.which === 13) {
+      this.props.onSelect(this.state.value)
+    // ESC key cancels
+    } else if (e.which === 27) {
+      this.props.setCancelled()
+    }
+  }
+
   render = () => {
     //onSelect={(val, item) => this.props.history.push(item.value)}
     return (
+      <div onKeyUp={this.onKeyUp}>
           <Autocomplete
             getItemValue={(item) => item}
             items={_.values(_.mapValues(this.props.defs,'name'))}
@@ -31,8 +46,12 @@ class TableAutocomplete extends React.Component {
             )}
             ref={el => this.input = el}
             shouldItemRender={(item,str) => true}
+            getItemValue={(item) => item}
+            value={this.state.value}
+            onChange={e => this.setState({ value: e.target.value })}
             onSelect={this.props.onSelect}
           />
+        </div>
     );
   }
 }

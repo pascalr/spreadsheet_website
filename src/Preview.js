@@ -15,27 +15,11 @@ import TableAutocomplete from './TableAutocomplete'
 // If the user takes the focus away from the text field, delete it
 // If the user writes something, make a table
 class TemporaryTable extends React.Component {
-  componentDidMount = () => {
-    //this.nameInput.focus();
-  }
-  onKeyUp = (e) => {
-    // Enter key confirms the Table
-    if (e.which === 13) {
-      this.props.setConfirmed(this.nameInput.value)
-    // ESC key cancels
-    } else if (e.which === 27) {
-      this.props.setCancelled()
-    }
-  }
+  
   render = () => {
-    /*<input
-          type="text"
-          ref={(input) => { this.nameInput = input; }}
-          defaultValue=""
-        />*/
     return(
       <div onKeyUp={this.onKeyUp}>
-        <TableAutocomplete onSelect={this.props.setConfirmed}/>
+        <TableAutocomplete onSelect={this.props.setConfirmed} {...this.props} />
       </div>
     );
   }
