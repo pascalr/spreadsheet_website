@@ -3,10 +3,11 @@ import _ from 'lodash'
 import { connect } from "react-redux"
 import Link from './Link'
 import Autocomplete from 'react-autocomplete'
+import { addPreview } from "./actions"
 
 function optionsFromDefs(defs) {
   return _.keys(defs).map(k => (
-    {value: `/tables/${k}`, label: defs[k].name}
+    {value: `/tables/${k}`, label: defs[k].name, id: k}
   ))
 }
 
@@ -24,9 +25,11 @@ const autocompleteMenuStyle = { // FIXME: Maybe useless...
 const mapStateToProps = state => ({
   defs: state.defs,
   history: state.history,
+  db: state.db,
 })
 
 const mapDispatchToProps = dispatch => ({
+  addPreview: (db, id) => dispatch(addPreview(db,id)),
 })
 
 class SearchBar extends React.Component {
@@ -50,6 +53,7 @@ class SearchBar extends React.Component {
                             cursor: 'pointer'}}
                 key={item.label}
               >
+                <span onClick={() => {this.props.addPreview(this.props.db,item.id)}}>[Add]  </span>
                 {item.label}
               </div>
             )}

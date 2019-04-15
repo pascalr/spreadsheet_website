@@ -55,27 +55,11 @@ mapDispatchToProps is so very ugly
 
 https://medium.freecodecamp.org/you-might-not-need-react-router-38673620f3d
 
-Pour avoir acces a des variables ou des fonctions pour tester, je peux faire:
-window.variable = variable;
-ou
-window.function = function;
-
-Faire un application de spreesheet.
-
-La page d'acceuil est une liste de toute les tables avec seulement leurs noms en ordre alphabetique. Quand je click sur une, ca ouvre vers la table.
-
 Toutefois, ce qui est innovant est de pouvoir imbriquer une table dans une autre table. Dans la vue en tout cas. Le modele existe encore quand meme par lui-meme, mais on le visualise a l'interieur de la table.
 
 Le feature le plus important je crois est le zoom infini.
 
-Dans le fond, juste faire un navigateur pour l'instant? Parce tous le reste revient a
-reinventer des applications qui marche deja comme Spreadsheet et Word, etc.
-
 Ce qui innovateur est de naviguer en se deplacant et zoomant dans un monde facile pour notre memoire a naviguer.
-
-Au moins pouvoir ecrire du texte.
-
-Donner des liens au File:/// protocol, mais c pas bon ca pcq c juste local...
 
 J'ai deux problemes que je veux resoudre:
 
@@ -86,20 +70,4 @@ Ca serait nice de pouvoir avoir une vue isometrique aussi pas juste quadrille.
 Une vue comme age of empires ou tous les jeux videos. Ca serait du pseudo 3d! Ca serait
 pas mal plus beau comme home.
 
-git push -u origin master
-
 https://css-tricks.com/snippets/css/complete-guide-grid/
-
-serve -s build
-
-Notes sur React:
-
-Mon point de vue:
-Un React.Component est comme un mix entre une vue et un modele.
-
-Je pense qu'une variable devrait etre un props si et seulement si ca modifie sa vue.
-
-Par exemple, je ne crois pas que firebase ne devrait etre un props. C'est juste
-une reference a une database. Ca n'affecte en rien la vue.
-
-Aussi, un state est simplement un props, mais qui est prive a lui-meme.

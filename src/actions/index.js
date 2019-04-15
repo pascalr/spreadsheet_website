@@ -3,7 +3,7 @@ import _ from 'lodash'
 
 import Helper, {nextColumnName} from '../Helper'
 
-import * as TABLES from '../constants/tables'
+import * as TABLE from '../constants/tables'
 
 import uuidv1 from 'uuid/v1'
 
@@ -19,14 +19,14 @@ export function newTable(db, defs, theName,theId) {
   const def = {...EMPTY_DEF, name, cols: {}}
   def.cols[idCol] = {name: "A", id: idCol}
   def.layout = [[idCol]]
-  db.setRecord(TABLES.DEFS,id,def)
+  db.setRecord(TABLE.DEFS,id,def)
   return { type: ACTION.NEW_TABLE, name: id, def };
 };
 
 export function defsLoaded(defs) {
   console.log('Loading defs')
   return { type: ACTION.DEFS_LOADED, payload: defs };
-  //return { type: ACTION.CACHE.SET, path: TABLES.DEFS, defs };
+  //return { type: ACTION.CACHE.SET, path: TABLE.DEFS, defs };
 };
 
 export function columnDropped(db, theDef, from, to) {
@@ -34,7 +34,7 @@ export function columnDropped(db, theDef, from, to) {
   let cols = [...def.layout[0]]
   cols.splice(to, 0, ...cols.splice(from, 1))
   def.layout[0] = cols
-  db.setRecord(TABLES.DEFS,def.id,def)
+  db.setRecord(TABLE.DEFS,def.id,def)
   return { type: ACTION.UPDATE_DEF, def };
 };
 
@@ -50,7 +50,7 @@ function withColumn(theDef) {
 
 export function addColumn(db, theDef) {
   const def = withColumn(theDef)
-  db.setRecord(TABLES.DEFS,def.id,def)
+  db.setRecord(TABLE.DEFS,def.id,def)
   return { type: ACTION.UPDATE_DEF, def };
 };
 
@@ -71,13 +71,13 @@ export function deletePath(db, path) {
 
 export function deleteColumn(db, theDef, columnId) {
   const def = withoutColumn(theDef, columnId)
-  db.setRecord(TABLES.DEFS,def.id,def)
+  db.setRecord(TABLE.DEFS,def.id,def)
   return { type: ACTION.UPDATE_DEF, def };
 };
 
 export function deleteTable(db, id) {
-  db.deleteRecord(TABLES.DEFS,id)
-  db.deleteRecord(TABLES.TABLES,id)
+  db.deleteRecord(TABLE.DEFS,id)
+  db.deleteRecord(TABLE.TABLES,id)
   return { type: ACTION.DELETE_TABLE, id };
 };
 
@@ -112,6 +112,12 @@ export function set(path, val) {
   } else {
     return { type: ACTION.CACHE.SET, path: ["root", path], val };
   }
+}
+
+export function addPreview(db, tableId) {
+  const id = uuidv1();
+  const p = {id, width: 50, height: 50, x: 0, y:0, tableId}
+  return setDb(db, [TABLE.PREVIEW, id], p)
 }
 
 export function push(path, val) {
