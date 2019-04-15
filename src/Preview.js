@@ -73,9 +73,11 @@ const LocatedPreview = (props) => {
       width: props.width,
       height: props.height,
       maxHeight: props.height,/*FIXME: Does not seem to work as I expected*/
+      overflowY: 'auto',
+      overflowX: 'hidden',
       left: props.x,
       top: props.y,
-      backgroundColor: 'rgba(0,0,255,.2)',
+      backgroundColor: 'rgb(250,250,250)',
       border: '1px solid #ccc',
     }}>
       { props.children }
