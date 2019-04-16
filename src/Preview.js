@@ -9,6 +9,7 @@ import * as PATH from './constants/paths'
 import Table from './Table'
 import { MenuProvider } from 'react-contexify'
 import Draggable from './Draggable'
+import Resizable from './Resizable'
 import TableAutocomplete from './TableAutocomplete'
 
 // When the user makes it a selection, it creates a temporaty table.
@@ -168,7 +169,11 @@ class PreviewSelection extends React.Component {
                   y={p.y}
                   disabled={false}
                 >
-                  <MenuProvider id="previewMenu" className="menu" data={{tableId: p.tableId}}>
+                  <Resizable
+                    path={[TABLE.PREVIEW, k]}
+                    {...p}
+                  disabled={false}
+                >
                   <div
                     onMouseEnter={() => {this.setState({over:k})}}
                     onMouseLeave={() => {this.setState({over:null})}}
@@ -185,8 +190,8 @@ class PreviewSelection extends React.Component {
                      }
                     <Table id={p.tableId} hideColumnNames={true} hideTableName={true} hideLineNumbers={true}/>
                 </LocatedPreview>
-                  </div>
-                  </MenuProvider>
+              </div>
+            </Resizable>
                     </Draggable>
             </div>)
           })}

@@ -91,11 +91,8 @@ class LinkScreen extends React.Component {
       <ByPass if={true || this.props.editMode}>
         <MapInteractionCSS showControls={true} disabled={this.state.mapDisabled}>
           <React.Fragment>
-            <MenuProvider id="link_screen_menu">
-              <PreviewSelection/>
-            </MenuProvider>
+            <PreviewSelection/>
             <ScreenMenu {...this.props} screen={this.props.items} />
-            <LinkMenu />
           </React.Fragment>
         </MapInteractionCSS>
       </ByPass>
