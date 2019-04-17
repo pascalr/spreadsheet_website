@@ -46,8 +46,60 @@ const COMMANDS = {
   a: cmd_a,
 }
 
-window.a = (link) => {
-  return <a href={link}>{link}</a>
+const makeAbsoluteURL = (url) => {
+  const r = new RegExp('^(?:[a-z]+:)?//', 'i');
+  const isAbsolutePath = r.test(url)
+  return (isAbsolutePath) ? url : 'http://' + url;
+}
+
+const addDotCom = (url) => {
+  const r = new RegExp('\\.+', 'i');
+  const hasDot = r.test(url)
+  return (hasDot) ? url : url + '.com';
+}
+
+window.$ = (address) => {
+  const {table,def} = window.context
+  // FIXME!!!!!
+  console.log(def.cols)
+  const row = address.split(/[A-Z]+/)[1]
+  const columnName = address.split(/[0-9]+/)[0]
+  const colId = _.keys(def.cols).filter(k => (def.cols[k].name === columnName))
+  return table[row][colId]
+}
+
+window.test = addDotCom
+
+const addSlashURL = (url) => {
+  return (url.slice(-1) === '/') ? url : url + '/'
+}
+
+// Makes a valid url
+const validURL = (url) => {
+  return addSlashURL(addDotCom(makeAbsoluteURL(url)))
+}
+
+window.img = (src) => {
+  return <img src={src} alt={'[img]'}/>
+}
+
+window.favicon = (site) => {
+  const url = validURL(site)
+  return <img width='14px' height='14px' src={url+"favicon.ico"} alt={'[ico]'}/>
+}
+
+window.bookmark = (site,name) => {
+  return (
+    <React.Fragment>
+      {window.favicon(site)}
+      {window.a(site,name)}
+    </React.Fragment>
+  )
+}
+
+window.a = (link,name) => {
+  const url = validURL(link)
+  return <a href={url}>{name ? name : link}</a>
 }
 
   /*window.a = (link) => {

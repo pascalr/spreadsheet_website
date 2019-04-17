@@ -33,11 +33,9 @@ const LocatedPreview = (props) => {
       width: props.width,
       height: props.height,
       maxHeight: props.height,
-      overflowY: 'auto',
-      overflowX: 'hidden',
       left: props.x,
       top: props.y,
-    }} className={props.selected ? 'selected' : 'notSelected'}>
+    }}>
       { props.children }
     </div>
   )
@@ -128,6 +126,8 @@ class PreviewSelection extends React.Component {
   onMouseDown = (e) => {
     if (this.state.tempPreview && clickIsOutside(e,this.state.tempPreview)) {
       this.setState({selection: [], tempPreview: null})
+    } else if (!this.state.tempPreview && this.state.selection.length > 0) {
+      this.setState({selection: []})
     }
   }
   onKeyUp = (e) => {
@@ -161,6 +161,7 @@ class PreviewSelection extends React.Component {
         >
           { _.keys(this.props.previews).map(k => {
             const p = this.props.previews[k]
+            const selected = this.state.selection.includes(k)
             return (
               <div key={k}>
                 <Draggable
@@ -174,12 +175,9 @@ class PreviewSelection extends React.Component {
                     {...p}
                   disabled={false}
                 >
-                  <div
-                    onMouseEnter={() => {this.setState({over:k})}}
-                    onMouseLeave={() => {this.setState({over:null})}}
-                  >
-                <LocatedPreview {...p} selected={this.state.selection.includes(k)}>
-                     { k !== this.state.over ? null :
+                    <LocatedPreview {...p} selected={this.state.selection.includes(k)}>
+                  <div className='popover__wrapper'>
+                      <div className='popover__content'>
                         <div className='flexHandles'>
                           <div className='clickHandle'
                             onClick={() => this.props.history.push(`/tables/${p.tableId}`)}
@@ -187,10 +185,13 @@ class PreviewSelection extends React.Component {
                           <div className='dragHandle'/>
                           <div className='resizeHandle'/>
                         </div>
-                     }
-                    <Table id={p.tableId} hideColumnNames={true} hideTableName={true} hideLineNumbers={true}/>
-                </LocatedPreview>
+                      </div>
+                      <div className={selected ? 'selected' : 'notSelected'} style={{
+                      }}>
+                        <Table id={p.tableId} hideColumnNames={true} hideTableName={true} hideLineNumbers={true}/>
+                      </div>
               </div>
+                </LocatedPreview>
             </Resizable>
                     </Draggable>
             </div>)

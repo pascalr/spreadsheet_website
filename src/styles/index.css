@@ -251,31 +251,66 @@ input[type="text"] {
 .selected {
   background-color: rgba(200,200,200,0.5);
   border: 2px solid rgb(0,0,255);
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 .notSelected {
   background-color: rgb(250,250,250);
   border: 1px solid #ccc;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 .flexHandles {
   display: flex;
-  height: 14px;
   justify-content: space-between;
 }
 .clickHandle {
   width: 20%;
-  height: 100%;
+  height: 14px;
   cursor: pointer;
 }
 .dragHandle {
   width: 60%;
-  height: 100%;
+  height: 14px;
   cursor: move;
 }
 
 .resizeHandle {
   width: 20%;
-  height: 100%;
+  height: 14px;
   cursor: nesw-resize;
+}
+
+.popover__wrapper {
+  position: relative;
+  margin-top: 14px;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+.popover__content {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  background-color: rgb(250,250,250);
+  border: 1px solid #ccc;
+  width: 100%;
+}
+.popover__content:before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+}
+.popover__wrapper:hover .popover__content {
+  z-index: 10;
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, -14px);
+  /*transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);*/
 }

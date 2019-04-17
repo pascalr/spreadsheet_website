@@ -63,8 +63,12 @@ class DatasheetTable extends Component {
     if (this.cols() && !cell.readOnly) {
       if (cell.value && cell.value[0] === '=') { // = should be pure
         try {
+          window.context = {
+            table: this.props.table,
+            def: this.props.def,
+          }
           const result = eval.call(window, cell.value.slice(1)); // FIXME: In onCellsChanged, eval there, set type to "function"
-          return stringify(result)
+          return result
         } catch(error) {
 				  return error.toString();
         }

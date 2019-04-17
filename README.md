@@ -1,16 +1,22 @@
 TODO:
 x select previews
 x delete previews
-- drag and drop previews
-- resize previews
-- hide line numbers
+x drag and drop previews
+x resize previews
+x hide line numbers
 - drag and drop tables on desktop
 - single file able to run everywhere
 - think about how to structure, table inside table?, columns defined by a function?
 - // Inside command is used to print the command: a('https://youtube.com') // youtube
+- link to other cells
+- petit carré en bas qui copy dans les autres cellules
+- resize columns
+- quand copy une cellule, modifier les references aux autres cellules relativement
 
 FIXME:
 - Remove all places where I did map(k,i) => key={i}
+
+https://codepen.io/mihaeltomic/pen/PqxVaq
 
 Feature list:
 - Partition de musique
@@ -21,7 +27,7 @@ Feature list:
 - Avoir une db de mes films, mes musiques, (liens youtube, accords, ...)
 - Pouvoir inclure des documents LaTeX. Voir: https://stackoverflow.com/questions/3284131/is-there-a-javascript-latex-equation-renderer
 - Pouvoir faire des calculs de spreadsheet de base
-- Pouvoir faire mes impots, avec une base de donnee locale, incryptee.
+- Pouvoir faire mes impots, avec une base de donnee locale, incryptée.
 - Faire ma liste d'epicerie
 - Avoir une liste d'articles interessant avec une petite description:
 Ex:
