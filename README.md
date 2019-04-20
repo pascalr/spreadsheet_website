@@ -13,6 +13,8 @@ x hide line numbers
 - resize columns
 - quand copy une cellule, modifier les references aux autres cellules relativement
 
+https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Headless_mode
+
 FIXME:
 - Remove all places where I did map(k,i) => key={i}
 

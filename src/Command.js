@@ -70,13 +70,9 @@ window.$ = (address) => {
 
 window.test = addDotCom
 
-const addSlashURL = (url) => {
-  return (url.slice(-1) === '/') ? url : url + '/'
-}
-
 // Makes a valid url
 const validURL = (url) => {
-  return addSlashURL(addDotCom(makeAbsoluteURL(url)))
+  return addDotCom(makeAbsoluteURL(url))
 }
 
 window.img = (src) => {
@@ -85,7 +81,11 @@ window.img = (src) => {
 
 window.favicon = (site) => {
   const url = validURL(site)
-  return <img width='14px' height='14px' src={url+"favicon.ico"} alt={'[ico]'}/>
+  // Trick: Use the browser to parse the url
+  const a = document.createElement('a') 
+  a.href = url
+  const path = a.origin + '/favicon.ico'
+  return <img width='14px' height='14px' src={path} alt={'[ico]'}/>
 }
 
 window.bookmark = (site,name) => {
