@@ -5,7 +5,7 @@ import Link from './Link'
 import * as PATH from './constants/paths'
 
 const mapStateToProps = state => ({
-  loading: _.get(state.cache, PATH.UI_LOADING),
+  loading: _.get(state.cache.root, PATH.UI_LOADING),
 })
 
 const mapDispatchToProps = dispatch => ({

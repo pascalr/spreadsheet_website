@@ -56,7 +56,6 @@ const mapStateToProps = state => ({
   db: state.db,
   defs: state.defs,
   previews: state.cache[TABLE.PREVIEW],
-  history: state.history,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -180,7 +179,7 @@ class PreviewSelection extends React.Component {
                       <div className='popover__content'>
                         <div className='flexHandles'>
                           <div className='clickHandle'
-                            onClick={() => this.props.history.push(`/tables/${p.tableId}`)}
+                            onClick={() => this.props.set(PATH.ROUTE,`/tables/${p.tableId}`)}
                           />
                           <div className='dragHandle'/>
                           <div className='resizeHandle'/>

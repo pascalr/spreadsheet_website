@@ -1,3 +1,6 @@
+sed
+zip -r build.zip build
+
 TODO:
 x select previews
 x delete previews

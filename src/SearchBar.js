@@ -3,7 +3,8 @@ import _ from 'lodash'
 import { connect } from "react-redux"
 import Link from './Link'
 import Autocomplete from 'react-autocomplete'
-import { addPreview } from "./actions"
+import { addPreview, set } from "./actions"
+import * as PATH from './constants/paths'
 
 function optionsFromDefs(defs) {
   return _.keys(defs).map(k => (
@@ -24,12 +25,12 @@ const autocompleteMenuStyle = { // FIXME: Maybe useless...
 
 const mapStateToProps = state => ({
   defs: state.defs,
-  history: state.history,
   db: state.db,
 })
 
 const mapDispatchToProps = dispatch => ({
   addPreview: (db, id) => dispatch(addPreview(db,id)),
+  set: (path, val) => dispatch(set(path,val)),
 })
 
 class SearchBar extends React.Component {
@@ -54,7 +55,7 @@ class SearchBar extends React.Component {
               </div>
             )}
             shouldItemRender={(item,str) => true}
-            onSelect={(val, item) => this.props.history.push(item.value)}
+            onSelect={(val, item) => this.props.set(PATH.ROUTE,item.value)}
             menuStyle={autocompleteMenuStyle}
           />
         </div>

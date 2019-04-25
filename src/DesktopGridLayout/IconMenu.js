@@ -10,16 +10,11 @@ const onClickMenu = ({ event, props }) => console.log(event,props);
 
 const mapStateToProps = state => ({
   db: state.db,
-  history: state.history,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   deleteTable: (db) => ({props}) => dispatch(deleteTable(db,props.id)),
 });
-
-const edit = history => ({event, props}) => {
-  history.push('/edit/' + props.name)
-}
 
 function confirmDelete(func) {
   return (args) => {
@@ -35,7 +30,6 @@ class IconMenu extends React.Component {
     return(
       <Menu id="iconMenu">
         <Item onClick={confirmDelete(this.props.deleteTable(db))}>delete table</Item>
-        <Item onClick={edit(this.props.history)}>edit</Item>
       </Menu>
     );
   }

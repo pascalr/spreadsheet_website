@@ -15,13 +15,14 @@ import Edit from './Edit'
 import router from './router'
 import StatusBar from './StatusBar'
 import SearchBar from './SearchBar'
-import PreviewMenu from './menus/PreviewMenu';
+import PreviewMenu from './menus/PreviewMenu'
+import * as PATH from './constants/paths'
 
 const uuidv1 = require('uuid/v1');
 
 const mapStateToProps = state => ({
   db: state.db,
-  history: state.history,
+  route: _.get(state.cache.root, PATH.ROUTE),
 })
 
 const mapDistpatchToProps = dispatch => ({
@@ -29,6 +30,7 @@ const mapDistpatchToProps = dispatch => ({
 })
 
 const routes = [
+  {path: '/index.html', action: () => (<Screen />), default: true},
   {path: '/', action: () => (<Screen />)},
   {path: '/tables/:id', action: (props) => (<Table {...props} />)},
   {path: '/edit/:id', action: (props) => (<Edit {...props} />)},
@@ -116,28 +118,19 @@ class App extends React.Component {
       path: "/"
     }
   }
-  componentWillMount = () => {
-    const location = this.props.history.location;
-    this.unlisten = this.props.history.listen((location, action) => {
-      this.setState({path: location.pathname})
-    });
-    // Use push, replace, and go to navigate around.
-    //this.props.history.push('/', { some: 'state' });
-  }
-  componentWillUnmount = () => {
-    this.unlisten();
-  }
     //    <button onClick={() => generateDefs(this.props.db)}>gen defs</button>
   //    <button onClick={() => addUUIDS(this.props.db)}>add uuids</button>
   //      <button onClick={() => addColLayout(this.props.db)}>add col layout</button>
   render() {
     return (
       <div className="app">
-        <StatusBar/>
-        <SearchBar/>
+        <div className="taskbars">
+          <StatusBar/>
+          <SearchBar/>
+        </div>
         {/*<Console/>
         <hr />*/}
-        {router.resolve(routes, this.props.history.location)}
+        {router.resolve(routes, this.props.route)}
         <PreviewMenu />
       </div>
     );

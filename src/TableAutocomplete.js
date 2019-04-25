@@ -6,7 +6,6 @@ import { addPreview } from "./actions"
 
 const mapStateToProps = state => ({
   defs: state.defs,
-  history: state.history,
   db: state.db,
 })
 
@@ -33,7 +32,6 @@ class TableAutocomplete extends React.Component {
   }
 
   render = () => {
-    //onSelect={(val, item) => this.props.history.push(item.value)}
     return (
       <div onKeyUp={this.onKeyUp}>
           <Autocomplete

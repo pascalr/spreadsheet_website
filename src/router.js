@@ -11,16 +11,23 @@ function matchURI(path, uri) {
   }
   return params;
 }
-function resolve(routes, context) {
+function resolve(routes, pathname) {
+  console.log(pathname)
   for (const route of routes) {
-    const uri = context.error ? '/error' : context.pathname;
-    const params = matchURI(route.path, uri);
+    const params = matchURI(route.path, pathname);
     if (!params) continue;
-    const result = route.action({ ...context, params });
+    const result = route.action({ pathname, params });
     if (result) return result;
   }
-  const error = new Error('No route matches this location.');
-  error.status = 404;
-  throw error;
+
+  const defaultRoute = routes.filter(r => (r.default))[0]
+
+  if (defaultRoute) {
+    return defaultRoute.action({pathname})
+  } else {
+    const error = new Error('No route matches this location.');
+    error.status = 404;
+    throw error;
+  }
 }
 export default { resolve };
