@@ -1,3 +1,4 @@
+Un calendrier serait un [[]] genere par une fonction simple.
 sed
 zip -r build.zip build
 

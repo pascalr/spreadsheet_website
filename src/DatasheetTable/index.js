@@ -66,9 +66,23 @@ class DatasheetTable extends Component {
           window.context = {
             table: this.props.table,
             def: this.props.def,
+            i, j,
           }
           const result = eval.call(window, cell.value.slice(1)); // FIXME: In onCellsChanged, eval there, set type to "function"
-          return result
+          if (typeof result === 'object' && result !== null) {
+            console.log('result')
+            console.log(result)
+            //return JSON.stringify(result)
+            return result
+          } else if (result === true) {
+            return 'true'
+          } else if (result === false) {
+            return 'false'
+          } else if (result === undefined) {
+            return 'undefined'
+          } else {
+            return result
+          }
         } catch(error) {
 				  return error.toString();
         }
