@@ -18,6 +18,7 @@ const autocompleteMenuStyle = { // FIXME: Maybe useless...
   background: 'rgba(255, 255, 255, 0)',
   padding: '2px 0',
   fontSize: '90%',
+  zIndex: '100',
   position: 'fixed',
   overflow: 'auto',
   maxHeight: '50%', // TODO: don't cheat, let it flow to the bottom
