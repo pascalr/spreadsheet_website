@@ -60,8 +60,6 @@ const addDotCom = (url) => {
 
 window.$ = (address) => {
   const {table,def} = window.context
-  // FIXME!!!!!
-  console.log(def.cols)
   const row = address.split(/[A-Z]+/)[1]
   const columnName = address.split(/[0-9]+/)[0]
   const colId = _.keys(def.cols).filter(k => (def.cols[k].name === columnName))

@@ -70,8 +70,6 @@ class DatasheetTable extends Component {
           }
           const result = eval.call(window, cell.value.slice(1)); // FIXME: In onCellsChanged, eval there, set type to "function"
           if (typeof result === 'object' && result !== null) {
-            console.log('result')
-            console.log(result)
             //return JSON.stringify(result)
             return result
           } else if (result === true) {
