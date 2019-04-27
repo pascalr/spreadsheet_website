@@ -3,12 +3,27 @@ import _ from 'lodash'
 import React from 'react'
 import Files from 'react-files'
 
+const mapStateToProps = state => ({
+  db: state.db,
+})
+
+const mapDispatchToProps = dispatch => ({
+})
+
 class Image extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      files: []
+      files: [],
     }
+  }
+  componentDidMount = () => {
+    const path = _.castArray('images/'+this.props.id).join('/');
+    const infoPath = 'storage/'+path;
+    const thisComponent = this
+    this.props.db.loadPath(infoPath, function(snapshot) {
+      thisComponent.setState({downloadUrl: snapshot})
+    })
   }
 
   onFilesChange = (files) => {
@@ -17,6 +32,7 @@ class Image extends React.Component {
     }, () => {
       console.log(this.state.files)
     })
+    this.props.db.stash('images/'+this.props.id,files[0])
   }
 
   onFilesError = (error, file) => {
@@ -24,6 +40,11 @@ class Image extends React.Component {
   }
 
   render () {
+    if (this.state.downloadUrl) {
+      return (
+        <img src={this.state.downloadUrl} alt='[image]'/>
+      )
+    }
     return (
       <div>
         <Files
@@ -52,4 +73,4 @@ class Image extends React.Component {
   }
 }
 
-export default Image
+export default connect(mapStateToProps,mapDispatchToProps)(Image)

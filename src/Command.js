@@ -79,7 +79,7 @@ window.img = (src) => {
 }
 
 window.image = (id) => {
-  return id ? <Image/> : 'Image id required'
+  return id ? <Image id={id}/> : 'Image id required'
 }
 
 window.favicon = (site) => {
