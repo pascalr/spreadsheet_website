@@ -5,6 +5,7 @@ import Link from './Link'
 import { newTable } from "./actions";
 import Latex from 'react-latex'
 import parse from 'parenthesis'
+import Image from './Image'
 
 const tableLinkProps = (state) => ({
   db: state.db,
@@ -75,6 +76,10 @@ const validURL = (url) => {
 
 window.img = (src) => {
   return <img src={src} alt={'[img]'}/>
+}
+
+window.image = (id) => {
+  return id ? <Image/> : 'Image id required'
 }
 
 window.favicon = (site) => {
