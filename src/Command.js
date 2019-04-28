@@ -82,6 +82,28 @@ window.image = (id) => {
   return id ? <Image id={id}/> : 'Image id required'
 }
 
+window.figure = (id) => (window.center(window.image(id)))
+
+window.title = (str) => {
+  return <div style={{textAlign: 'center', fontWeight: 'bold', fontSize: '2rem'}}>{str}</div> 
+}
+
+window.subtitle = (str) => {
+  return <div style={{marginLeft: '5%', textDecoration: 'underline', fontSize: '1.5rem'}}>{str}</div> 
+}
+
+window.underline = (str) => {
+  return <div style={{textDecoration: 'underline'}}>{str}</div> 
+}
+
+window.bold = (str) => {
+  return <div style={{fontWeight: 'bold'}}>{str}</div> 
+}
+
+window.center = (str) => {
+  return <div style={{textAlign: 'center'}}>{str}</div> 
+}
+
 window.favicon = (site) => {
   const url = validURL(site)
   // Trick: Use the browser to parse the url

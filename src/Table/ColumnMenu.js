@@ -31,6 +31,7 @@ class ColumnMenu extends React.Component {
           <Item onClick={this.onTypeChange(def,'')}>none</Item>
           <Item onClick={this.onTypeChange(def,'link')}>link</Item>
           <Item onClick={this.onTypeChange(def,'checkbox')}>checkbox</Item>
+          <Item onClick={this.onTypeChange(def,'document')}>document</Item>
         </Submenu>
       </Menu>
     );

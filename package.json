@@ -86,7 +86,9 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "bundle": "node scripts/build.js && sed -i \"s/\\/static/.\\/static/g\" build/index.html && zip -r build.zip build && cp build.zip \"/media/windows/Documents and Settings/pasca/Desktop\"",
+    "bundle": "node scripts/build.js && sed -i \"s/\\/home.ico/.\\/home.ico/g\" build/index.html && sed -i \"s/\\/static/.\\/static/g\" build/index.html && zip -r build.zip build",
+    "copyWindow": "cp -R build \"/media/windows/Documents and Settings/pasca/Desktop\"",
+    "copyLaptop": "cp -R build \"../Downloads/\"",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "cypress:open": "cypress open"
