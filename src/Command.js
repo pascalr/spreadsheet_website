@@ -7,6 +7,33 @@ import Latex from 'react-latex'
 import parse from 'parenthesis'
 import Image from './Image'
 
+import MathJax from 'react-mathjax'
+
+const tex = `f(x) = \\int_{-\\infty}^\\infty
+    \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}
+    \\,d\\xi`
+
+window.exampleTex = () => { 
+    return (
+        <MathJax.Provider>
+            <div>
+                This is an inline math formula: <MathJax.Node inline formula={'a = b'} />
+                And a block one:
+ 
+                <MathJax.Node formula={tex} />
+            </div>
+        </MathJax.Provider>
+    );
+}
+
+window.tex = (formula) => {
+    return (
+        <MathJax.Provider>
+                <MathJax.Node formula={formula} />
+        </MathJax.Provider>
+    );
+}
+
 const tableLinkProps = (state) => ({
   db: state.db,
   defs: state.defs,
@@ -65,6 +92,18 @@ window.$ = (address) => {
   const columnName = address.split(/[0-9]+/)[0]
   const colId = _.keys(def.cols).filter(k => (def.cols[k].name === columnName))
   return table[row][colId]
+}
+
+// TODO: Afficher les options dans l'autocomplete
+window.meteo = (ville,options={lang: 'fr'}) => {
+  if (options.lang === 'en') {
+    return <iframe title="Environment Canada Weather" width="287px" height="191px"
+      src="//weather.gc.ca/wxlink/wxlink.html?cityCode=qc-136&amp;lang=e"
+      allowtransparency="true"
+      frameborder="0">
+    </iframe>
+  }
+  return <iframe title="Météo Environnement Canada" width="287px" height="191px" src="//meteo.gc.ca/wxlink/wxlink.html?cityCode=qc-136&amp;lang=f" allowtransparency="true" frameborder="0"></iframe>
 }
 
 window.test = addDotCom
