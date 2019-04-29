@@ -251,5 +251,6 @@ const COMMANDS = {
   bookmark: {desc: '', args: [{name: '', type: '', desc: ''}]},
   a: {desc: '', args: [{name: '', type: '', desc: ''}]},
 }
+export { COMMANDS }
 
 export default Command

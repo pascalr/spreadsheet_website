@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react'
+import _ from 'lodash'
 import Autocomplete from 'react-autocomplete'
+import { COMMANDS } from '../Command'
 
 export default class DataEditor extends PureComponent {
   constructor (props) {
@@ -11,13 +13,35 @@ export default class DataEditor extends PureComponent {
     this._input.focus()
   }
 
+  componentDidUpdate () {
+    this._input.focus()
+  }
+
   handleChange (e) {
     this.props.onChange(e.target.value)
   }
 
   renderAutocomplete = () => {
-    return <span>autocomplete</span>
+    return (
+      <Autocomplete
+            getItemValue={(item) => item}
+            items={_.keys(COMMANDS)}
+            renderItem={(item, isHighlighted) => (
+              <div style={{ background: isHighlighted ? 'lightgray' : 'white',
+                            cursor: 'pointer'}}
+                key={item}
+              >
+                {item}
+              </div>
+            )}
+            ref={el => this._input = el}
+            shouldItemRender={(item,str) => _.includes(item,str.slice(1))}
+            value={this.props.value}
+            onChange={this.handleChange}
+            onSelect={(val, item) => this.props.onChange('='+item+'(')}
+          />)
   }
+            //onSelect={(val, item) => this.props.set(PATH.ROUTE,item.value)}
 
   render () {
     const {value, onKeyDown} = this.props
