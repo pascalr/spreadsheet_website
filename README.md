@@ -1,3 +1,9 @@
+React Datasheet
+Ligne 222:
+if (hasComponent && (isEditing)) {
+enlever hasComponent
+
+
 Un calendrier serait un [[]] genere par une fonction simple.
 sed
 zip -r build.zip build

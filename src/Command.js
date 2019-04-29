@@ -68,7 +68,7 @@ const cmd_a = (args) => {
   return <a href={args[0]}>{args.length > 1 ? args[1] : args[0]}</a>
 }
 
-const COMMANDS = {
+const CMDS = {
   fontSize: cmd_fontSize,
   table: cmd_table,
   a: cmd_a,
@@ -98,12 +98,12 @@ window.$ = (address) => {
 window.meteo = (ville,options={lang: 'fr'}) => {
   if (options.lang === 'en') {
     return <iframe title="Environment Canada Weather" width="287px" height="191px"
-      src="//weather.gc.ca/wxlink/wxlink.html?cityCode=qc-136&amp;lang=e"
+      src="https://weather.gc.ca/wxlink/wxlink.html?cityCode=qc-136&amp;lang=e"
       allowtransparency="true"
-      frameborder="0">
+      frameBorder="0">
     </iframe>
   }
-  return <iframe title="Météo Environnement Canada" width="287px" height="191px" src="//meteo.gc.ca/wxlink/wxlink.html?cityCode=qc-136&amp;lang=f" allowtransparency="true" frameborder="0"></iframe>
+  return <iframe title="Météo Environnement Canada" width="287px" height="191px" src="https://meteo.gc.ca/wxlink/wxlink.html?cityCode=qc-136&amp;lang=f" allowtransparency="true" frameBorder="0"></iframe>
 }
 
 window.test = addDotCom
@@ -210,9 +210,9 @@ class Command extends React.Component {
     const lastChar = first.slice(-1)
     if (lastChar === '(') {
       const cmdName = first.slice(0,-1)
-      if (COMMANDS.hasOwnProperty(cmdName)) {
+      if (CMDS.hasOwnProperty(cmdName)) {
         const args = this.parseArgs(cmd)
-        return COMMANDS[cmdName](args)
+        return CMDS[cmdName](args)
       }
     } else if (lastChar === '{') {
       return 'TODO'
@@ -233,6 +233,23 @@ class Command extends React.Component {
   }
 
   render = () => this.parseCmd()
+}
+
+const COMMANDS = {
+  img: {desc: 'Renders an image with the html <img> tag.', args: [{name: 'src', type: 'string', desc: 'the url of the image'}]},
+  tex: {desc: 'Renders a TeX equation using MathJax', args: [{name: 'formula', type: 'string', desc: 'the TeX formula'}]},
+  image: {desc: 'Renders a field to upload or drop an image', args: [{name: 'id', type: 'string', desc: 'the id to reference the image'}]},
+  figure: {desc: 'Renders a centered image', args: [{name: 'id', type: 'string', desc: 'the id to reference the figure'}]},
+  $: {desc: 'Gets the value at the given spreadsheet reference', args: [{name: 'address', type: 'string', desc: 'the spreadsheet reference'}]},
+  meteo: {desc: 'Affiche la meteo d\'environment canada', args: [{name: 'ville', type: 'string', desc: 'la ville'},{name: 'options', type: 'Object', desc: 'lang: fr ou en'}]},
+  title: {desc: '', args: [{name: '', type: '', desc: ''}]},
+  subtitle: {desc: '', args: [{name: '', type: '', desc: ''}]},
+  center: {desc: '', args: [{name: '', type: '', desc: ''}]},
+  bold: {desc: '', args: [{name: '', type: '', desc: ''}]},
+  underline: {desc: '', args: [{name: '', type: '', desc: ''}]},
+  favicon: {desc: '', args: [{name: '', type: '', desc: ''}]},
+  bookmark: {desc: '', args: [{name: '', type: '', desc: ''}]},
+  a: {desc: '', args: [{name: '', type: '', desc: ''}]},
 }
 
 export default Command

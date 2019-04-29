@@ -3,6 +3,7 @@ import ReactDataSheet from 'react-datasheet';
 import _ from 'lodash'
 
 import { MenuSheetRenderer, RowRenderer, CellRenderer } from './DatasheetTable'
+import DataEditor from './DataEditor'
 
 import { connect } from "react-redux";
 
@@ -128,6 +129,10 @@ class DatasheetTable extends Component {
   cellRenderer = (props) => {
     return <CellRenderer {...props} hideLineNumbers={this.props.hideLineNumbers}/>
   }
+
+  dataEditor = (props) => {
+    return <DataEditor {...props}/>
+  }
   
   render() {
     return (
@@ -139,6 +144,7 @@ class DatasheetTable extends Component {
           cellRenderer={this.cellRenderer}
           valueRenderer={this.valueFromCell}
           dataRenderer={this.dataRenderer(this.props.def)}
+          dataEditor={this.dataEditor}
           onCellsChanged={this.props.onCellsChanged}
         />
       </div>
