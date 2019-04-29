@@ -68,7 +68,6 @@
     "react-router-dom": "^4.3.1",
     "react-scale-text": "^1.2.2",
     "react-select": "^2.4.2",
-    "react-selection": "^0.1.0",
     "react-smooth-dnd": "^0.10.0",
     "redux": "^4.0.1",
     "resolve": "1.10.0",
@@ -91,8 +90,7 @@
     "copyWindow": "cp -R build \"/media/windows/Documents and Settings/pasca/Desktop\"",
     "copyLaptop": "cp -R build \"../Downloads/\"",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js",
-    "cypress:open": "cypress open"
+    "test": "node scripts/test.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -103,9 +101,7 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "devDependencies": {
-    "cypress": "^3.2.0"
-  },
+  "devDependencies": {},
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
