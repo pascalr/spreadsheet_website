@@ -2,16 +2,74 @@ import React, {useState} from 'react'
 import _ from 'lodash'
 import { connect } from "react-redux"
 import Link from './Link'
-import { newTable } from "./actions";
+import { newTable } from "./actions"
 import Latex from 'react-latex'
 import parse from 'parenthesis'
 import Image from './Image'
+import ABCJS from 'abcjs/midi'
 
 import MathJax from 'react-mathjax'
+
+import 'abcjs/abcjs-midi.css'
 
 const tex = `f(x) = \\int_{-\\infty}^\\infty
     \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}
     \\,d\\xi`
+
+
+class PrintABC extends React.Component {
+  componentDidMount() {
+    var ex = "T: Cooley's\n" +
+    "M: 4/4\n" +
+    "L: 1/8\n" +
+    "R: reel\n" +
+    "K: Emin\n" +
+    "|:D2|EB{c}BA B2 EB|~B2 AB dBAG|FDAD BDAD|FDAD dAFD|\n" +
+    "EBBA B2 EB|B2 AB defg|afe^c dBAF|DEFD E2:|\n" +
+    "|:gf|eB B2 efge|eB B2 gedB|A2 FA DAFA|A2 FA defg|\n" +
+    "eB B2 eBgB|eB B2 defg|afe^c dBAF|DEFD E2:|";
+    ABCJS.renderAbc("abcjsid", this.props.content || ex);
+  }
+  render() { return (<div id='abcjsid'/>) }
+}
+
+class PrintABCEditor extends React.Component {
+  componentDidMount() {
+    new ABCJS.Editor("abc", { canvas_id: "paper",
+                               generate_midi: true,
+				midi_id: "midi",
+				warnings_id: "warnings",
+				abcjsParams: {
+					generateInline: true,
+					generateDownload: true
+                                },
+			});
+  }
+  render() { return (<React.Fragment>
+<textarea id="abc" cols="80" rows="15">{
+    "T: Cooley's\n" +
+    "M: 4/4\n" +
+    "L: 1/8\n" +
+    "R: reel\n" +
+    "K: Emin\n" +
+    "|:D2|EB{c}BA B2 EB|~B2 AB dBAG|FDAD BDAD|FDAD dAFD|\n" +
+    "EBBA B2 EB|B2 AB defg|afe^c dBAF|DEFD E2:|\n" +
+    "|:gf|eB B2 efge|eB B2 gedB|A2 FA DAFA|A2 FA defg|\n" +
+    "eB B2 eBgB|eB B2 defg|afe^c dBAF|DEFD E2:|"}
+</textarea>
+
+<div id="warnings"></div>
+<div id="midi"></div>
+<div id="paper"></div>
+  </React.Fragment>) }
+}
+window.abcEditor = (content) => {
+  return <PrintABCEditor content={content}/>
+}
+
+window.abc = (content)  => {
+  return <PrintABC content={content}/>
+}
 
 window.exampleTex = () => { 
     return (

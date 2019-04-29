@@ -21,8 +21,13 @@ export default class DataEditor extends PureComponent {
     this.props.onChange(e.target.value)
   }
 
+  renderTextArea = (props) => {
+  return <textarea {...props} />
+  }
+
   renderAutocomplete = () => {
     return (
+      <div onKeyDown={this.onKeyDown}>
       <Autocomplete
             getItemValue={(item) => item}
             items={_.keys(COMMANDS)}
@@ -35,13 +40,18 @@ export default class DataEditor extends PureComponent {
               </div>
             )}
             ref={el => this._input = el}
+            renderInput={this.renderTextArea}
             shouldItemRender={(item,str) => _.includes(item,str.slice(1))}
             value={this.props.value}
             onChange={this.handleChange}
             onSelect={(val, item) => this.props.onChange('='+item+'(')}
-          />)
+          /></div>)
   }
             //onSelect={(val, item) => this.props.set(PATH.ROUTE,item.value)}
+  onKeyDown = (e) => {
+    e.stopPropagation()
+    console.log('on key down on data editor')
+  }
 
   render () {
     const {value, onKeyDown} = this.props
@@ -51,8 +61,8 @@ export default class DataEditor extends PureComponent {
         ref={input => { this._input = input }}
         className='data-editor'
         value={value}
-        onChange={this.handleChange}
         onKeyDown={onKeyDown}
+        onChange={this.handleChange}
       />
     )
   }

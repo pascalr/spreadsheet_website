@@ -1,3 +1,8 @@
+!!!POUVOIR VOIR LE RESULTAT DE LA FORMULE LIVE EN L'EDITANT!!!!
+Ca serait nice pour du latex, pour de la notation de musique
+Peut-etre que ca integrerais aussi, x = 10, qui afficher 10...
+
+
 React Datasheet
 Ligne 222:
 if (hasComponent && (isEditing)) {
