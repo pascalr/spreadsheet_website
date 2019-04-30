@@ -26,7 +26,6 @@ export default class DataEditor extends PureComponent {
 
   textAreaKeyDown = (e) => {
     if (e.keyCode === 8 || e.keyCode === 46) {// backspace or delete
-      console.log(this.props.value)
       if (this.props.value.length <= 1) {
         this.props.onChange(e.target.value)
       }
@@ -69,7 +68,6 @@ export default class DataEditor extends PureComponent {
   // onSelect={(val, item) => this.props.set(PATH.ROUTE,item.value)}
   onKeyDown (e) {
     e.stopPropagation()
-    console.log('on key down on data editor')
   }
 
   render () {

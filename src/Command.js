@@ -17,8 +17,6 @@ const tex = `f(x) = \\int_{-\\infty}^\\infty
 
 class PrintABC extends React.Component {
   componentDidMount = () => {
-    console.log('MY CONTENT')
-    console.log(this.props.content)
     var ex = "T: Cooley's\n" +
     "M: 4/4\n" +
     "L: 1/8\n" +
@@ -28,8 +26,6 @@ class PrintABC extends React.Component {
     "EBBA B2 EB|B2 AB defg|afe^c dBAF|DEFD E2:|\n" +
     "|:gf|eB B2 efge|eB B2 gedB|A2 FA DAFA|A2 FA defg|\n" +
     "eB B2 eBgB|eB B2 defg|afe^c dBAF|DEFD E2:|";
-    console.log('REF CONTENT')
-    console.log(ex)
     const content = this.props.content || ex
     ABCJS.renderAbc(this.div, content);
     ABCJS.renderMidi(this.divMidi, content);
@@ -91,6 +87,10 @@ const TableLink = connect(tableLinkProps,tableLinkDispatch)((props) => {
     }
   }
 })
+
+window.table = (name) => {
+  return <TableLink name={name}/>
+}
 
 const makeAbsoluteURL = (url) => {
   const r = new RegExp('^(?:[a-z]+:)?//', 'i');

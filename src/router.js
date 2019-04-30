@@ -12,7 +12,7 @@ function matchURI(path, uri) {
   return params;
 }
 function resolve(routes, pathname) {
-  console.log(pathname)
+  console.log(`route: path=${pathname}`)
   for (const route of routes) {
     const params = matchURI(route.path, pathname);
     if (!params) continue;

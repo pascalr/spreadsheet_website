@@ -1,14 +1,10 @@
 import React from 'react'
 
-import { colDragSource, colDropTarget } from './drag-drop.js'
-
 import { MenuProvider } from 'react-contexify'
 
 import SheetRenderer from './SheetRenderer'
 
 import TableMenu from '../Table/TableMenu'
-
-const onClickMenu = ({ event, props }) => console.log(event,props);
 
 class MenuSheetRenderer extends React.Component {
   render = () => (

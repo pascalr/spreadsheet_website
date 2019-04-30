@@ -131,7 +131,6 @@ class PreviewSelection extends React.Component {
   }
   onKeyUp = (e) => {
     // Delete key deletes selected previews
-    console.log(`onKeyUp which=${e.which}`)
     if (e.which === 46) {
       this.state.selection.forEach(s => {
         this.props.deletePath(this.props.db,[TABLE.PREVIEW,s])

@@ -18,7 +18,6 @@ function rowSourceCollect (connect, _monitor) {
  */
 const rowSourceSpec = {
   beginDrag (props) {
-    console.log('beginDrag', props.rowIndex, props)
     return {
       rowIndex: props.rowIndex
     }
