@@ -55,7 +55,6 @@ const clickIsOutside = (e,box) => {
 const mapStateToProps = state => ({
   db: state.db,
   defs: state.defs,
-  previews: state.cache[TABLE.PREVIEW],
 })
 
 const mapDispatchToProps = dispatch => ({

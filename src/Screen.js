@@ -13,6 +13,7 @@ const mapStateToProps = state => ({
   editMode: state.ui.editMode,
   items: state.cache[TABLE.ITEMS],
   defs: state.defs,
+  previews: state.cache[TABLE.PREVIEW],
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -82,12 +83,20 @@ class LinkScreen extends React.Component {
 
   render() {
     if (!this.props.items) { return null }
-    const tables = this.props.defs
+    // FIXME: They should be filtered elsewhere...
+    const previews = _.keys(this.props.previews).filter(k => {
+      const p = this.props.previews[k]
+      return this.props.defs[p.tableId]
+    }).reduce((acc,val) => {
+      acc[val] = this.props.previews[val]
+      return acc
+    },{})
+
     return (
       <ByPass if={true || this.props.editMode}>
         <MapInteractionCSS showControls={true} disabled={this.state.mapDisabled}>
           <React.Fragment>
-            <PreviewSelection/>
+            <PreviewSelection previews={previews}/>
             <ScreenMenu {...this.props} screen={this.props.items} />
           </React.Fragment>
         </MapInteractionCSS>

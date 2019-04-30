@@ -44,6 +44,7 @@ function defs(state = {}, action) {
   if (action.type === ACTION.DEFS_LOADED) {
     const defs = addIds(action.payload)
     return _.keys(action.payload).reduce((acc,k) => {
+      if (defs[k].del) {return acc;} // If the def is marked as delete dont return it.
       acc[k] = {...defs[k], cols: addIds(defs[k].cols)}
       return acc;
     }, {})

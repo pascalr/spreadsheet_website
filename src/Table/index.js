@@ -1,10 +1,11 @@
 import React from "react"
 import { connect } from "react-redux"
 import * as TABLE from '../constants/tables'
+import * as PATH from '../constants/paths'
 import DatasheetTable from '../DatasheetTable'
 
 import { RIEInput } from 'riek'
-import { set } from '../actions'
+import { set, setDb } from '../actions'
 import _ from 'lodash'
 
 const mapStateToProps = state => ({
@@ -14,7 +15,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  set: path => val => dispatch(set(path,val))
+  set: path => val => dispatch(set(path,val)),
+  setDb: (db, path, val) => dispatch(setDb(db, path,val)),
 })
 
 class Table extends React.Component {
@@ -75,13 +77,23 @@ class Table extends React.Component {
     return (
       <div className="Table">
         { this.props.hideTableName ? null :
-          <h1>
+          <React.Fragment>
+          <span className='title'>
             <RIEInput
               value={this.def().name}
               change={this.onTitleChange}
               propName='title'
               validate={_.isString} />
-          </h1>}
+          </span>
+          <span onClick={() => {
+            // TODO: Add a comment that says the table has been moved
+            // to trash and will be deleted in a certain period of time permanently.
+            // Offers to delete it permanently right now.
+            this.props.setDb(this.props.db, [TABLE.DEFS, this.props.id, 'del'],'1')
+            this.props.set(PATH.ROUTE)('/')
+          }}
+          className='link'>🗑</span>
+        </React.Fragment>}
         {this.renderDatasheetTable()}
       </div>
     );
