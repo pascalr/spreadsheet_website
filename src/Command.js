@@ -1,12 +1,12 @@
-import React from 'react'
+import React, {useState} from 'react'
 import _ from 'lodash'
 import { connect } from "react-redux"
 import Link from './Link'
 import { newTable } from "./actions"
 import Image from './Image'
 import ABCJS from 'abcjs/midi'
-
 import MathJax from 'react-mathjax'
+import Table from './Table'
 
 import 'abcjs/abcjs-midi.css'
 
@@ -65,6 +65,18 @@ window.tex = (formula) => {
     );
 }
 
+const HiddenTable = (props) => {
+  const [hidden, setHidden] = useState(true)
+  return (
+    <React.Fragment>
+      <span onClick={() => setHidden(!hidden)}>+ </span>
+      <Link to={'/tables/'+props.id}>{props.name}</Link>
+      {hidden ? null : <Table {...props} hideTableName={true}/>}
+    </React.Fragment>
+  )
+}
+//<Table id={p.tableId} hideColumnNames={true} hideTableName={true} hideLineNumbers={true}/>
+
 const tableLinkProps = (state) => ({
   db: state.db,
   defs: state.defs,
@@ -77,16 +89,20 @@ const TableLink = connect(tableLinkProps,tableLinkDispatch)((props) => {
   if (props.defs == null) { return null }
   const defId = _.keys(props.defs).find(e => props.defs[e].name === props.name)
   if (defId) {
-    return <Link to={'/tables/'+defId}>{props.defs[defId].name}</Link>
+    //return <Link to={'/tables/'+defId}>{props.defs[defId].name}</Link>
+    return <HiddenTable id={defId} name={props.name}/>
   } else {
+    return 'no table matches'
+  }
+})
+
+      /*} else {
     if (props.name) {
       newTable(props.db,props.defs,props.name)
       return 'creating table...'
     } else {
       return 'invalid table name'
-    }
-  }
-})
+    }*/
 
 window.table = (name) => {
   return <TableLink name={name}/>
