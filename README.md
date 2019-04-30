@@ -12,6 +12,16 @@ Présentemment, tu es pris par le provider du service à l'utiliser. Ce n'est pa
 
 La publicité dérange. Les updates qui change les choses de places et brises des compatibilités.
 
+!!!POUVOIR VOIR LE RESULTAT DE LA FORMULE LIVE EN L'EDITANT!!!!
+Ca serait nice pour du latex, pour de la notation de musique
+Peut-etre que ca integrerais aussi, x = 10, qui afficher 10...
+
+
+React Datasheet
+Ligne 222:
+if (hasComponent && (isEditing)) {
+enlever hasComponent
+
 Un calendrier serait un [[]] genere par une fonction simple.
 sed
 zip -r build.zip build

@@ -154,7 +154,7 @@ class PreviewSelection extends React.Component {
       <Selection onSelect={this.onSelect} onMouseDown={this.onMouseDown}
       canStart={this.canStartSelection}>
         <div id="screen" className={this.props.editMode ? "editMode" : "notEditMode"}
-          style={{width: 1920, height: 1024}}
+          style={{width: 1920, height: 10000}}
           onMouseUp={this.onMouseUp}
           onKeyUp={this.onKeyUp}
         >

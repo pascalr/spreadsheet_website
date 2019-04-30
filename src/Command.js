@@ -2,9 +2,95 @@ import React, {useState} from 'react'
 import _ from 'lodash'
 import { connect } from "react-redux"
 import Link from './Link'
-import { newTable } from "./actions";
+import { newTable } from "./actions"
 import Latex from 'react-latex'
 import parse from 'parenthesis'
+import Image from './Image'
+import ABCJS from 'abcjs/midi'
+
+import MathJax from 'react-mathjax'
+
+import 'abcjs/abcjs-midi.css'
+
+const tex = `f(x) = \\int_{-\\infty}^\\infty
+    \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}
+    \\,d\\xi`
+
+
+class PrintABC extends React.Component {
+  componentDidMount() {
+    var ex = "T: Cooley's\n" +
+    "M: 4/4\n" +
+    "L: 1/8\n" +
+    "R: reel\n" +
+    "K: Emin\n" +
+    "|:D2|EB{c}BA B2 EB|~B2 AB dBAG|FDAD BDAD|FDAD dAFD|\n" +
+    "EBBA B2 EB|B2 AB defg|afe^c dBAF|DEFD E2:|\n" +
+    "|:gf|eB B2 efge|eB B2 gedB|A2 FA DAFA|A2 FA defg|\n" +
+    "eB B2 eBgB|eB B2 defg|afe^c dBAF|DEFD E2:|";
+    ABCJS.renderAbc("abcjsid", this.props.content || ex);
+  }
+  render() { return (<div id='abcjsid'/>) }
+}
+
+class PrintABCEditor extends React.Component {
+  componentDidMount() {
+    new ABCJS.Editor("abc", { canvas_id: "paper",
+                               generate_midi: true,
+				midi_id: "midi",
+				warnings_id: "warnings",
+				abcjsParams: {
+					generateInline: true,
+					generateDownload: true
+                                },
+			});
+  }
+  render() { return (<React.Fragment>
+<textarea id="abc" cols="80" rows="15">{
+    "T: Cooley's\n" +
+    "M: 4/4\n" +
+    "L: 1/8\n" +
+    "R: reel\n" +
+    "K: Emin\n" +
+    "|:D2|EB{c}BA B2 EB|~B2 AB dBAG|FDAD BDAD|FDAD dAFD|\n" +
+    "EBBA B2 EB|B2 AB defg|afe^c dBAF|DEFD E2:|\n" +
+    "|:gf|eB B2 efge|eB B2 gedB|A2 FA DAFA|A2 FA defg|\n" +
+    "eB B2 eBgB|eB B2 defg|afe^c dBAF|DEFD E2:|"}
+</textarea>
+
+<div id="warnings"></div>
+<div id="midi"></div>
+<div id="paper"></div>
+  </React.Fragment>) }
+}
+window.abcEditor = (content) => {
+  return <PrintABCEditor content={content}/>
+}
+
+window.abc = (content)  => {
+  return <PrintABC content={content}/>
+}
+
+window.exampleTex = () => { 
+    return (
+        <MathJax.Provider>
+            <div>
+                This is an inline math formula: <MathJax.Node inline formula={'a = b'} />
+                And a block one:
+ 
+                <MathJax.Node formula={tex} />
+            </div>
+        </MathJax.Provider>
+    );
+}
+
+window.tex = (formula) => {
+    return (
+        <MathJax.Provider>
+                <MathJax.Node formula={formula} />
+        </MathJax.Provider>
+    );
+}
 
 const tableLinkProps = (state) => ({
   db: state.db,
@@ -40,7 +126,7 @@ const cmd_a = (args) => {
   return <a href={args[0]}>{args.length > 1 ? args[1] : args[0]}</a>
 }
 
-const COMMANDS = {
+const CMDS = {
   fontSize: cmd_fontSize,
   table: cmd_table,
   a: cmd_a,
@@ -60,12 +146,22 @@ const addDotCom = (url) => {
 
 window.$ = (address) => {
   const {table,def} = window.context
-  // FIXME!!!!!
-  console.log(def.cols)
   const row = address.split(/[A-Z]+/)[1]
   const columnName = address.split(/[0-9]+/)[0]
   const colId = _.keys(def.cols).filter(k => (def.cols[k].name === columnName))
   return table[row][colId]
+}
+
+// TODO: Afficher les options dans l'autocomplete
+window.meteo = (ville,options={lang: 'fr'}) => {
+  if (options.lang === 'en') {
+    return <iframe title="Environment Canada Weather" width="287px" height="191px"
+      src="https://weather.gc.ca/wxlink/wxlink.html?cityCode=qc-136&amp;lang=e"
+      allowtransparency="true"
+      frameBorder="0">
+    </iframe>
+  }
+  return <iframe title="Météo Environnement Canada" width="287px" height="191px" src="https://meteo.gc.ca/wxlink/wxlink.html?cityCode=qc-136&amp;lang=f" allowtransparency="true" frameBorder="0"></iframe>
 }
 
 window.test = addDotCom
@@ -77,6 +173,32 @@ const validURL = (url) => {
 
 window.img = (src) => {
   return <img src={src} alt={'[img]'}/>
+}
+
+window.image = (id) => {
+  return id ? <Image id={id}/> : 'Image id required'
+}
+
+window.figure = (id) => (window.center(window.image(id)))
+
+window.title = (str) => {
+  return <div style={{textAlign: 'center', fontWeight: 'bold', fontSize: '2rem'}}>{str}</div> 
+}
+
+window.subtitle = (str) => {
+  return <div style={{marginLeft: '5%', textDecoration: 'underline', fontSize: '1.5rem'}}>{str}</div> 
+}
+
+window.underline = (str) => {
+  return <div style={{textDecoration: 'underline'}}>{str}</div> 
+}
+
+window.bold = (str) => {
+  return <div style={{fontWeight: 'bold'}}>{str}</div> 
+}
+
+window.center = (str) => {
+  return <div style={{textAlign: 'center'}}>{str}</div> 
 }
 
 window.favicon = (site) => {
@@ -146,9 +268,9 @@ class Command extends React.Component {
     const lastChar = first.slice(-1)
     if (lastChar === '(') {
       const cmdName = first.slice(0,-1)
-      if (COMMANDS.hasOwnProperty(cmdName)) {
+      if (CMDS.hasOwnProperty(cmdName)) {
         const args = this.parseArgs(cmd)
-        return COMMANDS[cmdName](args)
+        return CMDS[cmdName](args)
       }
     } else if (lastChar === '{') {
       return 'TODO'
@@ -170,5 +292,23 @@ class Command extends React.Component {
 
   render = () => this.parseCmd()
 }
+
+const COMMANDS = {
+  img: {desc: 'Renders an image with the html <img> tag.', args: [{name: 'src', type: 'string', desc: 'the url of the image'}]},
+  tex: {desc: 'Renders a TeX equation using MathJax', args: [{name: 'formula', type: 'string', desc: 'the TeX formula'}]},
+  image: {desc: 'Renders a field to upload or drop an image', args: [{name: 'id', type: 'string', desc: 'the id to reference the image'}]},
+  figure: {desc: 'Renders a centered image', args: [{name: 'id', type: 'string', desc: 'the id to reference the figure'}]},
+  $: {desc: 'Gets the value at the given spreadsheet reference', args: [{name: 'address', type: 'string', desc: 'the spreadsheet reference'}]},
+  meteo: {desc: 'Affiche la meteo d\'environment canada', args: [{name: 'ville', type: 'string', desc: 'la ville'},{name: 'options', type: 'Object', desc: 'lang: fr ou en'}]},
+  title: {desc: '', args: [{name: '', type: '', desc: ''}]},
+  subtitle: {desc: '', args: [{name: '', type: '', desc: ''}]},
+  center: {desc: '', args: [{name: '', type: '', desc: ''}]},
+  bold: {desc: '', args: [{name: '', type: '', desc: ''}]},
+  underline: {desc: '', args: [{name: '', type: '', desc: ''}]},
+  favicon: {desc: '', args: [{name: '', type: '', desc: ''}]},
+  bookmark: {desc: '', args: [{name: '', type: '', desc: ''}]},
+  a: {desc: '', args: [{name: '', type: '', desc: ''}]},
+}
+export { COMMANDS }
 
 export default Command

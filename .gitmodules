@@ -1,0 +1,6 @@
+[submodule "react-datasheet"]
+	path = react-datasheet
+	url = https://github.com/nadbm/react-datasheet.git
+[submodule "src/lib/react-datasheet"]
+	path = src/lib/react-datasheet
+	url = https://github.com/nadbm/react-datasheet.git

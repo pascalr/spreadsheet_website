@@ -18,6 +18,7 @@ const autocompleteMenuStyle = { // FIXME: Maybe useless...
   background: 'rgba(255, 255, 255, 0)',
   padding: '2px 0',
   fontSize: '90%',
+  zIndex: '100',
   position: 'fixed',
   overflow: 'auto',
   maxHeight: '50%', // TODO: don't cheat, let it flow to the bottom
@@ -36,6 +37,10 @@ const mapDispatchToProps = dispatch => ({
 class SearchBar extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {value: ''}
+  }
+  shouldItemRender = (item,str) => {
+    return _.includes(item.label, str)
   }
   render = () => {
     return (
@@ -50,11 +55,12 @@ class SearchBar extends React.Component {
                             cursor: 'pointer'}}
                 key={item.label}
               >
-                <span onClick={() => {this.props.addPreview(this.props.db,item.id)}}>[Add]  </span>
                 {item.label}
               </div>
             )}
-            shouldItemRender={(item,str) => true}
+            shouldItemRender={this.shouldItemRender}
+            value={this.state.value}
+            onChange={e => this.setState({ value: e.target.value })}
             onSelect={(val, item) => this.props.set(PATH.ROUTE,item.value)}
             menuStyle={autocompleteMenuStyle}
           />

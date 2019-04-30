@@ -25,10 +25,10 @@ class Selection extends React.Component {
   }
   onMouseDown = (e) => {
     if (!this.props.canStart || this.props.canStart(e)) {
-      this.x1 = e.clientX; //Set the initial X
-      this.y1 = e.clientY; //Set the initial Y
-      this.x2 = e.clientX;
-      this.y2 = e.clientY;
+      this.x1 = e.pageX; //Set the initial X
+      this.y1 = e.pageY; //Set the initial Y
+      this.x2 = e.pageX;
+      this.y2 = e.pageY;
       this.reCalc();
       if (this.props.onMouseDown) {
         this.props.onMouseDown(e)
@@ -37,8 +37,8 @@ class Selection extends React.Component {
   };
   onMouseMove = (e) => {
     if (!this.state.hidden) {
-      this.x2 = e.clientX; //Update the current position X
-      this.y2 = e.clientY; //Update the current position Y
+      this.x2 = e.pageX; //Update the current position X
+      this.y2 = e.pageY; //Update the current position Y
       this.reCalc();
     }
   };

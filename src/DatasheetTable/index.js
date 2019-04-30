@@ -3,6 +3,7 @@ import ReactDataSheet from 'react-datasheet';
 import _ from 'lodash'
 
 import { MenuSheetRenderer, RowRenderer, CellRenderer } from './DatasheetTable'
+import DataEditor from './DataEditor'
 
 import { connect } from "react-redux";
 
@@ -59,8 +60,14 @@ class DatasheetTable extends Component {
   cols = () => ((this.props.def || {}).cols)
 
   valueFromCell = (cell,i,j) => {
+    let value = undefined
+    let style = undefined
     if (j === 0 && this.props.hideLineNumbers) {return <span></span>}
     if (this.cols() && !cell.readOnly) {
+      let col = this.column(j);
+      if (col.type === "document") {
+        style = {textAlign: 'justify',paddingLeft: '15%',paddingRight: '15%'}
+      }
       if (cell.value && cell.value[0] === '=') { // = should be pure
         try {
           window.context = {
@@ -70,47 +77,46 @@ class DatasheetTable extends Component {
           }
           const result = eval.call(window, cell.value.slice(1)); // FIXME: In onCellsChanged, eval there, set type to "function"
           if (typeof result === 'object' && result !== null) {
-            console.log('result')
-            console.log(result)
             //return JSON.stringify(result)
-            return result
+            value = result
           } else if (result === true) {
-            return 'true'
+            value = 'true'
           } else if (result === false) {
-            return 'false'
+            value = 'false'
           } else if (result === undefined) {
-            return 'undefined'
+            value = 'undefined'
           } else {
-            return result
+            value = result
           }
         } catch(error) {
-				  return error.toString();
+				  value = error.toString();
         }
-      }
-      if (cell.value && cell.value[0] === ':') { // : has side effects
-        return (<button onClick={() => {
-          eval.call(window, cell.value.slice(1))
-          this.setState({reload: !this.state.reload})
-        }}>
-          {cell.value.slice(1)}
-        </button>)
-      }
-      let col = this.column(j);
-      if (col && col.type) {
-        if (col.type === "link" && cell.value) {
-          return (<a href={cell.value}>{cell.value}</a>);
-        } else if (col.type === "bullet") {
-          return (<span>&bull;</span>)
-        } else if (col.type === "checkbox") {
-          return (<input type="checkbox" defaultChecked={cell.value} onChange={() => {
-            const path = [TABLE.TABLES,this.props.def.id,i,col.name]
-            const val = cell.value ? !cell.value : 1;
-            this.props.db.setPath(path, val, this.props.set(path))
-          }}/>)
+      } else if (cell.value && cell.value[0] === ':') { // : has side effects
+          value = (<button onClick={() => {
+            eval.call(window, cell.value.slice(1))
+            this.setState({reload: !this.state.reload})
+          }}>
+            {cell.value.slice(1)}
+          </button>)
+      } else {
+        if (col && col.type) {
+          if (col.type === "link" && cell.value) {
+            value = (<a href={cell.value}>{cell.value}</a>);
+          } else if (col.type === "bullet") {
+            value = (<span>&bull;</span>)
+          } else if (col.type === "checkbox") {
+            value = (<input type="checkbox" defaultChecked={cell.value} onChange={() => {
+              const path = [TABLE.TABLES,this.props.def.id,i,col.name]
+              const val = cell.value ? !cell.value : 1;
+              this.props.db.setPath(path, val, this.props.set(path))
+            }}/>)
+          } else {
+            value = cell.value
+          }
         }
       }
     }
-    return cell.value;
+    return <div style={style}>{value ? value : cell.value}</div>
   }
 
   dataRenderer = (def) => (cell,i,j) => {
@@ -123,6 +129,10 @@ class DatasheetTable extends Component {
   cellRenderer = (props) => {
     return <CellRenderer {...props} hideLineNumbers={this.props.hideLineNumbers}/>
   }
+
+  dataEditor = (props) => {
+    return <DataEditor {...props}/>
+  }
   
   render() {
     return (
@@ -134,6 +144,7 @@ class DatasheetTable extends Component {
           cellRenderer={this.cellRenderer}
           valueRenderer={this.valueFromCell}
           dataRenderer={this.dataRenderer(this.props.def)}
+          dataEditor={this.dataEditor}
           onCellsChanged={this.props.onCellsChanged}
         />
       </div>

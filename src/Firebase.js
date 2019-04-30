@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/storage';
 import _ from 'lodash'
 
 /* FIXME:
@@ -35,7 +36,77 @@ class Firebase {
 
       this.auth = app.auth();
       this.db = app.database();
+      this.storage = app.storage();
     }
+  }
+  // If any file already exist at the path, nothing happens
+  // If no file already exist there, it is put
+  stash = (rawPath,file) => {
+
+    const thisDb = this
+
+    // Create the file metadata
+    //var metadata = {
+    //  contentType: 'image/jpeg'
+    //};
+    
+    // Upload file and metadata to the object 'images/mountains.jpg'
+    const path = _.castArray(rawPath).join('/');
+    const infoPath = 'storage/'+path;
+
+    // Check if the file exists in the Real Time Database before uploading
+    this.loadPath(infoPath, function(snapshot) {
+      //if (snapshot && snapshot.exists()) return
+      if (snapshot) {
+        console.log('File is already stashed')
+        return
+      }
+      //if (snapshot.exists()) return
+   
+      // save the state of upload before really uploading to avoid messed up state 
+      thisDb.setPath(infoPath, 'uploading...', function(snapshot) {
+        const uploadTask = thisDb.storage.ref().child(path).put(file)//.put(file, metadata);
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.on('state_changed',
+          function(snapshot) {
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+              case 'paused':
+                console.log('Upload is paused');
+                break;
+              case 'running':
+                console.log('Upload is running');
+                break;
+            }
+          }, function(error) {
+        
+          // A full list of error codes is available at
+          // https://firebase.google.com/docs/storage/web/handle-errors
+          switch (error.code) {
+        case 'storage/unauthorized':
+              // User doesn't have permission to access the object
+              break;
+            case 'storage/canceled':
+              // User canceled the upload
+              break;
+            case 'storage/unknown':
+              // Unknown error occurred, inspect error.serverResponse
+              break;
+          }
+        }, function() {
+          // Upload completed successfully, now we can get the download URL
+          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+            thisDb.setPath(infoPath, downloadURL)
+            console.log('File available at', downloadURL);
+          });
+        });
+      });
+    });
+  }
+  loadPath = (path, callback) => {
+    this.db.ref(_.castArray(path).join('/')).once('value', s => (callback(s.val())))
   }
   load = (table,callback) => (
     this.db.ref(table).on('value', s => (callback(s.val())))

@@ -6,6 +6,7 @@
     "@babel/core": "7.2.2",
     "@nx-js/compiler-util": "github:nx-js/compiler-util",
     "@svgr/webpack": "4.1.0",
+    "abcjs": "^5.6.11",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
     "babel-jest": "23.6.0",
@@ -52,21 +53,22 @@
     "react-app-polyfill": "^0.2.1",
     "react-autocomplete": "^1.8.1",
     "react-contexify": "^4.0.2",
-    "react-datasheet": "^1.3.10",
+    "react-datasheet": "file:src/lib/react-datasheet",
     "react-dev-utils": "^7.0.3",
     "react-dnd": "^7.3.0",
     "react-dnd-html5-backend": "^7.2.0",
     "react-dom": "^16.8.3",
     "react-draggable": "^3.2.1",
+    "react-files": "^2.4.8",
     "react-grid-layout": "^0.16.6",
     "react-latex": "^1.2.0",
     "react-live-clock": "^3.1.0",
     "react-map-interaction": "^1.2.1",
+    "react-mathjax": "^1.0.1",
     "react-redux": "^6.0.1",
     "react-router-dom": "^4.3.1",
     "react-scale-text": "^1.2.2",
     "react-select": "^2.4.2",
-    "react-selection": "^0.1.0",
     "react-smooth-dnd": "^0.10.0",
     "redux": "^4.0.1",
     "resolve": "1.10.0",
@@ -85,10 +87,11 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "bundle": "node scripts/build.js && sed -i \"s/\\\/static/.\\\/static/g\" build/index.html && zip -r build.zip build && cp build.zip \"/media/windows/Documents and Settings/pasca/Desktop\"",
+    "bundle": "node scripts/build.js && sed -i \"s/\\/home.ico/.\\/home.ico/g\" build/index.html && sed -i \"s/\\/static/.\\/static/g\" build/index.html && zip -r build.zip build",
+    "copyWindow": "cp -R build \"/media/windows/Documents and Settings/pasca/Desktop\"",
+    "copyLaptop": "cp -R build \"../Downloads/\"",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js",
-    "cypress:open": "cypress open"
+    "test": "node scripts/test.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -99,9 +102,7 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "devDependencies": {
-    "cypress": "^3.2.0"
-  },
+  "devDependencies": {},
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
