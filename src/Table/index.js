@@ -2,12 +2,10 @@ import React from "react"
 import { connect } from "react-redux"
 import * as TABLE from '../constants/tables'
 import DatasheetTable from '../DatasheetTable'
-import FixedDataTable from '../FixedDataTable'
 
-import { RIEInput, RIETextArea } from 'riek'
+import { RIEInput } from 'riek'
 import { set } from '../actions'
 import _ from 'lodash'
-import Emoji from '../Emoji'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -18,11 +16,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   set: path => val => dispatch(set(path,val))
 })
-
-class DetailedTable extends React.Component {
-}
-class TablePreview extends React.Component {
-}
 
 class Table extends React.Component {
 
@@ -44,7 +37,7 @@ class Table extends React.Component {
         data[row] = empty
         rowVal = empty
       }
-      if (def.showLineNumbers != false) {
+      if (def.showLineNumbers !== false) {
         rowVal[def.layout[0][col-1]] = value
       } else {
         rowVal[def.layout[0][col]] = value
@@ -93,9 +86,6 @@ class Table extends React.Component {
       </div>
     );
   }
-
-  renderFixedDataTable = () => (
-    <FixedDataTable {...this.props} data={this.data()} def={this.def()}/>);
 
 }
 

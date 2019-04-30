@@ -10,7 +10,6 @@ import * as TABLES from './constants/tables'
 import { defsLoaded } from './actions'
 import Table from './Table'
 import Screen from './Screen'
-import Edit from './Edit'
 import router from './router'
 import StatusBar from './StatusBar'
 import SearchBar from './SearchBar'
@@ -30,7 +29,6 @@ const routes = [
   {path: '/index.html', action: () => (<Screen />), default: true},
   {path: '/', action: () => (<Screen />)},
   {path: '/tables/:id', action: (props) => (<Table {...props} />)},
-  {path: '/edit/:id', action: (props) => (<Edit {...props} />)},
 ]
 
 class App extends React.Component {
