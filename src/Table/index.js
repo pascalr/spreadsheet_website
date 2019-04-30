@@ -20,12 +20,11 @@ const mapDispatchToProps = dispatch => ({
 class Table extends React.Component {
 
   componentDidMount = () => {
-    this.props.db.loadRecord(TABLE.TABLES,this.id,this.props.set([TABLE.TABLES, this.id]))
+    this.props.db.loadRecord(TABLE.TABLES,this.props.id,this.props.set([TABLE.TABLES, this.props.id]))
   }
 
-  id = this.props.id || this.props.params.id;
-  def = () => this.props.defs[this.id];
-  data = () => this.props.dataRoot ? this.props.dataRoot[this.id] : null;
+  def = () => this.props.defs[this.props.id];
+  data = () => this.props.dataRoot ? this.props.dataRoot[this.props.id] : null;
   
   onCellsChanged = (changes, additions) => {
     let data = this.data() ? [...this.data()] : [[]]
@@ -44,7 +43,7 @@ class Table extends React.Component {
       }
       data[row] = rowVal;
     })
-    this.props.db.setRecord(TABLE.TABLES,this.id,data)
+    this.props.db.setRecord(TABLE.TABLES,this.props.id,data)
     this.setState({data})
   }
 
@@ -60,18 +59,19 @@ class Table extends React.Component {
   }
 
   onTitleChange = (props) => {
-    this.props.db.setAttr(TABLE.DEFS,this.id,'name',props.title,
-      this.props.set([TABLE.DEFS,this.id,'name'], props.title));
+    this.props.db.setAttr(TABLE.DEFS,this.props.id,'name',props.title,
+      this.props.set([TABLE.DEFS,this.props.id,'name'], props.title));
   }
   
   onIconChange = (props) => {
-    this.props.db.setAttr(TABLE.DEFS,this.id,'icon',props.icon,
-      this.props.set([TABLE.DEFS,this.id,'icon'], props.icon));
+    this.props.db.setAttr(TABLE.DEFS,this.props.id,'icon',props.icon,
+      this.props.set([TABLE.DEFS,this.props.id,'icon'], props.icon));
   }
 
   render() {
+    console.log('rendering table')
     //if (!this.props.dataRoot || !this.data() || !this.def()) {return null;}
-    if (!this.def()) {return null;}
+    if (!this.def()) {console.log('no def yet'); return null;}
     return (
       <div className="Table">
         { this.props.hideTableName ? null :

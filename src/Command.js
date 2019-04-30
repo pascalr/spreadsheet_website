@@ -77,7 +77,7 @@ const TableLink = connect(tableLinkProps,tableLinkDispatch)((props) => {
   if (props.defs == null) { return null }
   const defId = _.keys(props.defs).find(e => props.defs[e].name === props.name)
   if (defId) {
-    return <Link to={'tables/'+defId}>{props.defs[defId].name}</Link>
+    return <Link to={'/tables/'+defId}>{props.defs[defId].name}</Link>
   } else {
     if (props.name) {
       newTable(props.db,props.defs,props.name)

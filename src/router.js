@@ -16,13 +16,14 @@ function resolve(routes, pathname) {
   for (const route of routes) {
     const params = matchURI(route.path, pathname);
     if (!params) continue;
-    const result = route.action({ pathname, params });
+    const result = route.action({ ...params,pathname });
     if (result) return result;
   }
 
   const defaultRoute = routes.filter(r => (r.default))[0]
 
   if (defaultRoute) {
+    console.log('No route matches. Showing default route.')
     return defaultRoute.action({pathname})
   } else {
     const error = new Error('No route matches this location.');
