@@ -1,10 +1,8 @@
-import React, {useState} from 'react'
+import React from 'react'
 import _ from 'lodash'
 import { connect } from "react-redux"
 import Link from './Link'
 import { newTable } from "./actions"
-import Latex from 'react-latex'
-import parse from 'parenthesis'
 import Image from './Image'
 import ABCJS from 'abcjs/midi'
 
@@ -44,40 +42,6 @@ class PrintABC extends React.Component {
       </React.Fragment>
     )
   }
-}
-
-class PrintABCEditor extends React.Component {
-  componentDidMount() {
-    new ABCJS.Editor("abc", { canvas_id: "paper",
-                               generate_midi: true,
-				midi_id: "midi",
-				warnings_id: "warnings",
-				abcjsParams: {
-					generateInline: true,
-					generateDownload: true
-                                },
-			});
-  }
-  render() { return (<React.Fragment>
-<textarea id="abc" cols="80" rows="15" defaultValue={
-    "T: Cooley's\n" +
-    "M: 4/4\n" +
-    "L: 1/8\n" +
-    "R: reel\n" +
-    "K: Emin\n" +
-    "|:D2|EB{c}BA B2 EB|~B2 AB dBAG|FDAD BDAD|FDAD dAFD|\n" +
-    "EBBA B2 EB|B2 AB defg|afe^c dBAF|DEFD E2:|\n" +
-    "|:gf|eB B2 efge|eB B2 gedB|A2 FA DAFA|A2 FA defg|\n" +
-    "eB B2 eBgB|eB B2 defg|afe^c dBAF|DEFD E2:|"}>
-</textarea>
-
-<div id="warnings"></div>
-<div id="midi"></div>
-<div id="paper"></div>
-  </React.Fragment>) }
-}
-window.abcEditor = (content) => {
-  return <PrintABCEditor content={content}/>
 }
 
 window.abc = (content)  => {
@@ -127,23 +91,6 @@ const TableLink = connect(tableLinkProps,tableLinkDispatch)((props) => {
     }
   }
 })
-
-const cmd_fontSize = (args) => {
-  return <span style={{fontSize: args[0]}}>{args[1]}</span>
-}
-
-const cmd_table = (args) => {
-  return <TableLink name={args[0]}/>
-}
-const cmd_a = (args) => {
-  return <a href={args[0]}>{args.length > 1 ? args[1] : args[0]}</a>
-}
-
-const CMDS = {
-  fontSize: cmd_fontSize,
-  table: cmd_table,
-  a: cmd_a,
-}
 
 const makeAbsoluteURL = (url) => {
   const r = new RegExp('^(?:[a-z]+:)?//', 'i');
@@ -237,75 +184,6 @@ window.a = (link,name) => {
   return <a href={url}>{name ? name : link}</a>
 }
 
-  /*window.a = (link) => {
-  const r = new RegExp('^(?:[a-z]+:)?//', 'i');
-  const isAbsolutePath = r.test(link)
-  if (isAbsolutePath) {
-    window.location = link;
-  } else {
-    window.location = 'http://' + link;
-  }
-}*/
-
-// TODO: Pipes
-// eg: Hello | fontSize(40px)
-//
-// ca serait le genre de chose que ca serait nice faire des tests...
-// "1 + 1" => "2"
-// "tablea1!A1 + 10" => "12"
-// fontSize(10)(Hello!)
-// 'Hello!' | fontSize(10)
-// fontSize(10,Hello!)
-// fontSize(10)(color(red))(Hello)
-// Hello | fontSize(10) | color(red)
-class Command extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-  componentDidCatch(error, info) {
-    this.setState({ hasError: true });
-  }
-
-  parseArgs = (cmd) => {
-    const str = (cmd[1].length === 1) ? cmd[1][0]
-      : cmd[1][0]+this.parseArg(cmd[1][1])+cmd[1][2];
-    return str.split(',')
-  }
-
-  parseArg = (cmdStr) => {
-    const cmd = parse(cmdStr) // Parse parentheses
-    //const sub = cmd.slice(1)
-    //const vals = sub.split(',')
-    const first = cmd[0]
-    const lastChar = first.slice(-1)
-    if (lastChar === '(') {
-      const cmdName = first.slice(0,-1)
-      if (CMDS.hasOwnProperty(cmdName)) {
-        const args = this.parseArgs(cmd)
-        return CMDS[cmdName](args)
-      }
-    } else if (lastChar === '{') {
-      return 'TODO'
-    }
-    //const cmdName = vals[0]
-    return <span className='error'>unkown command</span>
-  }
-
-  parseCmd = () => {
-    const cmd = '' + this.props.cmd
-    if (!cmd) { return <span className='error'>empty cmd</span>}
-
-    if (cmd.charAt(0) === '=') {
-      return this.parseArg(cmd.slice(1))
-    } else {
-      return <span>{cmd}</span>
-    }
-  }
-
-  render = () => this.parseCmd()
-}
-
 const COMMANDS = {
   img: {desc: 'Renders an image with the html <img> tag.', args: [{name: 'src', type: 'string', desc: 'the url of the image'}]},
   tex: {desc: 'Renders a TeX equation using MathJax', args: [{name: 'formula', type: 'string', desc: 'the TeX formula'}]},
@@ -323,5 +201,3 @@ const COMMANDS = {
   a: {desc: '', args: [{name: '', type: '', desc: ''}]},
 }
 export { COMMANDS }
-
-export default Command
