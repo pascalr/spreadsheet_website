@@ -13,6 +13,8 @@ const Draggable = connect(dragLinkProps)((props) => {
   const [isDragging, setIsDragging] = useState(false)
   const [offsetX, setOffsetX] = useState(0)
   const [offsetY, setOffsetY] = useState(0)
+  const [dragX, setDragX] = useState(0)
+  const [dragY, setDragY] = useState(0)
   return (
     <DraggableCore
       onStop={(e, data) => {
@@ -23,6 +25,10 @@ const Draggable = connect(dragLinkProps)((props) => {
       }}
       handle='.dragHandle'
       grid={[5,5]}
+      onDrag={(e,data) => {
+        setDragX(e.pageX)
+        setDragY(e.pageY)
+      }}
       onStart={(e, data) => {
         setIsDragging(true)
         setOffsetX(data.x)
@@ -32,7 +38,16 @@ const Draggable = connect(dragLinkProps)((props) => {
     >
 
       <div className='draggingDiv'>
-        {isDragging ? null : props.children }
+        {isDragging ? null
+            /*<div style={{
+              width: 100, 
+              height: 100, 
+              left: dragX, 
+              top: dragY, 
+              backgroundColor: 'whitesmoke'}}>
+            </div>*/
+          : props.children
+        }
         </div>
       </DraggableCore>
     );
