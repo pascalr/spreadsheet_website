@@ -1,3 +1,7 @@
+Ctrl+s en editant une cellule:
+Reste en edit mode mais sauvegarde la valeur de la cellule.
+Les cellules qui dependent de celle la sont updater.
+
 Pourquoi un site maison?
 
 Peut-importe sur quelle ordinateur que tu te trouves, tu devrais pouvoir l'ouvrir et avoir accès à un espace personnel que tu contrôles. Sans publicité. Sans updates. Tes courriels, tes contacts, tes notes, tes favoris, ton historique, tes fichiers. Toutes tes informations devraient être encryptés et ne devraient jamais sortir de ton réseau lisible. Tu peux choisir de partager ce que tu veux. Tu peux collaborer pour des travaux.
