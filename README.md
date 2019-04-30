@@ -1,3 +1,17 @@
+Pourquoi un site maison?
+
+Peut-importe sur quelle ordinateur que tu te trouves, tu devrais pouvoir l'ouvrir et avoir accès à un espace personnel que tu contrôles. Sans publicité. Sans updates. Tes courriels, tes contacts, tes notes, tes favoris, ton historique, tes fichiers. Toutes tes informations devraient être encryptés et ne devraient jamais sortir de ton réseau lisible. Tu peux choisir de partager ce que tu veux. Tu peux collaborer pour des travaux.
+
+Tu dois être capable d'y avoir accès même sur un ordi public ou sur un ordi d'un ami, un ordi au travail ou à l'école. Ordi public pas yab pour la sécurité...
+
+La communauté open source a fais plein de choses. Mais c'est broche à foin et pas cohérent. Tout réunir.
+
+Présentemment, tu es pris par le provider du service à l'utiliser. Ce n'est pas nécessaire. Il existe plein d'alternatives gratuite. Tout ce que tu devrais avoir à faire est payer pour un serveur que tu utilises pour ton synchroniser et stocker tes fichiers.
+
+
+
+La publicité dérange. Les updates qui change les choses de places et brises des compatibilités.
+
 Un calendrier serait un [[]] genere par une fonction simple.
 sed
 zip -r build.zip build
