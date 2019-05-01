@@ -5,7 +5,7 @@ import { MenuProvider } from 'react-contexify'
 import SheetRenderer from './SheetRenderer'
 
 class MenuSheetRenderer extends React.Component {
-  render = () => {console.log(`layoutNb=${this.props.layoutNb}`); return (
+  render = () => {return (
     <React.Fragment>
       <MenuProvider id="tableMenu" data={{def: this.props.def, layoutNb: this.props.layoutNb}} className="tableMenu">
         <SheetRenderer {...this.props}/>

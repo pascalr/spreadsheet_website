@@ -1,3 +1,7 @@
+Peser sur delete ou backspace lorsque c'est un numero qui est selectionne suprime la ligne
+
+Dans le coin en haut a gauche, rajouter un bouton pour faire flipper la table.
+
 Des trucs semblables (ex: recette) sont base sur un template.
 Les templates seraient partager et integre meme a l'application.
 Le but etant de pouvoir partager facilement les informations si la meme structure est

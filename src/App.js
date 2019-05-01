@@ -43,33 +43,13 @@ class App extends React.Component {
   }
   
   render() {
-    this.props.history.push(this.props.route)
+    //this.props.history.push(this.props.route) FIXME: This does not work with File:///
     return (
       <div className="app">
         <div className="taskbars">
           <StatusBar/>
           <SearchBar/>
         </div>
-        <div onClick={() => {
-          this.props.db.load(TABLE.TABLES, (tables) => {
-            const tableIds = _.keys(tables)
-            const tablesToAdd = tableIds.reduce((newTables, id) => {
-              let valuesByColumn = {}
-              const rows = tables[id]
-              rows.forEach(r => {
-                const columnIds = _.keys(r)
-                columnIds.forEach(c => {
-                  valuesByColumn[c] = [...(valuesByColumn[c] || []), r[c]]
-                })
-              })
-              newTables[id] = valuesByColumn
-              return newTables
-            },{})
-            this.props.db.setPath([TABLE.TABLES], tablesToAdd)
-            console.log(tables)
-            console.log(tablesToAdd)
-          })
-        }}>Change table data</div>
         {router.resolve(routes, this.props.route)}
         <PreviewMenu />
         <TableMenu db={this.props.db} />

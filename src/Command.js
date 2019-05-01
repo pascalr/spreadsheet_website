@@ -5,7 +5,7 @@ import Link from './Link'
 import { newTable } from "./actions"
 import Image from './Image'
 import ABCJS from 'abcjs/midi'
-import MathJax from 'react-mathjax'
+//import MathJax from 'react-mathjax'
 import Table from './Table'
 
 import 'abcjs/abcjs-midi.css'
@@ -44,7 +44,7 @@ window.abc = (content)  => {
   return <PrintABC content={content}/>
 }
 
-window.exampleTex = () => { 
+  /*window.exampleTex = () => { 
     return (
         <MathJax.Provider>
             <div>
@@ -63,7 +63,7 @@ window.tex = (formula) => {
                 <MathJax.Node formula={formula} />
         </MathJax.Provider>
     );
-}
+}*/
 
 const HiddenTable = (props) => {
   const [hidden, setHidden] = useState(true)
@@ -125,7 +125,7 @@ window.$ = (address) => {
   const row = address.split(/[A-Z]+/)[1]
   const columnName = address.split(/[0-9]+/)[0]
   const colId = _.keys(def.cols).filter(k => (def.cols[k].name === columnName))
-  return table[row][colId]
+  return table[colId][row]
 }
 
 // TODO: Afficher les options dans l'autocomplete

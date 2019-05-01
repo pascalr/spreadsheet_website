@@ -138,10 +138,16 @@ class DatasheetTable extends Component {
   dataEditor = (props) => {
     return <DataEditor {...props}/>
   }
-  
+  keyDown = (e) => {
+    if (e.keyCode === 8 || e.keyCode === 46) {// backspace or delete
+      /*if (this.props.value.length <= 1) {
+        this.props.onChange(e.target.value)
+      }*/
+    }
+  } 
   render() {
     return (
-      <div>
+      <div onKeyDown={this.keyDown}>
         <ReactDataSheet
           data={this.generateGrid(this.props.def)}
           sheetRenderer={this.renderSheet}

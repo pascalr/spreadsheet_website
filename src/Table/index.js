@@ -69,7 +69,6 @@ class Table extends React.Component {
   }
 
   render() {
-    console.log('rendering table')
     //if (!this.props.dataRoot || !this.data() || !this.def()) {return null;}
     if (!this.def()) {console.log('no def yet'); return null;}
     return (
