@@ -83,7 +83,7 @@ class SheetRenderer extends React.PureComponent {
                   const col = def.cols[id]
                   return (
                     <Header key={col.name} col={col} def={def} className="data-header"
-                      columnIndex={index}
+                      columnIndex={index} layoutNb={this.props.layoutNb}
                       onColumnDrop={this.props.onColumnDrop(this.props.db, def)}
                     />
                   );

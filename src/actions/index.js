@@ -38,18 +38,18 @@ export function columnDropped(db, theDef, from, to) {
   return { type: ACTION.UPDATE_DEF, def };
 };
 
-function withColumn(theDef) {
+function withColumn(theDef,layoutNb) {
   const def = {...theDef}
   const id = uuidv1();
   const oldCols = def.cols || {}
   const cols = {...oldCols, [id]: {name: nextColumnName(def), type: ""}}
   def.cols = cols
-  def.layout[0] = [...def.layout[0], id]
+  def.layout[layoutNb] = [...def.layout[layoutNb], id]
   return def
 }
 
-export function addColumn(db, theDef) {
-  const def = withColumn(theDef)
+export function addColumn(db, theDef, layoutNb) {
+  const def = withColumn(theDef, layoutNb)
   db.setRecord(TABLE.DEFS,def.id,def)
   return { type: ACTION.UPDATE_DEF, def };
 };
@@ -71,7 +71,7 @@ function withoutColumn(theDef, columnId, layoutNb) {
     .filter(c => c !== columnId)
     .reduce((acc,k) => ({...acc, [k]: def.cols[k]}),{})
   def.cols = cols
-  def.layout[layoutNb] = def.layout[0].filter(e => e !== columnId)
+  def.layout[layoutNb] = def.layout[layoutNb].filter(e => e !== columnId)
   return def
 }
 

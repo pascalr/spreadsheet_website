@@ -10,8 +10,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  addColumn: (db) => ((props) => dispatch(addColumn(db, props.def))),
-  addColumnUnder: (db) => ((props) => dispatch(addColumnUnder(db, props.def))),
+  addColumn: (db) => (({props}) => dispatch(addColumn(db, props.def, props.layoutNb))),
+  addColumnUnder: (db) => (({props}) => dispatch(addColumnUnder(db, props.def, props.layoutNb))),
   //deleteTable: (props) => dispatch(deleteTable()),
 });
 
@@ -22,6 +22,7 @@ class TableMenu extends React.Component {
       <Menu id="tableMenu">
         <Item onClick={this.props.addColumn(db)}>add column</Item>
         <Item onClick={this.props.addColumnUnder(db)}>add column under</Item>
+        <Item onClick={({props}) => console.log(props)}>test</Item>
         {/*<Item onClick={this.props.deleteTable}>delete table</Item>*/}
         {/*(def && def.cols) ?
           <Submenu label="order by">

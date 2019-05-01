@@ -7,7 +7,7 @@ import './styles/react-grid-layout-style.css'
 import 'react-resizable/css/styles.css'
 
 import ColumnMenu from './Table/ColumnMenu'
-import TableMenu from './Table/ColumnMenu'
+import TableMenu from './Table/TableMenu'
 import * as TABLES from './constants/tables'
 import { defsLoaded } from './actions'
 import Table from './Table'
