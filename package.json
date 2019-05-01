@@ -53,7 +53,7 @@
     "react-app-polyfill": "^0.2.1",
     "react-autocomplete": "^1.8.1",
     "react-contexify": "^4.0.2",
-    "react-datasheet": "file:src/lib/react-datasheet",
+    "react-datasheet": "file:lib/react-datasheet",
     "react-dev-utils": "^7.0.3",
     "react-dnd": "^7.3.0",
     "react-dnd-html5-backend": "^7.2.0",
