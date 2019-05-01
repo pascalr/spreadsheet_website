@@ -15,6 +15,8 @@ import StatusBar from './StatusBar'
 import SearchBar from './SearchBar'
 import PreviewMenu from './menus/PreviewMenu'
 import * as PATH from './constants/paths'
+import TableMenu from './Table/TableMenu'
+import ColumnMenu from './Table/ColumnMenu'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -48,6 +50,8 @@ class App extends React.Component {
         </div>
         {router.resolve(routes, this.props.route)}
         <PreviewMenu />
+        <TableMenu db={this.props.db} />
+        <ColumnMenu db={this.props.db} />
       </div>
     );
   }
