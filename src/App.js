@@ -21,6 +21,7 @@ import * as PATH from './constants/paths'
 const mapStateToProps = state => ({
   db: state.db,
   route: _.get(state.cache.root, PATH.ROUTE),
+  history: state.history,
 })
 
 const mapDistpatchToProps = dispatch => ({
@@ -42,6 +43,7 @@ class App extends React.Component {
   }
   
   render() {
+    this.props.history.push(this.props.route)
     return (
       <div className="app">
         <div className="taskbars">

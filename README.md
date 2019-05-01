@@ -1,3 +1,15 @@
+Des trucs semblables (ex: recette) sont base sur un template.
+Les templates seraient partager et integre meme a l'application.
+Le but etant de pouvoir partager facilement les informations si la meme structure est
+utilise.
+
+You can publish as HTML to host on a private website.
+You can publish as pdf to distribute and print.
+
+A1 refere a $A$1 comme dans Excel.
+Si tu es dans B2 et tu veux referer a A1 relativement c'est (A-1) A-1, A+1, ...
+Fuck ca marche pas pour les colonnes...
+
 Ctrl+s en editant une cellule:
 Reste en edit mode mais sauvegarde la valeur de la cellule.
 Les cellules qui dependent de celle la sont updater.
@@ -81,51 +93,9 @@ Dans la barre de controle d'un preview, mettre un background beau, mais qui indi
 
 Idee pas rapport: Dans le but d'aider l'environment, travailler à distance. Mais, pas à la maison. Faire un office space où le monde travail à distance dans le même building. Idéalement 1 aux 2 3 coins de rues, pour être proche des maisons où le monde travail. Ça comblerait le besoin de social du monde, et l'office space pourrait fournir des salles de meeting que tu peux réserver.
 
-FIXME: Il y a un bug quand il y a un menu provider dans un autre. Pourtant avec ca marchait. je sais pas...
+FEATURE REQUESTS:
 
-Idealement, meme pas de click gauche...
-
-TODO: Chicken and egg. An egg has a chicken. A chicken has an egg.
-Il ne faut pas que mon programme plante, malgre une def circulaire.
-
-TODO: Possibilite d'un vrai search bar. Au lieu de juste etre un autocomplete, le search bar te donne live des resultats avec des description pi tout, comme google.
-
-Une commande est un objet javascript. Tu peux lui rajouter des valeurs a onClick, onDrag, ...
-
-https://drivy.engineering/setting-up-vim-for-react/
-
-Favicon image
-Studiohack has the "thorough" approach but heres a short hack:
-
-    Enter the domain name like https://superuser.com/(must end with '/')
-    Add favicon.ico to the end
-    Press enter (this should be in the URL: https://superuser.com/favicon.ico)
-    Right click on the image and click "save image as"
-
-ca serait nice de pouvoir naviguer les elements reacts selon lequel contient lequel
-
-TODO:
-(Dans longtemps): Mettre toutes les donnees sous un utilisateur dans firebase.
-
-AVOIR UNE BARRE DE COMMANDE POUR AVOIR LE CONTROLE A FOND.
-
-mapDispatchToProps is so very ugly
-
-https://medium.freecodecamp.org/you-might-not-need-react-router-38673620f3d
-
-Toutefois, ce qui est innovant est de pouvoir imbriquer une table dans une autre table. Dans la vue en tout cas. Le modele existe encore quand meme par lui-meme, mais on le visualise a l'interieur de la table.
-
-Le feature le plus important je crois est le zoom infini.
-
-Ce qui innovateur est de naviguer en se deplacant et zoomant dans un monde facile pour notre memoire a naviguer.
-
-J'ai deux problemes que je veux resoudre:
-
-- Avoir une base do donnees.
-- Naviguer dans cette base de donnees.
-
-Ca serait nice de pouvoir avoir une vue isometrique aussi pas juste quadrille.
-Une vue comme age of empires ou tous les jeux videos. Ca serait du pseudo 3d! Ca serait
-pas mal plus beau comme home.
-
-https://css-tricks.com/snippets/css/complete-guide-grid/
+1. Avoir une barre de commande console.
+2. Pouvoir avec des controles comme avec vi.
+3. Possibilite d'un vrai search bar. Au lieu de juste etre un autocomplete, le search bar te donne live des resultats avec des description pi tout, comme google.
+4. Flèche par en bas doit rajouter des cases.
