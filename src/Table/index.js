@@ -42,6 +42,20 @@ class Table extends React.Component {
     this.setState({data})
   }
 
+  onDeleteLines = (layoutNb, start, end) => {
+    let data = this.data()
+    const def = this.def()
+
+    const colIds = def.layout[layoutNb];
+    const mTable = colIds.reduce((nTable, colId) => {
+      nTable[colId] = [...data[colId].slice(0,start), ...data[colId].slice(end+1)]
+      return nTable
+    },{})
+
+    this.props.db.setRecord(TABLE.TABLES,this.props.id,mTable)
+    this.setState({data})
+  }
+
   renderDatasheetTable = () => {
     const def = this.props.defs[this.props.id];
     return def.layout.map((e,i) => {
@@ -51,6 +65,7 @@ class Table extends React.Component {
           def={def}
           table={this.data()}
           onCellsChanged={this.onCellsChanged(i)}
+          onDeleteLines={this.onDeleteLines}
           hideLineNumbers={this.props.hideLineNumbers}
           layoutNb={i}
           {...this.props}

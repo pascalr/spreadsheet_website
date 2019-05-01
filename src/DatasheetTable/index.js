@@ -30,7 +30,7 @@ class DatasheetTable extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {reload: false}
+    this.state = {reload: false, selection: {}}
   }
   
   renderSheet = (props) => (
@@ -138,11 +138,18 @@ class DatasheetTable extends Component {
   dataEditor = (props) => {
     return <DataEditor {...props}/>
   }
+  handleSelect = (sel) => { // {start,end}
+    this.setState({selection: {...sel}})
+  }
   keyDown = (e) => {
     if (e.keyCode === 8 || e.keyCode === 46) {// backspace or delete
-      /*if (this.props.value.length <= 1) {
-        this.props.onChange(e.target.value)
-      }*/
+      const start = this.state.selection.start
+      const end = this.state.selection.end
+      if (start && (start.j === 0 || end.j === 0)) { // Deletes lines
+        const startI = Math.min(start.i,end.i)
+        const endI = Math.max(start.i,end.i)
+        this.props.onDeleteLines(this.props.layoutNb, startI, endI)
+      }
     }
   } 
   render() {
@@ -157,6 +164,7 @@ class DatasheetTable extends Component {
           dataRenderer={this.dataRenderer(this.props.def)}
           dataEditor={this.dataEditor}
           onCellsChanged={this.props.onCellsChanged}
+          onSelect={this.handleSelect}
         />
       </div>
     );
