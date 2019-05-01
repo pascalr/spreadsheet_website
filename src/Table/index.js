@@ -28,7 +28,7 @@ class Table extends React.Component {
   def = () => this.props.defs[this.props.id];
   data = () => this.props.dataRoot ? this.props.dataRoot[this.props.id] : null;
   
-  onCellsChanged = (changes, additions) => {
+  onCellsChanged = (layoutNb) => (changes, additions) => {
     let data = this.data() ? [...this.data()] : [[]]
     const def = this.def()
     changes.concat(additions || []).forEach(({cell, row, col, value}) => {
@@ -39,9 +39,9 @@ class Table extends React.Component {
         rowVal = empty
       }
       if (def.showLineNumbers !== false) {
-        rowVal[def.layout[0][col-1]] = value
+        rowVal[def.layout[layoutNb][col-1]] = value
       } else {
-        rowVal[def.layout[0][col]] = value
+        rowVal[def.layout[layoutNb][col]] = value
       }
       data[row] = rowVal;
     })
@@ -54,10 +54,10 @@ class Table extends React.Component {
     return def.layout.map((e,i) => {
       return (
         <DatasheetTable
-          def={this.def()}
           key={'DatasheetTable'+i}
+          def={def}
           table={this.data()}
-          onCellsChanged={this.onCellsChanged}
+          onCellsChanged={this.onCellsChanged(i)}
           hideLineNumbers={this.props.hideLineNumbers}
           layoutNb={i}
           {...this.props}
@@ -82,7 +82,7 @@ class Table extends React.Component {
     return (
       <div className="Table">
         { this.props.hideTableName ? null :
-          <React.Fragment>
+          <div style={{textAlign: 'center'}}>
           <span className='title'>
             <RIEInput
               value={this.def().name}
@@ -98,7 +98,7 @@ class Table extends React.Component {
             this.props.set(PATH.ROUTE)('/')
           }}
           className='link'>🗑</span>
-        </React.Fragment>}
+      </div>}
         {this.renderDatasheetTable()}
       </div>
     );

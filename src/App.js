@@ -6,6 +6,8 @@ import 'react-contexify/dist/ReactContexify.min.css'
 import './styles/react-grid-layout-style.css'
 import 'react-resizable/css/styles.css'
 
+import ColumnMenu from './Table/ColumnMenu'
+import TableMenu from './Table/ColumnMenu'
 import * as TABLES from './constants/tables'
 import { defsLoaded } from './actions'
 import Table from './Table'
@@ -15,8 +17,6 @@ import StatusBar from './StatusBar'
 import SearchBar from './SearchBar'
 import PreviewMenu from './menus/PreviewMenu'
 import * as PATH from './constants/paths'
-import TableMenu from './Table/TableMenu'
-import ColumnMenu from './Table/ColumnMenu'
 
 const mapStateToProps = state => ({
   db: state.db,

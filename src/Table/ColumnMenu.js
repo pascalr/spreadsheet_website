@@ -11,27 +11,28 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteColumn: (db,def) => ({props}) => dispatch(deleteColumn(db,def,props.id)),
+  deleteColumn: (db) => ({props}) => dispatch(deleteColumn(db,props.def,props.id,props.layoutNb)),
   set: path => val => dispatch(set(path,val)),
 });
 
 class ColumnMenu extends React.Component {
 
-  onTypeChange = (def, type) => ({props}) => {
-    const path = [TABLE.DEFS,def.id,'cols',props.id,'type']
+  onTypeChange = (type) => ({props}) => {
+    const path = [TABLE.DEFS,props.def.id,'cols',props.id,'type']
     this.props.db.setPath(path,type, this.props.set(path, type));
   }
 
   render() {
-    const {db, def} = this.props;
+    console.log('----------------------------------------------------')
+    const {db} = this.props;
     return(
       <Menu id="columnMenu">
-        <Item onClick={this.props.deleteColumn(db,def)}>delete column</Item>
+        <Item onClick={this.props.deleteColumn(db)}>delete column</Item>
         <Submenu label="type">
-          <Item onClick={this.onTypeChange(def,'')}>none</Item>
-          <Item onClick={this.onTypeChange(def,'link')}>link</Item>
-          <Item onClick={this.onTypeChange(def,'checkbox')}>checkbox</Item>
-          <Item onClick={this.onTypeChange(def,'document')}>document</Item>
+          <Item onClick={this.onTypeChange('')}>none</Item>
+          <Item onClick={this.onTypeChange('link')}>link</Item>
+          <Item onClick={this.onTypeChange('checkbox')}>checkbox</Item>
+          <Item onClick={this.onTypeChange('document')}>document</Item>
         </Submenu>
       </Menu>
     );

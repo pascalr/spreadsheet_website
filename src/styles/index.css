@@ -149,7 +149,6 @@ div.menu {
 
 .rTable {
   table-layout:fixed;
-  margin-bottom: 10px;
 }
 .rTableCell, .rTableHead {
   overflow:hidden;

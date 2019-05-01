@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { MenuProvider } from 'react-contexify'
 import { columnDropped } from '../actions'
 import { colDragSource, colDropTarget } from './drag-drop.js'
-import ColumnMenu from '../Table/ColumnMenu'
 import { RIEInput } from 'riek'
 import { set } from '../actions'
 import * as TABLE from '../constants/tables'
@@ -47,7 +46,7 @@ class HeaderBase extends React.Component {
         connectDragSource(
           <div className={className} style={{ width: col.width }}>
             <MenuProvider id="columnMenu"
-              data={{id: col.id}}
+              data={{id: col.id, layoutNb: this.props.layoutNb, def}}
               className="columnMenu menu"
             >
               <ColumnName col={col} def={def}/>
@@ -80,7 +79,7 @@ class SheetRenderer extends React.PureComponent {
             />
             {
               (def.layout && def.cols) ?
-                def.layout[0].map((id, index) => {
+                def.layout[this.props.layoutNb].map((id, index) => {
                   const col = def.cols[id]
                   return (
                     <Header key={col.name} col={col} def={def} className="data-header"

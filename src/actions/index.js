@@ -54,13 +54,24 @@ export function addColumn(db, theDef) {
   return { type: ACTION.UPDATE_DEF, def };
 };
 
-function withoutColumn(theDef, columnId) {
+export function addColumnUnder(db, theDef) {
+  const def = {...theDef}
+  const id = uuidv1();
+  const oldCols = def.cols || {}
+  const cols = {...oldCols, [id]: {name: nextColumnName(def), type: ""}}
+  def.cols = cols
+  def.layout[def.layout.length] = [id]
+  db.setRecord(TABLE.DEFS,def.id,def)
+  return { type: ACTION.UPDATE_DEF, def };
+}
+
+function withoutColumn(theDef, columnId, layoutNb) {
   const def = {...theDef}
   const cols = _.keys(def.cols)
     .filter(c => c !== columnId)
     .reduce((acc,k) => ({...acc, [k]: def.cols[k]}),{})
   def.cols = cols
-  def.layout[0] = def.layout[0].filter(e => e !== columnId)
+  def.layout[layoutNb] = def.layout[0].filter(e => e !== columnId)
   return def
 }
 
@@ -69,17 +80,17 @@ export function deletePath(db, path) {
   return { type: ACTION.CACHE.SET, path: ["root", ..._.castArray(path)], val: null };
 }
 
-export function deleteColumn(db, theDef, columnId) {
-  const def = withoutColumn(theDef, columnId)
+export function deleteColumn(db, theDef, columnId, layoutNb) {
+  const def = withoutColumn(theDef, columnId, layoutNb)
   db.setRecord(TABLE.DEFS,def.id,def)
   return { type: ACTION.UPDATE_DEF, def };
 };
 
-export function deleteTable(db, id) {
+/*export function deleteTable(db, id) {
   db.deleteRecord(TABLE.DEFS,id)
   db.deleteRecord(TABLE.TABLES,id)
   return { type: ACTION.DELETE_TABLE, id };
-};
+};*/
 
 export function modelLoaded(path, val) {
   return { type: ACTION.CACHE.SET, path, val };
