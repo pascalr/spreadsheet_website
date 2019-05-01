@@ -52,7 +52,7 @@ class Table extends React.Component {
       return nTable
     },{})
 
-    this.props.db.setRecord(TABLE.TABLES,this.props.id,mTable)
+    this.props.db.setRecord(TABLE.TABLES,this.props.id,{...data, ...mTable})
     this.setState({data})
   }
 
