@@ -29,21 +29,14 @@ class Table extends React.Component {
   data = () => this.props.dataRoot ? this.props.dataRoot[this.props.id] : null;
   
   onCellsChanged = (layoutNb) => (changes, additions) => {
-    let data = this.data() ? [...this.data()] : [[]]
+    let data = this.data() ? {...this.data()} : {}
     const def = this.def()
     changes.concat(additions || []).forEach(({cell, row, col, value}) => {
-      let rowVal = {...data[row]}
-      if (!rowVal) {
-        let empty = _.keys(def.cols).reduce((acc,currVal) => {acc[currVal.name] = ""; return acc}, {})
-        data[row] = empty
-        rowVal = empty
-      }
-      if (def.showLineNumbers !== false) {
-        rowVal[def.layout[layoutNb][col-1]] = value
-      } else {
-        rowVal[def.layout[layoutNb][col]] = value
-      }
-      data[row] = rowVal;
+
+      let colId = def.layout[layoutNb][col-1]
+      const dataCol = [...(data[colId] || [])]
+      dataCol[row] = value
+      data[colId] = dataCol
     })
     this.props.db.setRecord(TABLE.TABLES,this.props.id,data)
     this.setState({data})

@@ -8,7 +8,7 @@ import 'react-resizable/css/styles.css'
 
 import ColumnMenu from './Table/ColumnMenu'
 import TableMenu from './Table/TableMenu'
-import * as TABLES from './constants/tables'
+import * as TABLE from './constants/tables'
 import { defsLoaded } from './actions'
 import Table from './Table'
 import Screen from './Screen'
@@ -38,7 +38,7 @@ class App extends React.Component {
   constructor(props) {
     super(props)
 
-    this.props.db.load(TABLES.DEFS, this.props.defsLoaded)
+    this.props.db.load(TABLE.DEFS, this.props.defsLoaded)
     this.state = {path: "/"}
   }
   
@@ -50,6 +50,26 @@ class App extends React.Component {
           <StatusBar/>
           <SearchBar/>
         </div>
+        <div onClick={() => {
+          this.props.db.load(TABLE.TABLES, (tables) => {
+            const tableIds = _.keys(tables)
+            const tablesToAdd = tableIds.reduce((newTables, id) => {
+              let valuesByColumn = {}
+              const rows = tables[id]
+              rows.forEach(r => {
+                const columnIds = _.keys(r)
+                columnIds.forEach(c => {
+                  valuesByColumn[c] = [...(valuesByColumn[c] || []), r[c]]
+                })
+              })
+              newTables[id] = valuesByColumn
+              return newTables
+            },{})
+            this.props.db.setPath([TABLE.TABLES], tablesToAdd)
+            console.log(tables)
+            console.log(tablesToAdd)
+          })
+        }}>Change table data</div>
         {router.resolve(routes, this.props.route)}
         <PreviewMenu />
         <TableMenu db={this.props.db} />

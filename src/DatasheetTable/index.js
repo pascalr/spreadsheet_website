@@ -38,23 +38,20 @@ class DatasheetTable extends Component {
   )
   
   generateGrid = (def) => {
-    let colIds = def.layout[this.props.layoutNb];
-    let rawGrid = (this.props.table || []).filter(e => e ? 1 : 0).map((row, j) => (
-                              colIds.map(col => ({value: row[col]}) )
-    ))
-    // Il faut filtrer parce que on a les lignes vides des autres layouts...
-    rawGrid = rawGrid.filter(function(e) {
-      let i;
-      for (i = 0; i < e.length; i++) {
-        if (e[i].value) { return true }
-      }
-      return false
-    })
+    const {table, layoutNb} = this.props
+    const colIds = def.layout[layoutNb];
+    const nb = table ? Math.max(...colIds.map(id => table[id] ? table[id].length || 0 : 0)) : 0
+
+    const mapColIdsToValues = function(id) {
+      return {value: table[id] ? table[id][i] || '' : ''}
+    }
+
     let emptyLine = new Array(colIds.length).fill({value: ""})
     let grid = []
-    for (var i = 0; i < rawGrid.length; ++i) {
-       grid.push(rawGrid[i] ? rawGrid[i] : emptyLine)
+    for (var i = 0; i < nb; ++i) {
+      grid.push(colIds.map(mapColIdsToValues))
     }
+
     grid.push(emptyLine)
     // Add a column for line numbers
     grid = grid.map((l,j) => [{readOnly: true, value:j+1}, ...l])
