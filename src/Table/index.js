@@ -50,14 +50,19 @@ class Table extends React.Component {
   }
 
   renderDatasheetTable = () => {
-    return (
+    const def = this.props.defs[this.props.id];
+    return def.layout.map((e,i) => {
+      return (
         <DatasheetTable
           def={this.def()}
+          key={'DatasheetTable'+i}
           table={this.data()}
           onCellsChanged={this.onCellsChanged}
           hideLineNumbers={this.props.hideLineNumbers}
+          layoutNb={i}
           {...this.props}
         />);
+    })
   }
 
   onTitleChange = (props) => {

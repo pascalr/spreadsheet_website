@@ -38,7 +38,7 @@ class DatasheetTable extends Component {
   )
   
   generateGrid = (def) => {
-    let colIds = def.layout[0];
+    let colIds = def.layout[this.props.layoutNb];
     let rawGrid = (this.props.table || []).filter(e => e ? 1 : 0).map((row, j) => (
                               colIds.map(col => ({value: row[col]}) )
                         ))
@@ -54,7 +54,7 @@ class DatasheetTable extends Component {
   }
 
   column = (col) => {
-    return this.cols()[this.props.def.layout[0][col-1]]
+    return this.cols()[this.props.def.layout[this.props.layoutNb][col-1]]
   }
 
   cols = () => ((this.props.def || {}).cols)
@@ -121,7 +121,7 @@ class DatasheetTable extends Component {
 
   dataRenderer = (def) => (cell,i,j) => {
     return cell.value;
-    let colIds = def.layout[0];
+    let colIds = def.layout[this.props.layoutNb];
     let val = (this.props.table || []).filter(e => e && e === colIds[j] ? 1 : 0)[i]
     return val;
   }
