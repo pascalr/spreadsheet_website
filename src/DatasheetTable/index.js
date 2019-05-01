@@ -41,7 +41,15 @@ class DatasheetTable extends Component {
     let colIds = def.layout[this.props.layoutNb];
     let rawGrid = (this.props.table || []).filter(e => e ? 1 : 0).map((row, j) => (
                               colIds.map(col => ({value: row[col]}) )
-                        ))
+    ))
+    // Il faut filtrer parce que on a les lignes vides des autres layouts...
+    rawGrid = rawGrid.filter(function(e) {
+      let i;
+      for (i = 0; i < e.length; i++) {
+        if (e[i].value) { return true }
+      }
+      return false
+    })
     let emptyLine = new Array(colIds.length).fill({value: ""})
     let grid = []
     for (var i = 0; i < rawGrid.length; ++i) {
