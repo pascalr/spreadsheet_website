@@ -125,7 +125,7 @@ window.$ = (address) => {
   const row = address.split(/[A-Z]+/)[1]
   const columnName = address.split(/[0-9]+/)[0]
   const colId = _.keys(def.cols).filter(k => (def.cols[k].name === columnName))
-  return table[colId][row]
+  return table[colId][row-1]
 }
 
 // TODO: Afficher les options dans l'autocomplete
@@ -175,6 +175,10 @@ window.bold = (str) => {
 
 window.center = (str) => {
   return <div style={{textAlign: 'center'}}>{str}</div> 
+}
+
+window.lineThrough = (str) => {
+  return <div style={{textDecoration: 'line-through'}}>{str}</div>
 }
 
 window.favicon = (site) => {

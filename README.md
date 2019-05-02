@@ -1,6 +1,5 @@
-Peser sur delete ou backspace lorsque c'est un numero qui est selectionne suprime la ligne
-
 Dans le coin en haut a gauche, rajouter un bouton pour faire flipper la table.
+Le nom des colonnes deviennet des rangees.
 
 Des trucs semblables (ex: recette) sont base sur un template.
 Les templates seraient partager et integre meme a l'application.
@@ -29,7 +28,6 @@ La communauté open source a fais plein de choses. Mais c'est broche à foin et 
 Présentemment, tu es pris par le provider du service à l'utiliser. Ce n'est pas nécessaire. Il existe plein d'alternatives gratuite. Tout ce que tu devrais avoir à faire est payer pour un serveur que tu utilises pour ton synchroniser et stocker tes fichiers.
 
 
-
 La publicité dérange. Les updates qui change les choses de places et brises des compatibilités.
 
 !!!POUVOIR VOIR LE RESULTAT DE LA FORMULE LIVE EN L'EDITANT!!!!
@@ -43,23 +41,19 @@ if (hasComponent && (isEditing)) {
 enlever hasComponent
 
 Un calendrier serait un [[]] genere par une fonction simple.
-sed
-zip -r build.zip build
+
+vi controls to add:
+- j,k,l,; -> deplacement
+- y -> copier
+- v -> selectionner
+- i -> insert
+- : -> focus dans la barre de commande
 
 TODO:
-x select previews
-x delete previews
-x drag and drop previews
-x resize previews
-x hide line numbers
-- drag and drop tables on desktop
-- single file able to run everywhere
-- think about how to structure, table inside table?, columns defined by a function?
 - // Inside command is used to print the command: a('https://youtube.com') // youtube
 - link to other cells
-- petit carré en bas qui copy dans les autres cellules
+- petit carré en bas qui copy dans les autres cellules (ou bien, version control vi, une lettre et copier avec le clavier etc.)
 - resize columns
-- quand copy une cellule, modifier les references aux autres cellules relativement
 
 https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Headless_mode
 

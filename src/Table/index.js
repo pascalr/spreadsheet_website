@@ -35,7 +35,7 @@ class Table extends React.Component {
 
       let colId = def.layout[layoutNb][col-1]
       const dataCol = [...(data[colId] || [])]
-      dataCol[row] = value
+      dataCol[row] = value || ''
       data[colId] = dataCol
     })
     this.props.db.setRecord(TABLE.TABLES,this.props.id,data)
