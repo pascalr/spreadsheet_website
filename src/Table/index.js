@@ -38,6 +38,8 @@ class Table extends React.Component {
       dataCol[row] = value || ''
       data[colId] = dataCol
     })
+    console.log('onCellsChanged')
+    console.log(data)
     this.props.db.setRecord(TABLE.TABLES,this.props.id,data)
     this.setState({data})
   }

@@ -206,6 +206,7 @@ class PreviewSelection extends React.Component {
                 if (ids && ids.length === 1) {
                   preview.tableId = ids[0]
                 } else {
+                  // FIXME: This is not even dispatched...
                   newTable(this.props.db,this.props.defs,null,this.state.tempPreview.tableId)
                 }
                 this.props.setDb(this.props.db, path, preview);

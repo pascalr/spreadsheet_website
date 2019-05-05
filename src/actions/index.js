@@ -12,14 +12,14 @@ export function toggleEditMode() {
 };
 
 const EMPTY_DEF = {backgroundColor: "", showLineNumbers: true, layout: [[""]]}
-export function newTable(db, defs, theName,theId) {
+export function newTable(db, defs, theName,theId,callback) {
   const name = theName || Helper.nextTableName(defs)
   const id = theId || uuidv1();
   const idCol = uuidv1();
   const def = {...EMPTY_DEF, name, cols: {}}
   def.cols[idCol] = {name: "A", id: idCol}
   def.layout = [[idCol]]
-  db.setRecord(TABLE.DEFS,id,def)
+  db.setRecord(TABLE.DEFS,id,def,callback)
   return { type: ACTION.NEW_TABLE, name: id, def };
 };
 

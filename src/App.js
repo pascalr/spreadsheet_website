@@ -17,6 +17,15 @@ import StatusBar from './StatusBar'
 import SearchBar from './SearchBar'
 import PreviewMenu from './menus/PreviewMenu'
 import * as PATH from './constants/paths'
+import FAB from './FAB'
+
+const abStyles = {
+  position: 'absolute',
+  top: '-110px',
+  right: '100%',
+  padding: '18px',
+  boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+};
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -52,6 +61,7 @@ class App extends React.Component {
         </div>
         {router.resolve(routes, this.props.route)}
         <PreviewMenu />
+        <FAB/>
         <TableMenu db={this.props.db} />
         <ColumnMenu db={this.props.db} />
       </div>
