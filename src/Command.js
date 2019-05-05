@@ -123,22 +123,28 @@ const addDotCom = (url) => {
 // $('')
 window.$ = (address) => {
   const {table,def,i} = window.context
-  let row = null
-  let columnName = null
-  if (address.includes('+') || address.includes('-')) {
-    const sep = address.split(/[\\+\\-]+/)
-    columnName = sep[0]
-    row = parseInt(sep[1])
-  } else {
-    row = parseInt(address.split(/[A-Z]+/)[1])
-    columnName = address.split(/[0-9]+/)[0]
+  let row = ''
+  let columnName = '' 
+  let addRelative = false
+  let susRelative = false
+  for (let k = 0; k < address.length; k++) {
+    if (address[k] === '+') {
+      addRelative = true
+    } else if (address[k] === '-') {
+      susRelative = true
+    } else if (isNaN(address[k])) {
+      columnName += address[k]
+    } else {
+      row += address[k]
+    }
   }
+  row = parseInt(row)
 
   const colId = _.keys(def.cols).filter(k => (def.cols[k].name === columnName))
   // Handles relative path
-  if (address.includes('+')) {
+  if (addRelative) {
     return table[colId][i+row]
-  } else if (address.includes('-')) {
+  } else if (susRelative) {
     return table[colId][i-row]
   } else if (row === 0) {
     return table[colId][i]
