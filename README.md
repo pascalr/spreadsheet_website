@@ -17,6 +17,12 @@ Ctrl+s en editant une cellule:
 Reste en edit mode mais sauvegarde la valeur de la cellule.
 Les cellules qui dependent de celle la sont updater.
 
+Tu peux diviser les cellules. En commancant avec /. La cellule devient une liste. Tu
+peux avoir une liste dans une liste dans une liste etc.
+
+Tu peux rajouter des commentaires aussi en commmencant avec #. Ces commentaire ne seront
+pas pris en compte lorsque tu les choisis. c pas clair
+
 Pourquoi un site maison?
 
 Peut-importe sur quelle ordinateur que tu te trouves, tu devrais pouvoir l'ouvrir et avoir accès à un espace personnel que tu contrôles. Sans publicité. Sans updates. Tes courriels, tes contacts, tes notes, tes favoris, ton historique, tes fichiers. Toutes tes informations devraient être encryptés et ne devraient jamais sortir de ton réseau lisible. Tu peux choisir de partager ce que tu veux. Tu peux collaborer pour des travaux.

@@ -17,18 +17,11 @@ const tex = `f(x) = \\int_{-\\infty}^\\infty
 
 class PrintABC extends React.Component {
   componentDidMount = () => {
-    var ex = "T: Cooley's\n" +
-    "M: 4/4\n" +
-    "L: 1/8\n" +
-    "R: reel\n" +
-    "K: Emin\n" +
-    "|:D2|EB{c}BA B2 EB|~B2 AB dBAG|FDAD BDAD|FDAD dAFD|\n" +
-    "EBBA B2 EB|B2 AB defg|afe^c dBAF|DEFD E2:|\n" +
-    "|:gf|eB B2 efge|eB B2 gedB|A2 FA DAFA|A2 FA defg|\n" +
-    "eB B2 eBgB|eB B2 defg|afe^c dBAF|DEFD E2:|";
-    const content = this.props.content || ex
+    const {content, renderMidi} = this.props
     ABCJS.renderAbc(this.div, content);
-    ABCJS.renderMidi(this.divMidi, content);
+    if (renderMidi) {
+      ABCJS.renderMidi(this.divMidi, content);
+    }
   }
   render() {
     return (
@@ -40,8 +33,12 @@ class PrintABC extends React.Component {
   }
 }
 
+window.abcLine = (header, line) => {
+  return <PrintABC content={header + '\n' + line}/>
+}
+
 window.abc = (content)  => {
-  return <PrintABC content={content}/>
+  return <PrintABC content={content} renderMidi={true}/>
 }
 
   /*window.exampleTex = () => { 
@@ -120,12 +117,34 @@ const addDotCom = (url) => {
   return (hasDot) ? url : url + '.com';
 }
 
+// The address can be absolute: $('A1')
+// The address can be relative: $('A+1'), $('A-1')
+// $('A0') is relative, since the first line starts at 1, not 0
+// $('')
 window.$ = (address) => {
-  const {table,def} = window.context
-  const row = address.split(/[A-Z]+/)[1]
-  const columnName = address.split(/[0-9]+/)[0]
+  const {table,def,i} = window.context
+  let row = null
+  let columnName = null
+  if (address.includes('+') || address.includes('-')) {
+    const sep = address.split(/[\\+\\-]+/)
+    columnName = sep[0]
+    row = parseInt(sep[1])
+  } else {
+    row = parseInt(address.split(/[A-Z]+/)[1])
+    columnName = address.split(/[0-9]+/)[0]
+  }
+
   const colId = _.keys(def.cols).filter(k => (def.cols[k].name === columnName))
-  return table[colId][row-1]
+  // Handles relative path
+  if (address.includes('+')) {
+    return table[colId][i+row]
+  } else if (address.includes('-')) {
+    return table[colId][i-row]
+  } else if (row === 0) {
+    return table[colId][i]
+  } else { // Or return absolute path
+    return table[colId][row-1]
+  }
 }
 
 // TODO: Afficher les options dans l'autocomplete

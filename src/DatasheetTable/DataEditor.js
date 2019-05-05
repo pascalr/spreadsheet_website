@@ -8,7 +8,6 @@ export default class DataEditor extends PureComponent {
     super(props)
     this.handleChange = this.handleChange.bind(this)
     this.renderTextArea = this.renderTextArea.bind(this)
-    this.renderAutocomplete = this.renderAutocomplete.bind(this)
     this.onKeyDown = this.onKeyDown.bind(this)
   }
 
@@ -43,29 +42,28 @@ export default class DataEditor extends PureComponent {
     </div>)
   }
 
-  renderAutocomplete () {
+  renderList = (props) => {
+    const { value, onKeyDown } = this.props
     return (
-      <div onKeyDown={this.onKeyDown}>
-        <Autocomplete
-          getItemValue={(item) => item}
-          items={_.keys(COMMANDS)}
-          renderItem={(item, isHighlighted) => (
-            <div style={{ background: isHighlighted ? 'lightgray' : 'white',
-              cursor: 'pointer' }}
-              key={item}
-            >
-              {item}
-            </div>
-          )}
-          ref={el => { this._input = el }}
-          renderInput={this.renderTextArea}
-          shouldItemRender={(item, str) => _.includes(item, str.slice(1))}
-          value={this.props.value}
+      <div>
+        <input
+          ref={input => { this._input = input }}
+          className='data-editor'
+          value={value}
+          onKeyDown={onKeyDown}
           onChange={this.handleChange}
-          onSelect={(val, item) => this.props.onChange('=' + item + '(')}
-        /></div>)
+        />
+        <input
+          ref={input => { this._input = input }}
+          className='data-editor'
+          value={value}
+          onKeyDown={onKeyDown}
+          onChange={this.handleChange}
+        />
+      </div>
+    )
   }
-  // onSelect={(val, item) => this.props.set(PATH.ROUTE,item.value)}
+
   onKeyDown (e) {
     e.stopPropagation()
   }
@@ -73,6 +71,7 @@ export default class DataEditor extends PureComponent {
   render () {
     const { value, onKeyDown } = this.props
     if (value && value[0] === '=') { return this.renderTextArea() }
+    if (value && value[0] === '/') { return this.renderList() }
     return (
       <input
         ref={input => { this._input = input }}
