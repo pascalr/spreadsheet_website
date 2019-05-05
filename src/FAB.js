@@ -7,6 +7,7 @@ import 'react-tiny-fab/dist/styles.min.css'
 import {
   MdAdd,
   MdSettings,
+  MdHistory,
   MdMoreHoriz,
 } from 'react-icons/md';
 import { newTable, set } from "./actions"
@@ -53,6 +54,14 @@ class MyFAB extends React.Component {
           }}
         >
           <MdSettings />
+        </Action>
+        <Action
+          style={actionButtonStyles}
+          text="Recent tables"
+          onClick={e => {
+          }}
+        >
+          <MdHistory />
         </Action>
         <Action
           style={actionButtonStyles}
