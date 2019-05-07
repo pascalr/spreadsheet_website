@@ -32,9 +32,15 @@ class PrintABC extends React.Component {
     )
   }
 }
+// TODO: Give it a range
+window.abcLines = (header, lines) => {
+}
 
 window.abcLine = (header, line) => {
   return <PrintABC content={header + '\n' + line}/>
+}
+
+window.playAbcLines = () => {
 }
 
 window.abc = (content)  => {
