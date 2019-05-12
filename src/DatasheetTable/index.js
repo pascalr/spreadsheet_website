@@ -142,7 +142,9 @@ class DatasheetTable extends Component {
     this.setState({selection: {...sel}})
   }
   keyDown = (e) => {
-    if (e.keyCode === 8 || e.keyCode === 46) {// backspace or delete
+    if (e.keyCode === 191) { // keycode for /
+      this.onChange()
+    } else if (e.keyCode === 8 || e.keyCode === 46) {// backspace or delete
       const start = this.state.selection.start
       const end = this.state.selection.end
       if (start && (start.j === 0 || end.j === 0)) { // Deletes lines

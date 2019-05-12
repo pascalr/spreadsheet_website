@@ -24,6 +24,7 @@ export default class DataEditor extends PureComponent {
   }
 
   textAreaKeyDown = (e) => {
+    console.log(e)
     if (e.keyCode === 8 || e.keyCode === 46) {// backspace or delete
       if (this.props.value.length <= 1) {
         this.props.onChange(e.target.value)
@@ -43,7 +44,7 @@ export default class DataEditor extends PureComponent {
   }
 
   renderList = (props) => {
-    const { value, onKeyDown } = this.props
+    /*const { value, onKeyDown } = this.props
     return (
       <div>
         <input
@@ -61,7 +62,7 @@ export default class DataEditor extends PureComponent {
           onChange={this.handleChange}
         />
       </div>
-    )
+    )*/
   }
 
   onKeyDown (e) {
@@ -71,7 +72,7 @@ export default class DataEditor extends PureComponent {
   render () {
     const { value, onKeyDown } = this.props
     if (value && value[0] === '=') { return this.renderTextArea() }
-    if (value && value[0] === '/') { return this.renderList() }
+    //if (value && value[0] === '/') { return this.renderList() }
     return (
       <input
         ref={input => { this._input = input }}
