@@ -82,7 +82,7 @@ class SheetRenderer extends React.PureComponent {
                 def.layout[this.props.layoutNb].map((id, index) => {
                   const col = def.cols[id]
                   return (
-                    <Header key={col.name} col={col} def={def} className="data-header"
+                    <Header key={id} col={col} def={def} className="data-header"
                       columnIndex={index} layoutNb={this.props.layoutNb}
                       onColumnDrop={this.props.onColumnDrop(this.props.db, def)}
                     />

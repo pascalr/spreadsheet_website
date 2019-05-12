@@ -25,6 +25,13 @@ class Table extends React.Component {
     this.props.db.loadRecord(TABLE.TABLES,this.props.id,this.props.set([TABLE.TABLES, this.props.id]))
   }
 
+  componentDidUpdate = () => {
+    // FIXME: This is a quick fix, but I need to think about how to do this correctly
+    if (this.def() && !this.data()) {
+      this.props.db.loadRecord(TABLE.TABLES,this.props.id,this.props.set([TABLE.TABLES, this.props.id]))
+    }
+  }
+
   def = () => this.props.defs[this.props.id];
   data = () => this.props.dataRoot ? this.props.dataRoot[this.props.id] : null;
   
@@ -63,7 +70,7 @@ class Table extends React.Component {
     return def.layout.map((e,i) => {
       return (
         <DatasheetTable
-          key={'DatasheetTable'+i}
+          key={'DatasheetTable'+def.id+i}
           def={def}
           table={this.data()}
           onCellsChanged={this.onCellsChanged(i)}
@@ -86,7 +93,6 @@ class Table extends React.Component {
   }
 
   render() {
-    //if (!this.props.dataRoot || !this.data() || !this.def()) {return null;}
     if (!this.def()) {console.log('no def yet'); return null;}
     return (
       <div className="Table">

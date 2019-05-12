@@ -53,7 +53,7 @@ class SearchBar extends React.Component {
             renderItem={(item, isHighlighted) => (
               <div style={{ background: isHighlighted ? 'lightgray' : 'white',
                             cursor: 'pointer'}}
-                key={item.label}
+                key={item.id}
               >
                 {item.label}
               </div>

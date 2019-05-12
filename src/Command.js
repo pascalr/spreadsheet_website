@@ -201,7 +201,7 @@ window.underline = (str) => {
 }
 
 window.bold = (str) => {
-  return <div style={{fontWeight: 'bold'}}>{str}</div> 
+  return <span style={{fontWeight: 'bold'}}>{str}</span> 
 }
 
 window.center = (str) => {
@@ -251,4 +251,19 @@ const COMMANDS = {
   bookmark: {desc: '', args: [{name: '', type: '', desc: ''}]},
   a: {desc: '', args: [{name: '', type: '', desc: ''}]},
 }
+
+window.help = () => {
+  return (
+    <div>  
+      {_.keys(COMMANDS).map(k => (
+        <div key={k}>
+          {window.bold(k)} (
+          {COMMANDS[k].args.map(arg => arg.name + ': ' + arg.type).join(', ')}
+          ) : <br /> -> {COMMANDS[k].desc}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export { COMMANDS }

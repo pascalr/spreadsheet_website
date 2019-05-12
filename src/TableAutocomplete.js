@@ -38,7 +38,7 @@ class TableAutocomplete extends React.Component {
             getItemValue={(item) => item}
             items={_.values(_.mapValues(this.props.defs,'name'))}
             renderItem={(item, isHighlighted) => (
-              <div style={{ background: isHighlighted ? 'lightgray' : 'white'}} key={item}>
+              <div style={{ background: isHighlighted ? 'lightgray' : 'white'}} key={item/*FIXME: key should be id, not name*/}>
                 {item}
               </div>
             )}
