@@ -7,7 +7,7 @@ import DataEditor from './DataEditor'
 
 import { connect } from "react-redux";
 
-import { set } from '../actions'
+import { set, setDb } from '../actions'
 
 import * as TABLE from '../constants/tables'
 
@@ -24,6 +24,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => ({
   set: path => val => dispatch(set(path,val)),
+  setDb: (db,path,val) => dispatch(setDb(db, path, val))
 });
 
 class DatasheetTable extends Component {
@@ -46,13 +47,13 @@ class DatasheetTable extends Component {
       return {value: table[id] ? table[id][i] || '' : ''}
     }
 
-    let emptyLine = new Array(colIds.length).fill({value: ""})
+    //let emptyLine = new Array(colIds.length).fill({value: ""})
     let grid = []
     for (var i = 0; i < nb; ++i) {
       grid.push(colIds.map(mapColIdsToValues))
     }
 
-    grid.push(emptyLine)
+    //grid.push(emptyLine)
     // Add a column for line numbers
     grid = grid.map((l,j) => [{readOnly: true, value:j+1}, ...l])
     return grid
@@ -144,6 +145,17 @@ class DatasheetTable extends Component {
   keyDown = (e) => {
     if (e.keyCode === 191) { // keycode for /
       this.onChange()
+    } else if (e.keyCode === 40) { // down arrow
+      // FIXME: Duplicated from above, but this will change anyway
+      const {table, layoutNb, def} = this.props
+      const colIds = def.layout[layoutNb];
+      const nb = table ? Math.max(...colIds.map(id => table[id] ? table[id].length || 0 : 0)) : 0
+      // adds another line
+      if (this.state.selection && this.state.selection.start.i + 1 >= nb) {
+        console.log('adding another line')
+        let colId = def.layout[layoutNb][0]
+        this.props.setDb(this.props.db,[TABLE.TABLES,this.props.id,colId,nb],'')
+      }
     } else if (e.keyCode === 8 || e.keyCode === 46) {// backspace or delete
       const start = this.state.selection.start
       const end = this.state.selection.end

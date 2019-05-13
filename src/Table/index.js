@@ -28,7 +28,9 @@ class Table extends React.Component {
   componentDidUpdate = () => {
     // FIXME: This is a quick fix, but I need to think about how to do this correctly
     if (this.def() && !this.data()) {
-      this.props.db.loadRecord(TABLE.TABLES,this.props.id,this.props.set([TABLE.TABLES, this.props.id]))
+      console.log('badly updating table not found')
+      this.props.db.loadRecord(TABLE.TABLES,this.props.id,
+        (val) => this.props.set([TABLE.TABLES, this.props.id])(val || 'loaded'))
     }
   }
 
