@@ -155,6 +155,7 @@ class PreviewSelection extends React.Component {
           style={{width: 1920, height: 10000}}
           onMouseUp={this.onMouseUp}
           onKeyUp={this.onKeyUp}
+          tabIndex='0'
         >
           { _.keys(this.props.previews).map(k => {
             const p = this.props.previews[k]
