@@ -40,9 +40,10 @@ class Table extends React.Component {
   onCellsChanged = (layoutNb) => (changes, additions) => {
     let data = this.data() ? {...this.data()} : {}
     const def = this.def()
-    changes.concat(additions || []).forEach(({row, col, value, type}) => {
+    changes.concat(additions || []).forEach(({cell, row, col, value, type}) => {
 
-      if (value === '/') { return } // ugly temporary fix to separate a cell
+      // ugly temporary fix to separate a cell
+      if (cell && cell.value.slice(0,2) === '==' && !value) { return } 
 
       let colId = def.layout[layoutNb][col-1]
       const dataCol = [...(data[colId] || [])]
@@ -96,10 +97,18 @@ class Table extends React.Component {
       this.props.set([TABLE.DEFS,this.props.id,'icon'], props.icon));
   }
 
+  onMouseDown = (e) => {
+    // Does not work but the idea is good I think
+    // It actually works, but not in the correct order...
+    console.log('table on mouse down')
+    //e.preventDefault()
+    //e.stopPropagation(); // In order to only click in the inner most table
+  }
+
   render() {
     if (!this.def()) {console.log('no def yet'); return null;}
     return (
-      <div className="Table">
+      <div className="Table" onMouseDown={this.onMouseDown}>
         { this.props.hideTableName ? null :
           <div style={{textAlign: 'center'}}>
           <span className='title'>

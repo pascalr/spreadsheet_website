@@ -8,7 +8,6 @@ import uuidv1 from 'uuid/v1'
 import { set, setDb, newTable } from '../actions'
 import * as TABLE from '../constants/tables'
 import TableLink from '../TableLink'
-import Table from '../Table'
 
 const stringify = function(obj) {
 	try {
@@ -78,11 +77,7 @@ class DatasheetTable extends Component {
       if (col.type === "document") {
         style = {textAlign: 'justify',paddingLeft: '15%',paddingRight: '15%'}
       }
-      if (cell.value && cell.value[0] === '=' && cell.value[1] === '=') {
-        console.log('showing subtable')
-        //return <TableLink id={cell.value.slice(2)}/>
-        return <Table id={cell.value.slice(2)} hideColumnNames={true} hideTableName={true} />
-      } else if (cell.value && cell.value[0] === '=') { // = should be pure
+      if (cell.value && cell.value[0] === '=') { // = should be pure
         try {
           window.context = {
             table: this.props.table,
@@ -157,6 +152,8 @@ class DatasheetTable extends Component {
       const id = uuidv1()
       this.props.onCellsChanged([{row: i, col: j, value: '=='+id}])
       this.props.newTable(this.props.db, this.props.defs, id)
+      e.preventDefault()
+      e.stopPropagation()
     } else if (e.keyCode === 40) { // down arrow
       // FIXME: Duplicated from above, but this will change anyway
       const {table, layoutNb, def} = this.props

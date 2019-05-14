@@ -1,7 +1,6 @@
 import React from 'react'
-
 import { MenuProvider } from 'react-contexify'
-
+import Table from '../Table'
 import SheetRenderer from './SheetRenderer'
 
 class MenuSheetRenderer extends React.Component {
@@ -35,6 +34,14 @@ const CellRenderer = props => {
   //}
   if (hideLineNumbers && col === 0) {
     return null
+  }
+  const value = cell.value
+  if (typeof value.slice === 'function' && value.slice(0,2) === '==') {
+    return (
+      <div {...rest} {...attributes}>
+        <Table id={value.slice(2)} hideColumnNames={false} hideTableName={true} />
+      </div>
+    )
   }
   return (
       <div {...rest} {...attributes}>
