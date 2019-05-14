@@ -1,7 +1,4 @@
-Une etape importante serait de pouvoir rajouter des lignes avec la fleche en bas ou bien j.
-Apres je vais pouvoir enlever la ligne qui est rajoutee vide.
-Peut-etre seulement un enter pour rajouter une ligne, parce que les autres ben il deplace,
-faudrait etre dans le mode insert, et la il n'y a pas ca pour l'instant.
+TODO: COPY PAST A TABLE
 
 Dans le coin en haut a gauche, rajouter un bouton pour faire flipper la table.
 Le nom des colonnes deviennet des rangees.

@@ -89,7 +89,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js && sed -i \"s/\\/home.ico/.\\/home.ico/g\" build/index.html && sed -i \"s/\\/static/.\\/static/g\" build/index.html && zip -r build.zip build",
+    "build": "node scripts/build.js && sed -i \"s/\\/home.ico/.\\/home.ico/g\" build/index.html && sed -i \"s/\\/static/.\\/static/g\" build/index.html",
     "copyWindows": "cp -R build \"/media/windows/Documents and Settings/pasca/Desktop\"",
     "copyLaptop": "cp -R build \"../Downloads/\"",
     "oldbuild": "node scripts/build.js",

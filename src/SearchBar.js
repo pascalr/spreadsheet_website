@@ -12,6 +12,25 @@ function optionsFromDefs(defs) {
   ))
 }
 
+function ciEquals(a, b) {
+  return typeof a === 'string' && typeof b === 'string'
+    ? a.localeCompare(b, undefined, { sensitivity: 'base'}) === 0
+    : a === b;
+}
+
+// returns whether b is a substring of a
+function ciIncludes(a, b) {
+  if (!a) {return false}
+  if (!b) {return true}
+
+  for (let n = a.length - b.length; n >= 0; n--) {
+    if (ciEquals(a.slice(n,n+b.length), b)) {
+      return true
+    }
+  }
+  return false
+}
+
 const autocompleteMenuStyle = { // FIXME: Maybe useless...
   borderRadius: '3px',
   boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
@@ -40,7 +59,8 @@ class SearchBar extends React.Component {
     this.state = {value: ''}
   }
   shouldItemRender = (item,str) => {
-    return _.includes(item.label, str)
+    //return _.includes(item.label, str)
+    return ciIncludes(item.label,str)
   }
   render = () => {
     return (
