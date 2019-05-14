@@ -27,11 +27,11 @@ class Table extends React.Component {
 
   componentDidUpdate = () => {
     // FIXME: This is a quick fix, but I need to think about how to do this correctly
-    if (this.def() && !this.data()) {
+    /*if (this.def() && !this.data()) {
       console.log('badly updating table not found')
       this.props.db.loadRecord(TABLE.TABLES,this.props.id,
         (val) => this.props.set([TABLE.TABLES, this.props.id])(val || 'loaded'))
-    }
+    }*/
   }
 
   def = () => this.props.defs[this.props.id];
@@ -40,7 +40,9 @@ class Table extends React.Component {
   onCellsChanged = (layoutNb) => (changes, additions) => {
     let data = this.data() ? {...this.data()} : {}
     const def = this.def()
-    changes.concat(additions || []).forEach(({cell, row, col, value}) => {
+    changes.concat(additions || []).forEach(({row, col, value, type}) => {
+
+      if (value === '/') { return } // ugly temporary fix to separate a cell
 
       let colId = def.layout[layoutNb][col-1]
       const dataCol = [...(data[colId] || [])]
@@ -116,7 +118,8 @@ class Table extends React.Component {
           }}
           className='link'>🗑</span>
       </div>}
-        {this.renderDatasheetTable()}
+      {this.renderDatasheetTable()}
+        { this.props.hideTableName ? null : 'Add field'}
       </div>
     );
   }

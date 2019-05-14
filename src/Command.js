@@ -1,12 +1,11 @@
-import React, {useState} from 'react'
+import React, { Component, useState } from 'react'
 import _ from 'lodash'
 import { connect } from "react-redux"
-import Link from './Link'
-import { newTable } from "./actions"
 import Image from './Image'
 import ABCJS from 'abcjs/midi'
 //import MathJax from 'react-mathjax'
-import Table from './Table'
+import uuidv1 from 'uuid/v1'
+import TableLink from './TableLink'
 
 import 'abcjs/abcjs-midi.css'
 
@@ -14,6 +13,7 @@ const tex = `f(x) = \\int_{-\\infty}^\\infty
     \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}
     \\,d\\xi`
 
+window.uuidv1 = uuidv1
 
 class PrintABC extends React.Component {
   componentDidMount = () => {
@@ -68,36 +68,10 @@ window.tex = (formula) => {
     );
 }*/
 
-const HiddenTable = (props) => {
-  const [hidden, setHidden] = useState(true)
-  return (
-    <React.Fragment>
-      <span onClick={() => setHidden(!hidden)}>+ </span>
-      <Link to={'/tables/'+props.id}>{props.name}</Link>
-      {hidden ? null : <Table {...props} hideTableName={true}/>}
-    </React.Fragment>
-  )
-}
+
 //<Table id={p.tableId} hideColumnNames={true} hideTableName={true} hideLineNumbers={true}/>
 
-const tableLinkProps = (state) => ({
-  db: state.db,
-  defs: state.defs,
-})
-const tableLinkDispatch = (dispatch) => ({
-  newTable: (db, defs, name) => () => dispatch(newTable(db,defs,name)),
-})
 
-const TableLink = connect(tableLinkProps,tableLinkDispatch)((props) => {
-  if (props.defs == null) { return null }
-  const defId = _.keys(props.defs).find(e => props.defs[e].name === props.name)
-  if (defId) {
-    //return <Link to={'/tables/'+defId}>{props.defs[defId].name}</Link>
-    return <HiddenTable id={defId} name={props.name}/>
-  } else {
-    return 'no table matches'
-  }
-})
 
       /*} else {
     if (props.name) {
