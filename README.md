@@ -1,4 +1,4 @@
-TODO: COPY PAST A TABLE
+TODO: COPY PASTE A TABLE
 
 Dans le coin en haut a gauche, rajouter un bouton pour faire flipper la table.
 Le nom des colonnes deviennet des rangees.
