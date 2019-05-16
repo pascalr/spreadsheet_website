@@ -11,7 +11,8 @@ function matchURI(path, uri) {
   }
   return params;
 }
-function resolve(routes, pathname) {
+function resolve(routes, rawPathname) {
+  const pathname = rawPathname[0] === '#' ? rawPathname.slice(1) : rawPathname
   console.log(`route: path=${pathname}`)
   for (const route of routes) {
     const params = matchURI(route.path, pathname);

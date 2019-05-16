@@ -48,18 +48,24 @@ class App extends React.Component {
     super(props)
 
     this.props.db.load(TABLE.DEFS, this.props.defsLoaded)
-    this.state = {path: "/"}
   }
   
   render() {
     //this.props.history.push(this.props.route) FIXME: This does not work with File:///
+    //
+    //
+    if (this.props.route) {
+      this.props.history.push({
+        hash: this.props.route,
+      })
+    }
     return (
       <div className="app">
         <div className="taskbars">
           <StatusBar/>
           <SearchBar/>
         </div>
-        {router.resolve(routes, this.props.route)}
+        {router.resolve(routes, this.props.route || this.props.history.location.hash)}
         <PreviewMenu />
         <FAB/>
         <TableMenu db={this.props.db} />
