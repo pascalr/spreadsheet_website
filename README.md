@@ -1,4 +1,8 @@
+TODO: Handle cells values properly, to be able to get the computed value by reference,
+not the formula. And run the formula only on onCellsChanged
+
 TODO: COPY PASTE A TABLE
+TODO: COPY PASTE A TABLE AS JSON, SO COPY PASTE JSON IN ORDER TO ADD FIELDS!!!
 
 Dans le coin en haut a gauche, rajouter un bouton pour faire flipper la table.
 Le nom des colonnes deviennet des rangees.

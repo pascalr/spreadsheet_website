@@ -71,7 +71,7 @@ class SheetRenderer extends React.PureComponent {
     return (
       <div className={"rTable "+className}
            style={{backgroundColor: this.props.def.backgroundColor}}>
-        { this.props.hideColumnNames ? null :
+        { this.props.hideColumnNames || this.props.isField ? null :
         <div className="rTableHeading">
           <div className="rTableRow">
             <div className='rTableHead cell read-only row-handle' key='$$actionCell'

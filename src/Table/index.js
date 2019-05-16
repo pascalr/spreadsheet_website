@@ -73,6 +73,16 @@ class Table extends React.Component {
   renderDatasheetTable = () => {
     const def = this.props.defs[this.props.id];
     return def.layout.map((e,i) => {
+      let isField = false
+      // show a field
+      const cols = def.layout[i]
+      // If no columns side by side and only one value, show as a field
+      if (cols.length === 1 && this.data()) {
+        const rows = this.data()[cols[0]]
+        if (rows.length === 1) {
+          isField = true
+        }
+      }
       return (
         <DatasheetTable
           key={'DatasheetTable'+def.id+i}
@@ -81,6 +91,7 @@ class Table extends React.Component {
           onCellsChanged={this.onCellsChanged(i)}
           onDeleteLines={this.onDeleteLines}
           hideLineNumbers={this.props.hideLineNumbers}
+          isField={isField}
           layoutNb={i}
           {...this.props}
         />);
@@ -126,8 +137,8 @@ class Table extends React.Component {
             this.props.set(PATH.ROUTE)('/')
           }}
           className='link'>🗑</span>
-      </div>}
-      {this.renderDatasheetTable()}
+        </div>}
+        {this.renderDatasheetTable()}
         { this.props.hideTableName ? null : 'Add field'}
       </div>
     );

@@ -72,6 +72,11 @@ class DatasheetTable extends Component {
     let value = undefined
     let style = undefined
     if (j === 0 && this.props.hideLineNumbers) {return <span></span>}
+    if (j === 0 && this.props.isField) {
+      const cols = this.props.def.layout[this.props.layoutNb]
+      const colName = this.props.def.cols[cols[0]].name
+      return <div>{colName}</div>
+    }
     if (this.cols() && !cell.readOnly) {
       let col = this.column(j);
       if (col.type === "document") {
