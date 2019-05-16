@@ -79,7 +79,7 @@ class Table extends React.Component {
       // If no columns side by side and only one value, show as a field
       if (cols.length === 1 && this.data()) {
         const rows = this.data()[cols[0]]
-        if (rows.length === 1) {
+        if (rows && rows.length === 1) {
           isField = true
         }
       }

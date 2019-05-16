@@ -1,6 +1,10 @@
 TODO: Handle cells values properly, to be able to get the computed value by reference,
 not the formula. And run the formula only on onCellsChanged
 
+TODO: Pouvoir programmer mes fonctions a l'interieur de mon app.
+
+TODO: local files, node.js read file
+
 TODO: COPY PASTE A TABLE
 TODO: COPY PASTE A TABLE AS JSON, SO COPY PASTE JSON IN ORDER TO ADD FIELDS!!!
 
