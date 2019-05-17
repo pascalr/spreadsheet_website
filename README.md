@@ -1,3 +1,6 @@
+The infinite map easier version is a folder and file.
+Export as PDF, HTML, JSON, JPEG
+
 TODO: Handle cells values properly, to be able to get the computed value by reference,
 not the formula. And run the formula only on onCellsChanged
 

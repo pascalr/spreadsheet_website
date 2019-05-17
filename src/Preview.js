@@ -62,6 +62,7 @@ const mapDispatchToProps = dispatch => ({
   setDb: (db, path, val) => dispatch(setDb(db, path,val)),
   set: (path, val) => dispatch(set(path,val)),
   deletePath: (db,path) => dispatch(deletePath(db, path)),
+  newTable: (db, defs, name, id) => dispatch(newTable(db, defs, name, id)),
 })
 
 const OverBar = (props) => {
@@ -80,7 +81,7 @@ const OverBar = (props) => {
 class PreviewSelection extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {tempPreview: null, selection: []}
+    this.state = {tempPreview: null, selection: [], selectionToCopy: []}
   }
   componentDidMount = () => {
     this.props.set(PATH.UI_LOADING, true)
@@ -147,6 +148,48 @@ class PreviewSelection extends React.Component {
     return can
   }
 
+  onMouseMove = (e) => {
+    this.pageX = e.pageX
+    this.pageY = e.pageY
+  }
+
+  onCopy = (e) => {
+    console.log('onCopy')
+    this.setState({selectionToCopy: this.state.selection})
+  }
+
+  onPaste = (e) => {
+    console.log('onPaste')
+    //console.log(e.clipboardData.getData('Text'));
+    const cpy = this.state.selectionToCopy
+    if (!cpy) { return }
+
+    cpy.map(t => {
+      const p = this.props.previews[t]
+      const x = this.pageX - p.x
+      const y = this.pageY - p.y
+      this.props.db.loadRecord(TABLE.TABLES, p.tableId, (model) => {
+        console.log('Copying ' + t)
+        console.log('at ' + this.pageX)
+        const oldDef = this.props.defs[p.tableId]
+        const tableId = uuidv1()
+        const name = tableId
+        //const name = 'copy of ' + oldDef.name // FIXME: number (2)
+        const def = {...oldDef, name}
+        this.props.db.setRecord(TABLE.DEFS,tableId,def)
+        // Duplicate table
+        let path = [TABLE.TABLES, tableId]
+        this.props.setDb(this.props.db, path, model)
+        // Create preview
+        const previewId = uuidv1()
+        path = [TABLE.PREVIEW, previewId]
+        const newP = {id: previewId, width: p.width, height: p.height, x, y, tableId}
+        this.props.setDb(this.props.db, path, newP)
+      })
+      console.log(this)
+    })
+  }
+
   render = () => {
     return (
       <Selection onSelect={this.onSelect} onMouseDown={this.onMouseDown}
@@ -154,8 +197,11 @@ class PreviewSelection extends React.Component {
         <div id="screen" className={this.props.editMode ? "editMode" : "notEditMode"}
           style={{width: 1920, height: 10000}}
           onMouseUp={this.onMouseUp}
+          onMouseMove={this.onMouseMove}
           onKeyUp={this.onKeyUp}
           tabIndex='0'
+          onPaste={this.onPaste}
+          onCopy={this.onCopy}
         >
           { _.keys(this.props.previews).map(k => {
             const p = this.props.previews[k]

@@ -97,7 +97,7 @@ class LinkScreen extends React.Component {
         <MapInteractionCSS showControls={true} disabled={this.state.mapDisabled}>
           <React.Fragment>
             <PreviewSelection previews={previews}/>
-            <ScreenMenu {...this.props} screen={this.props.items} />
+            <ScreenMenu {...this.props} screen={this.props.items} onPaste={this.onPaste} />
           </React.Fragment>
         </MapInteractionCSS>
       </ByPass>
