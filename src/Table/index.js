@@ -7,11 +7,12 @@ import DatasheetTable from '../DatasheetTable'
 import { RIEInput } from 'riek'
 import { set, setDb } from '../actions'
 import _ from 'lodash'
+import Loading from '../Loading'
 
 const mapStateToProps = state => ({
   db: state.db,
   defs: state.defs,
-  dataRoot: state.cache.root[TABLE.TABLES],
+  //dataRoot: state.cache.root[TABLE.TABLES],
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -35,10 +36,11 @@ class Table extends React.Component {
   }
 
   def = () => this.props.defs[this.props.id];
-  data = () => this.props.dataRoot ? this.props.dataRoot[this.props.id] : null;
+  //data = () => this.props.dataRoot ? this.props.dataRoot[this.props.id] : null;
   
   onCellsChanged = (layoutNb) => (changes, additions) => {
-    let data = this.data() ? {...this.data()} : {}
+    //let data = this.data() ? {...this.data()} : {}
+    let data = this.props.data || {}
     const def = this.def()
     changes.concat(additions || []).forEach(({cell, row, col, value, type}) => {
 
@@ -57,7 +59,7 @@ class Table extends React.Component {
   }
 
   onDeleteLines = (layoutNb, start, end) => {
-    let data = this.data()
+    let data = this.props.data
     const def = this.def()
 
     const colIds = def.layout[layoutNb];
@@ -77,8 +79,8 @@ class Table extends React.Component {
       // show a field
       const cols = def.layout[i]
       // If no columns side by side and only one value, show as a field
-      if (cols.length === 1 && this.data()) {
-        const rows = this.data()[cols[0]]
+      if (cols.length === 1 && this.props.data) {
+        const rows = this.props.data[cols[0]]
         if (rows && rows.length === 1) {
           isField = true
         }
@@ -87,7 +89,7 @@ class Table extends React.Component {
         <DatasheetTable
           key={'DatasheetTable'+def.id+i}
           def={def}
-          table={this.data()}
+          table={this.props.data}
           onCellsChanged={this.onCellsChanged(i)}
           onDeleteLines={this.onDeleteLines}
           hideLineNumbers={this.props.hideLineNumbers}
@@ -146,4 +148,8 @@ class Table extends React.Component {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Table);
+const load = (LoadObj) => (props) => {
+  return <Loading path={[TABLE.TABLES,props.id]} callback={(data) => <LoadObj {...props} data={data}/>}/>
+}
+
+export default load(connect(mapStateToProps, mapDispatchToProps)(Table));

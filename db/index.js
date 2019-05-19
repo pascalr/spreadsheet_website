@@ -34,6 +34,7 @@ app.get('/:db/:path', function(req, res) {
   const file = filesByName(req.params.db)
   const val = file.get(req.params.path)
   res.send(val);
+  console.log(val)
 });
 
 app.put('/:db/:path', function(req, res) {
@@ -51,4 +52,8 @@ app.delete('/:db/unset/:path', function(req, res) {
   res.send('done');
 });
 
-app.listen(8000);
+var port = 8000
+
+app.listen(port);
+
+console.log('Listening on http://localhost:' + port)
