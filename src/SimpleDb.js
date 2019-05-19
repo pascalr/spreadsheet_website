@@ -37,9 +37,12 @@ class SimpleDb {
     })
   }
 
-  //update = (path, updates) => {
-  //  return this.db.ref(_.castArray(path).join('/')).update(updates)
-  //}
+  update = (path, updates) => {
+    const that = this
+    return _.keys(updates).map(k => {
+      that.set([..._.castArray(path), k], updates[k], null)
+    })    
+  }
 }
 
 export default SimpleDb;
