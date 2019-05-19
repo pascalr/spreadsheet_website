@@ -6,6 +6,8 @@ config.env
 *.swp
 *.swo
 build.zip
+db/data
+db/node_modules
 
 # dependencies
 /node_modules

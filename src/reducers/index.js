@@ -2,6 +2,7 @@ import * as ACTION from "../constants/action-types";
 import { combineReducers } from 'redux'
 import { createBrowserHistory } from 'history'
 import Firebase from '../Firebase'
+import SimpleDb from '../SimpleDb'
 import { Map } from 'immutable';
 import _ from 'lodash'
 
@@ -77,18 +78,11 @@ function defs(state = {}, action) {
   return state;
 }
 
-function saveToDb(oldState, newState, action) {
-  if (action.type === ACTION.CACHE.SET) {
-    console.log('Saving cache to db.');
-    const path = action.path.constructor === Array ? action.path.join('/') : action.path
-    newState.db.set("cache/"+path, action.val)
-  }
-}
-
 export default function combination(state, action) {
   if (state === undefined) {
     state = {
-      db: new Firebase(),
+      db: new SimpleDb(),
+      //db: new Firebase(),
       history: createBrowserHistory(),
     };
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -102,8 +96,6 @@ export default function combination(state, action) {
     defs: defs(state.defs, action),
     cache: cache(state.cache, action),
   }
-  // FIXME: This function has side effect and should not belong in a reducer.
-  //saveToDb(state,vals, action);
   return vals;
 }
 

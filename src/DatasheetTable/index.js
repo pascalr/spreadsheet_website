@@ -122,7 +122,7 @@ class DatasheetTable extends Component {
             value = (<input type="checkbox" defaultChecked={cell.value} onChange={() => {
               const path = [TABLE.TABLES,this.props.def.id,i,col.name]
               const val = cell.value ? !cell.value : 1;
-              this.props.db.setPath(path, val, this.props.set(path))
+              this.props.db.set(path, val, this.props.set(path))
             }}/>)
           } else {
             value = cell.value

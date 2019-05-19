@@ -21,7 +21,7 @@ class Image extends React.Component {
     const path = _.castArray('images/'+this.props.id).join('/');
     const infoPath = 'storage/'+path;
     const thisComponent = this
-    this.props.db.loadPath(infoPath, function(snapshot) {
+    this.props.db.get(infoPath, function(snapshot) {
       thisComponent.setState({downloadUrl: snapshot})
     })
   }

@@ -18,6 +18,8 @@ import SearchBar from './SearchBar'
 import PreviewMenu from './menus/PreviewMenu'
 import * as PATH from './constants/paths'
 import FAB from './FAB'
+import SimpleDb from './SimpleDb'
+import Loading from './Loading'
 
 const abStyles = {
   position: 'absolute',
@@ -47,13 +49,10 @@ class App extends React.Component {
   constructor(props) {
     super(props)
 
-    this.props.db.load(TABLE.DEFS, this.props.defsLoaded)
+    this.props.db.get(TABLE.DEFS, this.props.defsLoaded)
   }
   
   render() {
-    //this.props.history.push(this.props.route) FIXME: This does not work with File:///
-    //
-    //
     if (this.props.route) {
       this.props.history.push({
         hash: this.props.route,

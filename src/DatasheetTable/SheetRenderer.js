@@ -20,7 +20,7 @@ class ColumnNameBase extends React.Component {
 
   onColumnNameChange = (props) => {
     const path = [TABLE.DEFS,this.props.def.id,'cols',this.props.col.id,'name']
-    this.props.db.setPath(path,props.columnName,
+    this.props.db.set(path,props.columnName,
       this.props.set(path, props.columnName));
   }
 

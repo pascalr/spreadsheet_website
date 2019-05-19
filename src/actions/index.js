@@ -19,7 +19,7 @@ export function newTable(db, defs, theName,theId,callback) {
   const def = {...EMPTY_DEF, name, cols: {}}
   def.cols[idCol] = {name: "A", id: idCol}
   def.layout = [[idCol]]
-  db.setRecord(TABLE.DEFS,id,def,callback)
+  db.set([TABLE.DEFS,id],def,callback)
   return { type: ACTION.NEW_TABLE, name: id, def };
 };
 
@@ -34,7 +34,7 @@ export function columnDropped(db, theDef, from, to) {
   let cols = [...def.layout[0]]
   cols.splice(to, 0, ...cols.splice(from, 1))
   def.layout[0] = cols
-  db.setRecord(TABLE.DEFS,def.id,def)
+  db.set([TABLE.DEFS,def.id],def)
   return { type: ACTION.UPDATE_DEF, def };
 };
 
@@ -50,7 +50,7 @@ function withColumn(theDef,layoutNb) {
 
 export function addColumn(db, theDef, layoutNb) {
   const def = withColumn(theDef, layoutNb)
-  db.setRecord(TABLE.DEFS,def.id,def)
+  db.set([TABLE.DEFS,def.id],def)
   return { type: ACTION.UPDATE_DEF, def };
 };
 
@@ -61,7 +61,7 @@ export function addColumnUnder(db, theDef) {
   const cols = {...oldCols, [id]: {name: nextColumnName(def), type: ""}}
   def.cols = cols
   def.layout[def.layout.length] = [id]
-  db.setRecord(TABLE.DEFS,def.id,def)
+  db.set([TABLE.DEFS,def.id],def)
   return { type: ACTION.UPDATE_DEF, def };
 }
 
@@ -76,21 +76,15 @@ function withoutColumn(theDef, columnId, layoutNb) {
 }
 
 export function deletePath(db, path) {
-  db.delete(path)
+  db.unset(path)
   return { type: ACTION.CACHE.SET, path: ["root", ..._.castArray(path)], val: null };
 }
 
 export function deleteColumn(db, theDef, columnId, layoutNb) {
   const def = withoutColumn(theDef, columnId, layoutNb)
-  db.setRecord(TABLE.DEFS,def.id,def)
+  db.set([TABLE.DEFS],def.id,def)
   return { type: ACTION.UPDATE_DEF, def };
 };
-
-/*export function deleteTable(db, id) {
-  db.deleteRecord(TABLE.DEFS,id)
-  db.deleteRecord(TABLE.TABLES,id)
-  return { type: ACTION.DELETE_TABLE, id };
-};*/
 
 export function modelLoaded(path, val) {
   return { type: ACTION.CACHE.SET, path, val };
@@ -107,7 +101,7 @@ export function updateDb(db,path,vals) {
 }
 
 export function setDb(db, path, val) {
-  db.setPath(path,val)
+  db.set(path,val)
   // TODO: Try this replacement
   //return { type: ACTION.CACHE.SET, path: ["root", ..._.castArray(path)], val };
   if (path.constructor === Array) {

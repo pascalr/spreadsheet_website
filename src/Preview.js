@@ -85,7 +85,7 @@ class PreviewSelection extends React.Component {
   }
   componentDidMount = () => {
     this.props.set(PATH.UI_LOADING, true)
-    this.props.db.load(TABLE.PREVIEW, (model) => {
+    this.props.db.get(TABLE.PREVIEW, (model) => {
       this.props.modelLoaded(model);
       this.props.set(PATH.UI_LOADING, false)
     })
@@ -168,7 +168,7 @@ class PreviewSelection extends React.Component {
       const p = this.props.previews[t]
       const x = this.pageX - p.x
       const y = this.pageY - p.y
-      this.props.db.loadRecord(TABLE.TABLES, p.tableId, (model) => {
+      this.props.db.get([TABLE.TABLES, p.tableId], (model) => {
         console.log('Copying ' + t)
         console.log('at ' + this.pageX)
         const oldDef = this.props.defs[p.tableId]
@@ -176,7 +176,7 @@ class PreviewSelection extends React.Component {
         const name = tableId
         //const name = 'copy of ' + oldDef.name // FIXME: number (2)
         const def = {...oldDef, name}
-        this.props.db.setRecord(TABLE.DEFS,tableId,def)
+        this.props.db.set([TABLE.DEFS,tableId],def)
         // Duplicate table
         let path = [TABLE.TABLES, tableId]
         this.props.setDb(this.props.db, path, model)

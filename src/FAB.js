@@ -89,7 +89,7 @@ class MyFAB extends React.Component {
                   this.props.defs[k].name === tableName
                 ))
                 if (ids && ids.length === 1) {
-                  this.props.db.loadRecord(TABLE.TABLES,ids[0],(data) => {
+                  this.props.db.get([TABLE.TABLES,ids[0]],(data) => {
                     const id = uuidv1()
                     this.props.newTable(this.props.db,this.props.defs, null, id, (vals) => {
                       this.props.setDb(this.props.db, [TABLE.TABLES,id],data)

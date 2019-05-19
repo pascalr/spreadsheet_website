@@ -78,7 +78,7 @@ class LinkScreen extends React.Component {
   }
   
   componentDidMount = () => {
-    this.props.db.load(TABLE.ITEMS, this.props.modelLoaded)
+    this.props.db.get(TABLE.ITEMS, this.props.modelLoaded)
   }
 
   render() {

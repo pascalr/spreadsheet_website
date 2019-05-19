@@ -19,7 +19,7 @@ class ColumnMenu extends React.Component {
 
   onTypeChange = (type) => ({props}) => {
     const path = [TABLE.DEFS,props.def.id,'cols',props.id,'type']
-    this.props.db.setPath(path,type, this.props.set(path, type));
+    this.props.db.set(path,type, this.props.set(path, type));
   }
 
   render() {

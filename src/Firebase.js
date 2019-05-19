@@ -55,7 +55,7 @@ class Firebase {
     const infoPath = 'storage/'+path;
 
     // Check if the file exists in the Real Time Database before uploading
-    this.loadPath(infoPath, function(snapshot) {
+    this.get(infoPath, function(snapshot) {
       //if (snapshot && snapshot.exists()) return
       if (snapshot) {
         console.log('File is already stashed')
@@ -64,7 +64,7 @@ class Firebase {
       //if (snapshot.exists()) return
    
       // save the state of upload before really uploading to avoid messed up state 
-      thisDb.setPath(infoPath, 'uploading...', function(snapshot) {
+      thisDb.set(infoPath, 'uploading...', function(snapshot) {
         const uploadTask = thisDb.storage.ref().child(path).put(file)//.put(file, metadata);
         // Listen for state changes, errors, and completion of the upload.
         uploadTask.on('state_changed',
@@ -98,38 +98,20 @@ class Firebase {
         }, function() {
           // Upload completed successfully, now we can get the download URL
           uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-            thisDb.setPath(infoPath, downloadURL)
+            thisDb.set(infoPath, downloadURL)
             console.log('File available at', downloadURL);
           });
         });
       });
     });
   }
-  loadPath = (path, callback) => {
+  get = (path, callback) => {
     this.db.ref(_.castArray(path).join('/')).once('value', s => (callback(s.val())))
   }
-  load = (table,callback) => (
-    this.db.ref(table).on('value', s => (callback(s.val())))
-  )
-  loadRecord = (table,id,callback) => {
-    return this.db.ref(`${table}/${id}`).on('value', s => (callback(s.val())))
-  }
-  set = (table,values,callback) => {
-    return this.db.ref(table).set(values,callback)
-  }
-  setRecord = (table,id,values,callback) => {
-    return this.db.ref(`${table}/${id}`).set(values,callback)
-  }
-  setAttr = (table,id,attr,values,callback) => {
-    return this.db.ref(`${table}/${id}/${attr}`).set(values,callback)
-  }
-  setPath = (path,values,callback) => {
+  set = (path,values,callback) => {
     return this.db.ref(_.castArray(path).join('/')).set(values,callback)
   }
-  deleteRecord = (table,id) => {
-    return this.db.ref(`${table}/${id}`).remove()
-  }
-  delete = (path) => {
+  unset = (path) => {
     console.log(`Firebase: deleting path=${path}`);
     return this.db.ref(_.castArray(path).join('/')).remove()
   }
