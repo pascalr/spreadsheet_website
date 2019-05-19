@@ -84,10 +84,10 @@ class PreviewSelection extends React.Component {
     this.state = {tempPreview: null, selection: [], selectionToCopy: []}
   }
   componentDidMount = () => {
-    this.props.set(PATH.UI_LOADING, true)
+    this.props.set([...PATH.UI_LOADING, TABLE.PREVIEW], true)
     this.props.db.get(TABLE.PREVIEW, (model) => {
       this.props.modelLoaded(model);
-      this.props.set(PATH.UI_LOADING, false)
+      this.props.set([...PATH.UI_LOADING, TABLE.PREVIEW], false)
     })
   }
   // If the selection includes at least one preview, select it.

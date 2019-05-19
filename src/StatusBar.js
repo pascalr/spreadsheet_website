@@ -4,9 +4,14 @@ import { connect } from "react-redux"
 import Link from './Link'
 import * as PATH from './constants/paths'
 
-const mapStateToProps = state => ({
-  loading: _.get(state.cache.root, PATH.UI_LOADING),
-})
+const mapStateToProps = state => {
+  const loadingObjs = _.get(state.cache.root, PATH.UI_LOADING)
+  return ({
+    loading: _.keys(loadingObjs).reduce((acc,curr) => {
+      return acc || loadingObjs[curr]
+    },false),
+  })
+}
 
 const mapDispatchToProps = dispatch => ({
 })

@@ -2,12 +2,15 @@ import React from 'react'
 import { connect } from "react-redux"
 import _ from 'lodash'
 import * as TABLE from './constants/tables'
+import { set } from "./actions"
+import * as PATH from './constants/paths'
 
 const mapStateToProps = state => ({
   db: state.db,
 })
 
 const mapDistpatchToProps = dispatch => ({
+  set: (path, val) => dispatch(set(path,val)),
 })
 
 // Loading takes a db, a path, and a callback to render
@@ -20,7 +23,9 @@ class Loading extends React.Component {
   }
 
   componentDidMount() {
+    this.props.set([...PATH.UI_LOADING, this.props.path.slice(-1)], true)
     this.props.db.get(this.props.path, (val) => {
+      this.props.set([...PATH.UI_LOADING, this.props.path.slice(-1)], false)
       this.setState({loaded: true, val})
     })
   }
