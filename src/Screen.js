@@ -7,11 +7,11 @@ import * as TABLE from './constants/tables'
 import { MapInteraction } from 'react-map-interaction'
 import ByPass from './lib/ByPass'
 import {PreviewSelection} from './Preview'
+import Loading from './Loading'
 
 const mapStateToProps = state => ({
   db: state.db,
   editMode: state.ui.editMode,
-  items: state.cache[TABLE.ITEMS],
   defs: state.defs,
   previews: state.cache[TABLE.PREVIEW],
 })
@@ -105,4 +105,8 @@ class LinkScreen extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LinkScreen);
+const load = (LoadObj) => (props) => {
+  return <Loading path={TABLE.ITEMS} callback={(items) => <LoadObj items={items}/>}/>
+}
+
+export default load(connect(mapStateToProps, mapDispatchToProps)(LinkScreen))

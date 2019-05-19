@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from "react-redux"
 import _ from 'lodash'
+import * as TABLE from './constants/tables'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -25,7 +26,8 @@ class Loading extends React.Component {
   }
 
   render() {
-    return this.state.loaded ? this.props.callback(this.state.val) : null
+    if (!this.state.loaded) { return null }
+    return this.props.callback(this.state.val)
   }
 }
 
