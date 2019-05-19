@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import _ from 'lodash'
 import { connect } from "react-redux"
-import { modelLoaded } from './actions'
 import ScreenMenu from './menus/ScreenMenu'
 import * as TABLE from './constants/tables'
 import { MapInteraction } from 'react-map-interaction'
@@ -17,7 +16,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  modelLoaded: (model) => dispatch(modelLoaded(TABLE.ITEMS, model))
 })
 
 /*
@@ -77,10 +75,6 @@ class LinkScreen extends React.Component {
     this.state = {mapDisabled: false, x: 0, y: 0}
   }
   
-  componentDidMount = () => {
-    this.props.db.get(TABLE.ITEMS, this.props.modelLoaded)
-  }
-
   render() {
     if (!this.props.items) { return null }
     // FIXME: They should be filtered elsewhere...
