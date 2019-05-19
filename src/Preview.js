@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { connect } from "react-redux"
 import Selection from './Selection'
 import uuidv1 from 'uuid/v1'
-import { deletePath, newTable, set, modelLoaded, setDb } from "./actions"
+import { deletePath, newTable, set, setDb } from "./actions"
 import * as TABLE from './constants/tables'
 import * as PATH from './constants/paths'
 import Table from './Table'
@@ -11,6 +11,7 @@ import { MenuProvider } from 'react-contexify'
 import Draggable from './Draggable'
 import Resizable from './Resizable'
 import TableAutocomplete from './TableAutocomplete'
+import Loading from './Loading'
 
 // When the user makes it a selection, it creates a temporaty table.
 // If the user takes the focus away from the text field, delete it
@@ -58,7 +59,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  modelLoaded: (model) => dispatch(modelLoaded(TABLE.PREVIEW, model)),
   setDb: (db, path, val) => dispatch(setDb(db, path,val)),
   set: (path, val) => dispatch(set(path,val)),
   deletePath: (db,path) => dispatch(deletePath(db, path)),
@@ -82,13 +82,6 @@ class PreviewSelection extends React.Component {
   constructor(props) {
     super(props)
     this.state = {tempPreview: null, selection: [], selectionToCopy: []}
-  }
-  componentDidMount = () => {
-    this.props.set([...PATH.UI_LOADING, TABLE.PREVIEW], true)
-    this.props.db.get(TABLE.PREVIEW, (model) => {
-      this.props.modelLoaded(model);
-      this.props.set([...PATH.UI_LOADING, TABLE.PREVIEW], false)
-    })
   }
   // If the selection includes at least one preview, select it.
   // Else, create a new empty preview.
@@ -191,6 +184,16 @@ class PreviewSelection extends React.Component {
   }
 
   render = () => {
+
+    // FIXME: delete properly and remove this
+    const previews = _.keys(this.props.previews).filter(k => {
+      const p = this.props.previews[k]
+      return this.props.defs[p.tableId]
+    }).reduce((acc,val) => {
+      acc[val] = this.props.previews[val]
+      return acc
+    },{})
+
     return (
       <Selection onSelect={this.onSelect} onMouseDown={this.onMouseDown}
       canStart={this.canStartSelection}>
@@ -267,5 +270,9 @@ class PreviewSelection extends React.Component {
   }
 }
 
-const connectedPreviewSelection = connect(mapStateToProps,mapDispatchToProps)(PreviewSelection)
+const load = (LoadObj) => (props) => {
+  return <Loading path={TABLE.PREVIEW} callback={(data) => <LoadObj {...props} previews={data}/>}/>
+}
+
+const connectedPreviewSelection = load(connect(mapStateToProps,mapDispatchToProps)(PreviewSelection))
 export {connectedPreviewSelection as PreviewSelection }
