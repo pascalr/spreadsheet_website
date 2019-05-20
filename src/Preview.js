@@ -56,6 +56,7 @@ const clickIsOutside = (e,box) => {
 const mapStateToProps = state => ({
   db: state.db,
   defs: state.defs,
+  previews: _.get(state.cache.root, TABLE.PREVIEW),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -271,7 +272,9 @@ class PreviewSelection extends React.Component {
 }
 
 const load = (LoadObj) => (props) => {
-  return <Loading path={TABLE.PREVIEW} callback={(data) => <LoadObj {...props} previews={data}/>}/>
+  return <Loading path={TABLE.PREVIEW}>
+    <LoadObj {...props}/>
+  </Loading>
 }
 
 const connectedPreviewSelection = load(connect(mapStateToProps,mapDispatchToProps)(PreviewSelection))

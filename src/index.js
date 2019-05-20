@@ -11,8 +11,14 @@ import ByPass from './lib/ByPass'
 
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContextProvider } from 'react-dnd'
+import {StoreProvider} from './contexts'
+
+console.log('ran once????????????????????????????????????????????????????')
+
+const theStore = {}
 
 ReactDOM.render(
+  <StoreProvider store={theStore}>
   <Provider store={store}>
     <DragDropContextProvider backend={HTML5Backend}>
       {/*<Router>*/}
@@ -23,7 +29,8 @@ ReactDOM.render(
         </ByPass>
         {/*</Router>*/}
     </DragDropContextProvider>
-  </Provider>,
+  </Provider>
+  </StoreProvider>,
   document.getElementById('root')
 );
 

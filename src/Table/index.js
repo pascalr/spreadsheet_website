@@ -12,7 +12,7 @@ import Loading from '../Loading'
 const mapStateToProps = state => ({
   db: state.db,
   defs: state.defs,
-  //dataRoot: state.cache.root[TABLE.TABLES],
+  dataRoot: _.get(state.cache.root, TABLE.TABLES),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -148,8 +148,10 @@ class Table extends React.Component {
 
 }
 
-const load = (LoadObj) => (props) => {
-  return <Loading path={[TABLE.TABLES,props.id]} callback={(data) => <LoadObj {...props} data={data}/>}/>
+const LoadingTable = (props) => {
+  return <Loading path={[TABLE.TABLES,props.id]}>
+    <Table {...props} data={props.dataRoot ? props.dataRoot[props.id] : null}/>
+  </Loading>
 }
 
-export default load(connect(mapStateToProps, mapDispatchToProps)(Table));
+export default connect(mapStateToProps, mapDispatchToProps)(LoadingTable);

@@ -26,13 +26,14 @@ class Loading extends React.Component {
     this.props.set([...PATH.UI_LOADING, this.props.path.slice(-1)], true)
     this.props.db.get(this.props.path, (val) => {
       this.props.set([...PATH.UI_LOADING, this.props.path.slice(-1)], false)
+      this.props.set(this.props.path, val)
       this.setState({loaded: true, val})
     })
   }
 
   render() {
     if (!this.state.loaded) { return null }
-    return this.props.callback(this.state.val)
+    return this.props.children
   }
 }
 

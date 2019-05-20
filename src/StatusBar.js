@@ -23,7 +23,6 @@ class StatusBar extends React.Component {
   render = () => {
     // TODO: No internet connection
     // TODO: Not logged in, all changes are local
-    // TODO: Loading...
     // TODO: Saving changes...
     return (
       <React.Fragment>

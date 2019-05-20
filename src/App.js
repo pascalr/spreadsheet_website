@@ -19,7 +19,6 @@ import PreviewMenu from './menus/PreviewMenu'
 import * as PATH from './constants/paths'
 import FAB from './FAB'
 import SimpleDb from './SimpleDb'
-import Loading from './Loading'
 
 const abStyles = {
   position: 'absolute',

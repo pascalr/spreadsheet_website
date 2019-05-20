@@ -34,12 +34,10 @@ app.get('/:db/:path', function(req, res) {
   const file = filesByName(req.params.db)
   const val = file.get(req.params.path)
   res.send(val);
-  console.log(val)
 });
 
 app.put('/:db/:path', function(req, res) {
   console.log('set: ' + req.path)
-  console.log(req.body.data)
   const file = filesByName(req.params.db)
   file.set(req.params.path, req.body.data)
   res.send('done');
