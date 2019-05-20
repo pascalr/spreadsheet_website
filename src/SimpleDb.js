@@ -19,6 +19,13 @@ class SimpleDb {
         callback(response.data)
       }
     })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+    .finally(function () {
+      // always executed
+    });
   }
   set = (path, val, callback) => {
     axios.put('http://localhost:'+port+'/'+dbname+'/'+_path(path),{data: val},{ headers: { ['Content-Type']: 'application/json' }})
@@ -27,6 +34,13 @@ class SimpleDb {
         callback()
       }
     })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+    .finally(function () {
+      // always executed
+    });
   }
   unset = (path, callback) => {
     axios.get('http://localhost:'+port+'/'+dbname+'/get/'+_path(path))
@@ -35,6 +49,13 @@ class SimpleDb {
         callback()
       }
     })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+    .finally(function () {
+      // always executed
+    });
   }
 
   update = (path, updates) => {
