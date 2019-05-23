@@ -12,6 +12,7 @@ import Draggable from './Draggable'
 import Resizable from './Resizable'
 import TableAutocomplete from './TableAutocomplete'
 import Loading from './Loading'
+import {avec, PREVIEWS} from './contexts'
 
 // When the user makes it a selection, it creates a temporaty table.
 // If the user takes the focus away from the text field, delete it
@@ -56,7 +57,7 @@ const clickIsOutside = (e,box) => {
 const mapStateToProps = state => ({
   db: state.db,
   defs: state.defs,
-  previews: _.get(state.cache.root, TABLE.PREVIEW),
+  //previews: _.get(state.cache.root, TABLE.PREVIEW),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -271,11 +272,11 @@ class PreviewSelection extends React.Component {
   }
 }
 
-const load = (LoadObj) => (props) => {
+  /*const load = (LoadObj) => (props) => {
   return <Loading path={TABLE.PREVIEW}>
     <LoadObj {...props}/>
   </Loading>
-}
+}*/
 
-const connectedPreviewSelection = load(connect(mapStateToProps,mapDispatchToProps)(PreviewSelection))
+const connectedPreviewSelection = connect(mapStateToProps,mapDispatchToProps)(avec(PREVIEWS, PreviewSelection))
 export {connectedPreviewSelection as PreviewSelection }

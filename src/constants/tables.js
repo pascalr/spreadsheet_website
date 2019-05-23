@@ -4,7 +4,7 @@ export const DEFS = 'defs';
 export const ITEMS = 'items';
 export const SCREEN = 'items';// Screen should be deleted...
 export const LAYOUT = 'layout';
-export const PREVIEW = 'preview';
+export const PREVIEW = 'previews';
 export const UI = 'ui';
 
 // A Table contains all the data

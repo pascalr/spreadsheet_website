@@ -30,10 +30,12 @@ app.use(function(req, res, next) {
 });
  
 app.get('/:db/:path', function(req, res) {
-  console.log('get: ' + req.path)
+  const before = new Date().getMilliseconds()
   const file = filesByName(req.params.db)
   const val = file.get(req.params.path)
   res.send(val);
+  const after = new Date().getMilliseconds()
+  console.log('get: ' + req.path + ' in ' + (after - before) + ' ms.')
 });
 
 app.put('/:db/:path', function(req, res) {

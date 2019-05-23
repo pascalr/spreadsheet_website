@@ -6,7 +6,6 @@ import * as TABLE from './constants/tables'
 import { MapInteraction } from 'react-map-interaction'
 import ByPass from './lib/ByPass'
 import {PreviewSelection} from './Preview'
-import {PreviewsProvider,withPreviews} from './contexts'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -89,5 +88,5 @@ class LinkScreen extends React.Component {
   }
 }
 
-export default withPreviews(connect(mapStateToProps, mapDispatchToProps)(LinkScreen))
+export default connect(mapStateToProps, mapDispatchToProps)(LinkScreen)
 //export default connect(mapStateToProps, mapDispatchToProps)(LinkScreen)

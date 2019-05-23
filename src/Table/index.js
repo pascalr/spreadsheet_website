@@ -8,6 +8,7 @@ import { RIEInput } from 'riek'
 import { set, setDb } from '../actions'
 import _ from 'lodash'
 import Loading from '../Loading'
+import {avec, TABLES} from '../contexts'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -40,7 +41,8 @@ class Table extends React.Component {
   
   onCellsChanged = (layoutNb) => (changes, additions) => {
     //let data = this.data() ? {...this.data()} : {}
-    let data = this.props.data || {}
+    let data = this.props.tables ? this.props.tables[this.props.id] : {}
+    //let data = this.props.data || {}
     const def = this.def()
     changes.concat(additions || []).forEach(({cell, row, col, value, type}) => {
 
@@ -59,7 +61,8 @@ class Table extends React.Component {
   }
 
   onDeleteLines = (layoutNb, start, end) => {
-    let data = this.props.data
+    //let data = this.props.data
+    let data = this.props.tables ? this.props.tables[this.props.id] : {}
     const def = this.def()
 
     const colIds = def.layout[layoutNb];
@@ -73,14 +76,15 @@ class Table extends React.Component {
   }
 
   renderDatasheetTable = () => {
+    if (!this.props.tables) {return null}
     const def = this.props.defs[this.props.id];
     return def.layout.map((e,i) => {
       let isField = false
       // show a field
       const cols = def.layout[i]
       // If no columns side by side and only one value, show as a field
-      if (cols.length === 1 && this.props.data) {
-        const rows = this.props.data[cols[0]]
+      if (cols.length === 1 && this.props.tables && this.props.tables[this.props.id]) {
+        const rows = this.props.tables[cols[0]]
         if (rows && rows.length === 1) {
           isField = true
         }
@@ -89,7 +93,7 @@ class Table extends React.Component {
         <DatasheetTable
           key={'DatasheetTable'+def.id+i}
           def={def}
-          table={this.props.data}
+          table={this.props.tables[this.props.id]}
           onCellsChanged={this.onCellsChanged(i)}
           onDeleteLines={this.onDeleteLines}
           hideLineNumbers={this.props.hideLineNumbers}
@@ -148,10 +152,16 @@ class Table extends React.Component {
 
 }
 
+const AvecTable = (props) => {
+  const Component = avec([TABLES, props.id], Table)
+  return <Component {...props}/>
+}
+
 const LoadingTable = (props) => {
   return <Loading path={[TABLE.TABLES,props.id]}>
     <Table {...props} data={props.dataRoot ? props.dataRoot[props.id] : null}/>
   </Loading>
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoadingTable);
+export default connect(mapStateToProps, mapDispatchToProps)(AvecTable);
+//export default connect(mapStateToProps, mapDispatchToProps)(LoadingTable);
