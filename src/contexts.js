@@ -53,16 +53,43 @@ class Store {
     this.set(path,val)
   }
 
+  unset = (rawPath, val) => {
+    let path = _path(rawPath)
+    console.log('unsetting ' + path)
+    this.data = _.omit(this.data, [rawPath])
+    const divPaths = path.split('.')
+    for (let i = divPaths.length; i > 0; i--) {
+      path = _path(divPaths.slice(0,i))
+      if (this.callbacksByPath[path]) {
+        const cs = this.callbacksByPath[path].filter(c => c ? true : false)
+        console.log('' + cs.length + ' callbacks called')
+        _.forEach(cs, c => {
+          c(val)
+        })
+      }
+    }
+  }
+
+  dispatchDelete = (path) => {
+    this.db.unset(path)
+    this.unset(path)
+  }
+
   set = (rawPath, val) => {
-    const path = _path(rawPath)
+    let path = _path(rawPath)
     console.log('setting ' + path)
     // TODO: Before updating, checks that the value has really changed
     _.set(this.data, path, val)
-    if (this.callbacksByPath[path]) {
-      const cs = this.callbacksByPath[path].filter(c => c ? true : false)
-      _.forEach(cs, c => {
-        c(val)
-      })
+    const divPaths = path.split('.')
+    for (let i = divPaths.length; i > 0; i--) {
+      path = _path(divPaths.slice(0,i))
+      if (this.callbacksByPath[path]) {
+        const cs = this.callbacksByPath[path].filter(c => c ? true : false)
+        console.log('' + cs.length + ' callbacks called')
+        _.forEach(cs, c => {
+          c(val)
+        })
+      }
     }
   }
 
@@ -109,7 +136,7 @@ const avec = (rawPaths, Comp) => (props) => {
     {store => {
       if (subProps !== null) {
         // TODO: Only pass the data needed
-        return <div className='here'><Comp {...props} {...store.data} dispatch={store.dispatch} /></div>
+        return <div className='here'><Comp {...props} {...store.data} dispatch={store.dispatch} dispatchDelete={store.dispatchDelete} /></div>
         //return <div className='here'><Comp {...props} {...subProps} store={store} /></div>
       } else {
         store.subscribe(paths, logSetSubProps)
@@ -123,15 +150,7 @@ const avec = (rawPaths, Comp) => (props) => {
 const withDispatch = (Comp) => (props) => {
   return <StoreContext.Consumer>
     {store => {
-      return <Comp {...props} dispatch={store.dispatch} />
-    }}
-  </StoreContext.Consumer>
-}
-
-const avecDbStore = (Comp) => (props) => {
-  return <StoreContext.Consumer>
-    {store => {
-      return <Comp {...props} dbStore={store} />
+      return <Comp {...props} dispatch={store.dispatch} dispatchDelete={store.dispatchDelete}/>
     }}
   </StoreContext.Consumer>
 }
@@ -143,4 +162,3 @@ export {withDispatch}
 export {StoreProvider}
 export {Store}
 export {avec}
-export {avecDbStore}

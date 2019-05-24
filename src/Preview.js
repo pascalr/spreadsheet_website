@@ -128,7 +128,8 @@ class PreviewSelection extends React.Component {
     // Delete key deletes selected previews
     if (e.which === 46) {
       this.state.selection.forEach(s => {
-        this.props.deletePath(this.props.db,[TABLE.PREVIEW,s])
+        //this.props.deletePath(this.props.db,[TABLE.PREVIEW,s])
+        this.props.dispatchDelete([TABLE.PREVIEW,s])
       })
     }
   }
@@ -261,7 +262,7 @@ class PreviewSelection extends React.Component {
                   // FIXME: This is not even dispatched...
                   newTable(this.props.db,this.props.defs,null,this.state.tempPreview.tableId)
                 }
-                this.props.setDb(this.props.db, path, preview);
+                this.props.dispatch(path, preview);
               }}
             />
           </LocatedPreview>

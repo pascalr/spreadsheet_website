@@ -45,11 +45,15 @@ app.put('/:db/:path', function(req, res) {
   res.send('done');
 });
 
-app.delete('/:db/unset/:path', function(req, res) {
+app.delete('/:db/:path', function(req, res) {
   console.log('unset: ' + req.path)
   const file = filesByName(req.params.db)
   file.unset(req.params.path)
   res.send('done');
+});
+
+app.get('*',function (req, res) {
+  console.log('no routes matches: ' + req.path)
 });
 
 var port = 8000

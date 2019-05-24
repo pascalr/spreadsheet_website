@@ -8,7 +8,7 @@ import uuidv1 from 'uuid/v1'
 import { set, setDb, newTable } from '../actions'
 import * as TABLE from '../constants/tables'
 import TableLink from '../TableLink'
-import {avecDbStore} from '../contexts'
+import {withDispatch} from '../contexts'
 
 const stringify = function(obj) {
 	try {
@@ -201,4 +201,4 @@ class DatasheetTable extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(avecDbStore(DatasheetTable));
+export default connect(mapStateToProps, mapDispatchToProps)(withDispatch(DatasheetTable));

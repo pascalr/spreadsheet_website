@@ -43,7 +43,7 @@ class SimpleDb {
     });
   }
   unset = (path, callback) => {
-    axios.get('http://localhost:'+port+'/'+dbname+'/get/'+_path(path))
+    axios.delete('http://localhost:'+port+'/'+dbname+'/'+_path(path))
     .then(response => {
       if (callback) {
         callback()
