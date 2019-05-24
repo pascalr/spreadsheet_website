@@ -7,7 +7,6 @@ import DatasheetTable from '../DatasheetTable'
 import { RIEInput } from 'riek'
 import { set, setDb } from '../actions'
 import _ from 'lodash'
-import Loading from '../Loading'
 import {avec, TABLES} from '../contexts'
 
 const mapStateToProps = state => ({
@@ -36,13 +35,21 @@ class Table extends React.Component {
       if (cell && cell.value.slice(0,2) === '==' && !value) { return } 
 
       let colId = def.layout[layoutNb][col-1]
-      const dataCol = [...(data[colId] || [])]
-      dataCol[row] = value || ''
-      data[colId] = dataCol
+      const d = data[colId]
+      // In JSON, an array is an object
+      if (typeof d === 'object') {
+        const dataCol = d
+        dataCol[row] = value || ''
+        data[colId] = dataCol
+      } else { // Array
+        const dataCol = [...(d || [])]
+        dataCol[row] = value || ''
+        data[colId] = dataCol
+      }
     })
     console.log('onCellsChanged')
     console.log(data)
-    this.props.db.set([TABLE.TABLES,this.props.id],data)
+    //this.props.db.set([TABLE.TABLES,this.props.id],data)
     this.props.dispatch([TABLE.TABLES,this.props.id],data)
     this.setState({data})
   }
@@ -145,11 +152,4 @@ const AvecTable = (props) => {
   return <Component {...props}/>
 }
 
-const LoadingTable = (props) => {
-  return <Loading path={[TABLE.TABLES,props.id]}>
-    <Table {...props} data={props.dataRoot ? props.dataRoot[props.id] : null}/>
-  </Loading>
-}
-
 export default connect(mapStateToProps, mapDispatchToProps)(AvecTable);
-//export default connect(mapStateToProps, mapDispatchToProps)(LoadingTable);

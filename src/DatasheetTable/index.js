@@ -119,13 +119,13 @@ class DatasheetTable extends Component {
             value = (<a href={cell.value}>{cell.value}</a>);
           } else if (col.type === "bullet") {
             value = (<span>&bull;</span>)
-          } else if (col.type === "checkbox") {
+          }/* FIXME: TO FIX else if (col.type === "checkbox") {
             value = (<input type="checkbox" defaultChecked={cell.value} onChange={() => {
               const path = [TABLE.TABLES,this.props.def.id,i,col.name]
               const val = cell.value ? !cell.value : 1;
               this.props.db.set(path, val, this.props.set(path))
             }}/>)
-          } else {
+          } */else {
             value = cell.value
           }
         }
@@ -169,7 +169,7 @@ class DatasheetTable extends Component {
       if (this.state.selection && this.state.selection.start.i + 1 >= nb) {
         console.log('adding another line')
         let colId = def.layout[layoutNb][0]
-        this.props.setDb(this.props.db,[TABLE.TABLES,this.props.id,colId,nb],'')
+        //this.props.setDb(this.props.db,[TABLE.TABLES,this.props.id,colId,nb],'')
         this.props.dispatch([TABLE.TABLES,this.props.id,colId,nb],'')
       }
     } else if (e.keyCode === 8 || e.keyCode === 46) {// backspace or delete

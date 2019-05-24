@@ -47,6 +47,11 @@ class Store {
       }
     })
   }
+   
+  dispatch = (path, val) => {
+    this.db.set(path,val)
+    this.set(path,val)
+  }
 
   set = (rawPath, val) => {
     const path = _path(rawPath)
@@ -55,11 +60,7 @@ class Store {
     _.set(this.data, path, val)
     if (this.callbacksByPath[path]) {
       const cs = this.callbacksByPath[path].filter(c => c ? true : false)
-      console.log('the callbacks are of :' + cs.length)
-      console.log(cs)
       _.forEach(cs, c => {
-        console.log('in here')
-        console.log(c)
         c(val)
       })
     }
@@ -67,15 +68,9 @@ class Store {
 
   // whenever the value of any of the paths changes, rerender the component
   subscribe = (rawPaths, callback) => {
-    console.log('rawPaths')
-    console.log(rawPaths)
     const paths = _.castArray(rawPaths)
-    console.log('paths')
-    console.log(paths)
     paths.forEach(p => {
       const newPaths = [..._.castArray(this.callbacksByPath[p]), callback]
-    console.log('newPaths')
-    console.log(newPaths)
       this.callbacksByPath[p] = newPaths
       this.componentLoadedMap[p] = false
     })
@@ -100,14 +95,9 @@ class StoreProvider extends React.Component {
 // avec(MODEL.PREVIEW,
 // avec should load and rerender the components whenever they change.
 const avec = (rawPaths, Comp) => (props) => {
-  console.log('subProps')
-  console.log(subProps)
   const [subProps, setSubProps] = useState(null)
   const paths = _.castArray(rawPaths)
   const logSetSubProps = (blah) => {
-    console.log('callback called')
-    console.trace()
-    console.log(blah)
     // important to make sure the subProps is never null
     // because null is used to mean that is was never loaded
     return setSubProps(blah || {}) 
@@ -117,11 +107,9 @@ const avec = (rawPaths, Comp) => (props) => {
   //},{})
   return <StoreContext.Consumer>
     {store => {
-      console.log('there')
       if (subProps !== null) {
         // TODO: Only pass the data needed
-        const o = {}
-        return <div className='here'><Comp {...props} {...store.data} dispatch={store.set} /></div>
+        return <div className='here'><Comp {...props} {...store.data} dispatch={store.dispatch} /></div>
         //return <div className='here'><Comp {...props} {...subProps} store={store} /></div>
       } else {
         store.subscribe(paths, logSetSubProps)
@@ -135,7 +123,7 @@ const avec = (rawPaths, Comp) => (props) => {
 const withDispatch = (Comp) => (props) => {
   return <StoreContext.Consumer>
     {store => {
-      return <Comp {...props} dispatch={store.set} />
+      return <Comp {...props} dispatch={store.dispatch} />
     }}
   </StoreContext.Consumer>
 }

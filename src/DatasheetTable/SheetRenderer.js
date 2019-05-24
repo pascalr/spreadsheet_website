@@ -7,6 +7,7 @@ import { colDragSource, colDropTarget } from './drag-drop.js'
 import { RIEInput } from 'riek'
 import { set } from '../actions'
 import * as TABLE from '../constants/tables'
+import {withDispatch} from '../contexts'
 
 const colMapStateToProps = state => ({
   db: state.db,
@@ -20,8 +21,9 @@ class ColumnNameBase extends React.Component {
 
   onColumnNameChange = (props) => {
     const path = [TABLE.DEFS,this.props.def.id,'cols',this.props.col.id,'name']
-    this.props.db.set(path,props.columnName,
-      this.props.set(path, props.columnName));
+    this.props.dispatch(path,props.columnName)
+    //this.props.db.set(path,props.columnName,
+    //  this.props.set(path, props.columnName));
   }
 
   render = () => {
@@ -35,7 +37,7 @@ class ColumnNameBase extends React.Component {
   }
 }
 
-const ColumnName = connect(colMapStateToProps, colMapDispatchToProps)(ColumnNameBase);
+const ColumnName = connect(colMapStateToProps, colMapDispatchToProps)(withDispatch(ColumnNameBase));
 
 class HeaderBase extends React.Component {
   render() {
