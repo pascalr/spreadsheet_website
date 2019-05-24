@@ -1,3 +1,15 @@
+----------------------------------------------------------
+Objectifs fin de semaine: Minimum viable product
+- Pouvoir visualiser mon application tout le monde
+- Faire une petite demo belle
+- Editer et voir le result a cote en temps reel.
+- Print pdf et publish html
+- Plus de bug grave
+- Copier coller en JSON
+- Pouvoir envoyer un lien vers mon application
+----------------------------------------------------------
+
+
 TODODOODODOODDODO : RENAME preview to previews!!!
 
 The infinite map easier version is a folder and file.

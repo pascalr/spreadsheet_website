@@ -13,7 +13,6 @@ import {avec, TABLES} from '../contexts'
 const mapStateToProps = state => ({
   db: state.db,
   defs: state.defs,
-  dataRoot: _.get(state.cache.root, TABLE.TABLES),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -23,21 +22,7 @@ const mapDispatchToProps = dispatch => ({
 
 class Table extends React.Component {
 
-  componentDidMount = () => {
-    //this.props.db.get([TABLE.TABLES,this.props.id],this.props.set([TABLE.TABLES, this.props.id]))
-  }
-
-  componentDidUpdate = () => {
-    // FIXME: This is a quick fix, but I need to think about how to do this correctly
-    /*if (this.def() && !this.data()) {
-      console.log('badly updating table not found')
-      this.props.db.get([TABLE.TABLES,this.props.id],
-        (val) => this.props.set([TABLE.TABLES, this.props.id])(val || 'loaded'))
-    }*/
-  }
-
   def = () => this.props.defs[this.props.id];
-  //data = () => this.props.dataRoot ? this.props.dataRoot[this.props.id] : null;
   
   onCellsChanged = (layoutNb) => (changes, additions) => {
     //let data = this.data() ? {...this.data()} : {}
@@ -58,7 +43,7 @@ class Table extends React.Component {
     console.log('onCellsChanged')
     console.log(data)
     this.props.db.set([TABLE.TABLES,this.props.id],data)
-    this.props.dbStore.set([TABLE.TABLES,this.props.id],data)
+    this.props.dispatch([TABLE.TABLES,this.props.id],data)
     this.setState({data})
   }
 

@@ -170,7 +170,7 @@ class DatasheetTable extends Component {
         console.log('adding another line')
         let colId = def.layout[layoutNb][0]
         this.props.setDb(this.props.db,[TABLE.TABLES,this.props.id,colId,nb],'')
-        this.props.dbStore.set([TABLE.TABLES,this.props.id,colId,nb],'')
+        this.props.dispatch([TABLE.TABLES,this.props.id,colId,nb],'')
       }
     } else if (e.keyCode === 8 || e.keyCode === 46) {// backspace or delete
       const start = this.state.selection.start

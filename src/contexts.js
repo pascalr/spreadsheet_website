@@ -119,16 +119,23 @@ const avec = (rawPaths, Comp) => (props) => {
     {store => {
       console.log('there')
       if (subProps !== null) {
-        // FIXME: Dont pass the store
-        // TODO: Only pass the props needed
+        // TODO: Only pass the data needed
         const o = {}
-        return <div className='here'><Comp {...props} {...store.data} dbStore={store} /></div>
+        return <div className='here'><Comp {...props} {...store.data} dispatch={store.set} /></div>
         //return <div className='here'><Comp {...props} {...subProps} store={store} /></div>
       } else {
         store.subscribe(paths, logSetSubProps)
         store.load(paths)
         return null
       }
+    }}
+  </StoreContext.Consumer>
+}
+
+const withDispatch = (Comp) => (props) => {
+  return <StoreContext.Consumer>
+    {store => {
+      return <Comp {...props} dispatch={store.set} />
     }}
   </StoreContext.Consumer>
 }
@@ -144,6 +151,7 @@ const avecDbStore = (Comp) => (props) => {
 //export avec(PREVIEWS)(Exemple)
 //export avec([TABLES, PREVIEWS])(Exemple)
 
+export {withDispatch}
 export {StoreProvider}
 export {Store}
 export {avec}
