@@ -18,16 +18,6 @@ import SearchBar from './SearchBar'
 import PreviewMenu from './menus/PreviewMenu'
 import * as PATH from './constants/paths'
 import FAB from './FAB'
-import SimpleDb from './SimpleDb'
-import {avec, PREVIEWS} from './contexts'
-
-const abStyles = {
-  position: 'absolute',
-  top: '-110px',
-  right: '100%',
-  padding: '18px',
-  boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
-};
 
 const mapStateToProps = state => ({
   db: state.db,

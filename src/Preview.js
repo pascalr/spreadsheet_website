@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import _ from 'lodash'
 import { connect } from "react-redux"
 import Selection from './Selection'
@@ -7,11 +7,9 @@ import { deletePath, newTable, set, setDb } from "./actions"
 import * as TABLE from './constants/tables'
 import * as PATH from './constants/paths'
 import Table from './Table'
-import { MenuProvider } from 'react-contexify'
 import Draggable from './Draggable'
 import Resizable from './Resizable'
 import TableAutocomplete from './TableAutocomplete'
-import Loading from './Loading'
 import {avec, PREVIEWS} from './contexts'
 
 // When the user makes it a selection, it creates a temporaty table.
@@ -57,7 +55,6 @@ const clickIsOutside = (e,box) => {
 const mapStateToProps = state => ({
   db: state.db,
   defs: state.defs,
-  //previews: _.get(state.cache.root, TABLE.PREVIEW),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -191,16 +188,6 @@ class PreviewSelection extends React.Component {
   }
 
   render = () => {
-
-    // FIXME: delete properly and remove this
-    const previews = _.keys(this.props.previews).filter(k => {
-      const p = this.props.previews[k]
-      return this.props.defs[p.tableId]
-    }).reduce((acc,val) => {
-      acc[val] = this.props.previews[val]
-      return acc
-    },{})
-
     return (
       <Selection onSelect={this.onSelect} onMouseDown={this.onMouseDown}
       canStart={this.canStartSelection}>

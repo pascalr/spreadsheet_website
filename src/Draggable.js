@@ -1,7 +1,5 @@
 import React, {useState} from 'react'
-import _ from 'lodash'
 import { connect } from "react-redux"
-import ReactDraggable from 'react-draggable'
 import {DraggableCore} from 'react-draggable'
 
 const dragLinkProps = (state) => ({

@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react'
 import _ from 'lodash'
 import { newTable } from "./actions"
 import Link from './Link'

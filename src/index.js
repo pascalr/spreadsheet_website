@@ -12,10 +12,10 @@ import ByPass from './lib/ByPass'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContextProvider } from 'react-dnd'
 import {Store, StoreProvider} from './contexts'
-import KeyController from './KeyController'
 
 const theStore = new Store({test: '1212'})
 
+//import KeyController from './KeyController'
 //<KeyController>
 //</KeyController>
 ReactDOM.render(
