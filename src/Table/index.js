@@ -24,7 +24,7 @@ const mapDispatchToProps = dispatch => ({
 class Table extends React.Component {
 
   componentDidMount = () => {
-    this.props.db.get([TABLE.TABLES,this.props.id],this.props.set([TABLE.TABLES, this.props.id]))
+    //this.props.db.get([TABLE.TABLES,this.props.id],this.props.set([TABLE.TABLES, this.props.id]))
   }
 
   componentDidUpdate = () => {
@@ -42,6 +42,7 @@ class Table extends React.Component {
   onCellsChanged = (layoutNb) => (changes, additions) => {
     //let data = this.data() ? {...this.data()} : {}
     let data = this.props.tables ? this.props.tables[this.props.id] : {}
+    if (data === "") {data = {}}
     //let data = this.props.data || {}
     const def = this.def()
     changes.concat(additions || []).forEach(({cell, row, col, value, type}) => {
@@ -57,12 +58,14 @@ class Table extends React.Component {
     console.log('onCellsChanged')
     console.log(data)
     this.props.db.set([TABLE.TABLES,this.props.id],data)
+    this.props.dbStore.set([TABLE.TABLES,this.props.id],data)
     this.setState({data})
   }
 
   onDeleteLines = (layoutNb, start, end) => {
     //let data = this.props.data
     let data = this.props.tables ? this.props.tables[this.props.id] : {}
+    if (data === "") {data = {}}
     const def = this.def()
 
     const colIds = def.layout[layoutNb];
@@ -153,7 +156,7 @@ class Table extends React.Component {
 }
 
 const AvecTable = (props) => {
-  const Component = avec([TABLES, props.id], Table)
+  const Component = avec(TABLES+'.'+props.id, Table)
   return <Component {...props}/>
 }
 

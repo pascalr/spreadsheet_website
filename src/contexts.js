@@ -8,6 +8,10 @@ export const PREVIEWS = 'previews'
 export const TABLES = 'tables'
 export const NESTED = 'foo.bar.blah' // nested exemple
 
+function _path(path) {
+  return _.castArray(path).join('.')
+}
+
 // Lazy loading data
 // The issue with lazy loading is that it makes render functions non pure.
 class Store {
@@ -19,7 +23,7 @@ class Store {
   }
   // Format could be array, string
   get = (path) => {
-    return _.get(this.data, path) || {}
+    return _.get(this.data, path)
     /*const isLoaded = _.get(this.componentLoadedMap, path)
     if (isLoaded) {
       return _.get(this.data, path)
@@ -37,31 +41,42 @@ class Store {
       const isLoaded = _.get(this.componentLoadedMap, path)
       if (!isLoaded) {
         this.db.get(path, (data) => {
+          _.set(this.componentLoadedMap, path, true)
           this.set(path, data)
-          _.set(this.componentLoadedMap, path)
         })
       }
     })
   }
 
-  set = (path, val) => {
+  set = (rawPath, val) => {
+    const path = _path(rawPath)
     console.log('setting ' + path)
     // TODO: Before updating, checks that the value has really changed
     _.set(this.data, path, val)
-    const cs = this.callbacksByPath[path].filter(c => c ? true : false)
-    console.log(cs)
-    _.forEach(cs, c => {
-      console.log('in here')
-      console.log(c)
-      c(val)
-    })
+    if (this.callbacksByPath[path]) {
+      const cs = this.callbacksByPath[path].filter(c => c ? true : false)
+      console.log('the callbacks are of :' + cs.length)
+      console.log(cs)
+      _.forEach(cs, c => {
+        console.log('in here')
+        console.log(c)
+        c(val)
+      })
+    }
   }
 
   // whenever the value of any of the paths changes, rerender the component
   subscribe = (rawPaths, callback) => {
+    console.log('rawPaths')
+    console.log(rawPaths)
     const paths = _.castArray(rawPaths)
+    console.log('paths')
+    console.log(paths)
     paths.forEach(p => {
-      this.callbacksByPath[p] = [..._.castArray(this.callbacksByPath[p]), callback]
+      const newPaths = [..._.castArray(this.callbacksByPath[p]), callback]
+    console.log('newPaths')
+    console.log(newPaths)
+      this.callbacksByPath[p] = newPaths
       this.componentLoadedMap[p] = false
     })
   }
@@ -85,13 +100,17 @@ class StoreProvider extends React.Component {
 // avec(MODEL.PREVIEW,
 // avec should load and rerender the components whenever they change.
 const avec = (rawPaths, Comp) => (props) => {
-  console.log('here')
+  console.log('subProps')
+  console.log(subProps)
   const [subProps, setSubProps] = useState(null)
   const paths = _.castArray(rawPaths)
-  function logSetSubProps(blah) {
+  const logSetSubProps = (blah) => {
     console.log('callback called')
+    console.trace()
     console.log(blah)
-    return setSubProps(blah)
+    // important to make sure the subProps is never null
+    // because null is used to mean that is was never loaded
+    return setSubProps(blah || {}) 
   }
   //const storeProps = paths.reduce((acc,curr) => {
   //  _.set(acc, curr, 
@@ -103,7 +122,7 @@ const avec = (rawPaths, Comp) => (props) => {
         // FIXME: Dont pass the store
         // TODO: Only pass the props needed
         const o = {}
-        return <div className='here'><Comp {...props} {...store.data} /></div>
+        return <div className='here'><Comp {...props} {...store.data} dbStore={store} /></div>
         //return <div className='here'><Comp {...props} {...subProps} store={store} /></div>
       } else {
         store.subscribe(paths, logSetSubProps)
@@ -114,9 +133,18 @@ const avec = (rawPaths, Comp) => (props) => {
   </StoreContext.Consumer>
 }
 
+const avecDbStore = (Comp) => (props) => {
+  return <StoreContext.Consumer>
+    {store => {
+      return <Comp {...props} dbStore={store} />
+    }}
+  </StoreContext.Consumer>
+}
+
 //export avec(PREVIEWS)(Exemple)
 //export avec([TABLES, PREVIEWS])(Exemple)
 
 export {StoreProvider}
 export {Store}
 export {avec}
+export {avecDbStore}

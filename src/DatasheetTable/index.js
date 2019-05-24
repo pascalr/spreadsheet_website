@@ -8,6 +8,7 @@ import uuidv1 from 'uuid/v1'
 import { set, setDb, newTable } from '../actions'
 import * as TABLE from '../constants/tables'
 import TableLink from '../TableLink'
+import {avecDbStore} from '../contexts'
 
 const stringify = function(obj) {
 	try {
@@ -169,6 +170,7 @@ class DatasheetTable extends Component {
         console.log('adding another line')
         let colId = def.layout[layoutNb][0]
         this.props.setDb(this.props.db,[TABLE.TABLES,this.props.id,colId,nb],'')
+        this.props.dbStore.set([TABLE.TABLES,this.props.id,colId,nb],'')
       }
     } else if (e.keyCode === 8 || e.keyCode === 46) {// backspace or delete
       const start = this.state.selection.start
@@ -199,4 +201,4 @@ class DatasheetTable extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DatasheetTable);
+export default connect(mapStateToProps, mapDispatchToProps)(avecDbStore(DatasheetTable));
