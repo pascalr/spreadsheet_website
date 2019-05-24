@@ -138,6 +138,10 @@ class PreviewSelection extends React.Component {
     let can = true
     _.values(this.props.previews).map(p => {
       if (!clickIsOutside(e,p)) {
+        console.log('cannot click because of the preview:')
+        console.log(p)
+        console.log(e)
+
         can = false
       }
     })
@@ -201,7 +205,7 @@ class PreviewSelection extends React.Component {
       <Selection onSelect={this.onSelect} onMouseDown={this.onMouseDown}
       canStart={this.canStartSelection}>
         <div id="screen" className={this.props.editMode ? "editMode" : "notEditMode"}
-          style={{width: 1920, height: 10000}}
+          style={{width: 1920, height: 10000, outline: 'none'}}
           onMouseUp={this.onMouseUp}
           onMouseMove={this.onMouseMove}
           onKeyUp={this.onKeyUp}
