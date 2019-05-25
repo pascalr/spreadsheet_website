@@ -10,8 +10,11 @@ Objectifs fin de semaine: Minimum viable product
 - Plus de bug grave
 - Copier coller en JSON
 - Pouvoir envoyer un lien vers mon application
+- historique
+- ctrl+z
+- etre sur de ne pas perdre d'information
+- etre capable de tout retrouver (recherche???)
 ----------------------------------------------------------
-
 
 TODODOODODOODDODO : RENAME preview to previews!!!
 

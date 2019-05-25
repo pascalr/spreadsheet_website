@@ -9,7 +9,11 @@ export const TABLES = 'tables'
 export const NESTED = 'foo.bar.blah' // nested exemple
 
 function _path(path) {
-  return _.castArray(path).join('.')
+  if (typeof path === 'string') {
+    return path
+  } else {
+    return _.castArray(path).join('.')
+  }
 }
 
 // Lazy loading data
@@ -75,6 +79,13 @@ class Store {
     this.unset(path)
   }
 
+  dispatchUpdate = (path, updates) => {
+    this.db.update(path, updates)
+    _.keys(updates).forEach(k => {
+      this.set(_path(path) + '.' + k, updates[k])
+    })    
+  }
+
   set = (rawPath, val) => {
     let path = _path(rawPath)
     console.log('setting ' + path)
@@ -135,9 +146,8 @@ const avec = (rawPaths, Comp) => (props) => {
   return <StoreContext.Consumer>
     {store => {
       if (subProps !== null) {
-        // TODO: Only pass the data needed
-        return <div className='here'><Comp {...props} {...store.data} dispatch={store.dispatch} dispatchDelete={store.dispatchDelete} /></div>
-        //return <div className='here'><Comp {...props} {...subProps} store={store} /></div>
+        // TODO: Only pass the data needed, don't pass the whole store.data
+        return <Comp {...props} {...store.data} {...storeProps(store)} />
       } else {
         store.subscribe(paths, logSetSubProps)
         store.load(paths)
@@ -147,10 +157,18 @@ const avec = (rawPaths, Comp) => (props) => {
   </StoreContext.Consumer>
 }
 
+function storeProps(store) {
+  return {
+    dispatch: store.dispatch,
+    dispatchDelete: store.dispatchDelete,
+    dispatchUpdate: store.dispatchUpdate,
+  }
+}
+
 const withDispatch = (Comp) => (props) => {
   return <StoreContext.Consumer>
     {store => {
-      return <Comp {...props} dispatch={store.dispatch} dispatchDelete={store.dispatchDelete}/>
+      return <Comp {...props} {...storeProps(store)}/>
     }}
   </StoreContext.Consumer>
 }

@@ -28,7 +28,7 @@ class SimpleDb {
     });
   }
   set = (path, val, callback) => {
-    axios.put('http://localhost:'+port+'/'+dbname+'/'+_path(path),{data: val},{ headers: { ['Content-Type']: 'application/json' }})
+    axios.put('http://localhost:'+port+'/'+dbname+'/'+_path(path),{data: val},{ headers: { 'Content-Type': 'application/json' }})
     .then(response => {
       if (callback) {
         callback()
@@ -59,9 +59,8 @@ class SimpleDb {
   }
 
   update = (path, updates) => {
-    const that = this
-    return _.keys(updates).map(k => {
-      that.set([..._.castArray(path), k], updates[k], null)
+    _.keys(updates).forEach(k => {
+      this.set(_path(path) + '.' + k, updates[k], null)
     })    
   }
 }
