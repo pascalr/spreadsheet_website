@@ -1,6 +1,3 @@
-Snippets:
-import {withDispatch} from '../contexts'
-
 ----------------------------------------------------------
 Objectifs fin de semaine: Minimum viable product
 - Pouvoir visualiser mon application tout le monde

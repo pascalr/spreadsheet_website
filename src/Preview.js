@@ -11,6 +11,7 @@ import Draggable from './Draggable'
 import Resizable from './Resizable'
 import TableAutocomplete from './TableAutocomplete'
 import {avec, PREVIEWS} from './contexts'
+import {genDef} from './helpers'
 
 // When the user makes it a selection, it creates a temporaty table.
 // If the user takes the focus away from the text field, delete it
@@ -250,8 +251,8 @@ class PreviewSelection extends React.Component {
                 if (ids && ids.length === 1) {
                   preview.tableId = ids[0]
                 } else {
-                  // FIXME: This is not even dispatched...
-                  newTable(this.props.db,this.props.defs,null,this.state.tempPreview.tableId)
+                  const def = genDef(this.props.defs,null,this.state.tempPreview.tableId)
+                  this.props.dispatch([TABLE.DEFS,def.id],def.attrs)
                 }
                 this.props.dispatch(path, preview);
               }}
