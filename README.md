@@ -13,6 +13,9 @@ Objectifs fin de semaine: Minimum viable product
 - etre capable de tout retrouver (recherche???)
 ----------------------------------------------------------
 
+Ne plus utiliser click droit. Au lieu, selectionner, et lorsque l'item est selectionner,
+faire apparaitre des petites icones d'actions au dessus.
+
 TODODOODODOODDODO : RENAME preview to previews!!!
 
 The infinite map easier version is a folder and file.
