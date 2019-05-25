@@ -23,7 +23,8 @@ class Selection extends React.Component {
       this.setState({style,hidden: false})
   }
   onMouseDown = (e) => {
-    if (!this.props.canStart || this.props.canStart(e)) {
+    //if (!this.props.canStart || this.props.canStart(e)) {
+    if (true || !this.props.canStart || this.props.canStart(e)) {
       this.x1 = e.pageX; //Set the initial X
       this.y1 = e.pageY; //Set the initial Y
       this.x2 = e.pageX;
@@ -35,6 +36,7 @@ class Selection extends React.Component {
     }
   };
   onMouseMove = (e) => {
+    console.log('onMouseMove')
     if (!this.state.hidden) {
       this.x2 = e.pageX; //Update the current position X
       this.y2 = e.pageY; //Update the current position Y

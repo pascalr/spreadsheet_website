@@ -80,9 +80,12 @@ class Table extends React.Component {
       // If no columns side by side and only one value, show as a field
       if (cols.length === 1 && this.props.tables && this.props.tables[this.props.id]) {
         const rows = this.props.tables[this.props.id][cols[0]]
-        if (rows && rows.length === 1) {
+        if (!rows || rows.length === 1) {
           isField = true
         }
+      }
+      if (!this.props.tables || !this.props.tables[this.props.id]) {
+        isField = true
       }
       return (
         <DatasheetTable

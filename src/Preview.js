@@ -132,7 +132,7 @@ class PreviewSelection extends React.Component {
     }
   }
 
-  canStartSelection = (e) => {
+    /*canStartSelection = (e) => {
     let can = true
     _.values(this.props.previews).map(p => {
       if (!clickIsOutside(e,p)) {
@@ -144,7 +144,7 @@ class PreviewSelection extends React.Component {
       }
     })
     return can
-  }
+  }*/
 
   onMouseMove = (e) => {
     this.pageX = e.pageX

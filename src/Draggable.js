@@ -20,9 +20,9 @@ const Draggable = connect(dragLinkProps)(withDispatch((props) => {
       }}*/
   return (
     <div id="draggableComponentDiv"
-      onMouseDown={(e) => {e.stopPropagation()}}
-      onMouseUp={(e) => {e.stopPropagation()}}
-      onMouseMove={(e) => {e.stopPropagation()}}
+      onMouseDown={null/*(e) => {e.stopPropagation()}*/}
+      onMouseUp={null/*(e) => {e.stopPropagation()}*/}
+      onMouseMove={null/*(e) => {e.stopPropagation()}*/}
     >
     <DraggableCore
       onStop={(e, data) => {

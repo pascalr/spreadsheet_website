@@ -12,6 +12,7 @@ import ByPass from './lib/ByPass'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContextProvider } from 'react-dnd'
 import {Store, StoreProvider} from './contexts'
+import MouseController from './MouseController'
 
 const theStore = new Store({test: '1212'})
 
@@ -21,6 +22,7 @@ const theStore = new Store({test: '1212'})
 ReactDOM.render(
   <StoreProvider store={theStore}>
   <Provider store={store}>
+  <MouseController>
     <DragDropContextProvider backend={HTML5Backend}>
       {/*<Router>*/}
         <ByPass if={process.env.NODE_ENV === 'development'}>
@@ -30,6 +32,7 @@ ReactDOM.render(
         </ByPass>
         {/*</Router>*/}
     </DragDropContextProvider>
+  </MouseController>
   </Provider>
   </StoreProvider>,
   document.getElementById('root')

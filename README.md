@@ -1,3 +1,15 @@
+TODO: Store the state of the mouse in the store. What is it doing? Dragging of selecting???
+https://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-flow-capture
+I have to add an event listener, so I detect it first upward.
+
+TODO: Add cache(......), cacheUpdate() cacheUnset()... same as dispatch but does not persist
+data to db
+
+There are 3 levels of formulas:
+The raw with ids
+The clean formula
+The evaluated value
+
 ----------------------------------------------------------
 Objectifs fin de semaine: Minimum viable product
 - Pouvoir visualiser mon application tout le monde
@@ -14,7 +26,8 @@ Objectifs fin de semaine: Minimum viable product
 ----------------------------------------------------------
 
 Ne plus utiliser click droit. Au lieu, selectionner, et lorsque l'item est selectionner,
-faire apparaitre des petites icones d'actions au dessus.
+faire apparaitre des petites icones d'actions au dessus. La premiere icone de cette barre
+d'outils serait une icone pour piner la barre.
 
 TODODOODODOODDODO : RENAME preview to previews!!!
 
