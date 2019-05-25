@@ -11,9 +11,18 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+var args = process.argv.slice(2);
+//Note that the first arg is usually the path to nodejs, and the second arg is the location of the script you're executing.
+
+let dbName = null
+if (args[0]) {
+  dbName = args[0]
+}
+
 var files = {}
 var historyFiles = {}
-function filesByName(name) {
+function filesByName(rawName) {
+  const name = dbName || rawName
   if (!files[name]) {
     files[name] = editJsonFile(`${__dirname}/data/${name}.json`, {
       autosave: true

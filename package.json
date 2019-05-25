@@ -2,6 +2,7 @@
   "name": "spreadsheet_website",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://pascalr.github.io/spreadsheet_website",
   "dependencies": {
     "@babel/core": "7.2.2",
     "@nx-js/compiler-util": "github:nx-js/compiler-util",
@@ -33,6 +34,7 @@
     "fixed-data-table-2": "^0.8.20",
     "fork-ts-checker-webpack-plugin-alt": "0.4.14",
     "fs-extra": "7.0.1",
+    "gh-pages": "^2.0.1",
     "history": "^4.9.0",
     "html-webpack-plugin": "4.0.0-alpha.2",
     "identity-obj-proxy": "3.0.0",
@@ -97,6 +99,9 @@
     "copyWindows": "cp -R build \"/media/windows/Documents and Settings/pasca/Desktop\"",
     "copyLaptop": "cp -R build \"../Downloads/\"",
     "oldbuild": "node scripts/build.js",
+    "deployGithub": "gh-pages -d build",
+    "predeploy": "node scripts/build.js",
+    "deploy": "gh-pages -d build",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {

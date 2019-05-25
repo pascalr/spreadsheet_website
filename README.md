@@ -1,3 +1,5 @@
+THIS IS A BIG WORK IN PROGRESS.
+
 TODO: Store the state of the mouse in the store. What is it doing? Dragging of selecting???
 https://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-flow-capture
 I have to add an event listener, so I detect it first upward.
@@ -12,7 +14,6 @@ The evaluated value
 
 ----------------------------------------------------------
 Objectifs fin de semaine: Minimum viable product
-- Pouvoir visualiser mon application tout le monde
 - Faire une petite demo belle
 - Editer et voir le result a cote en temps reel.
 - Print pdf et publish html
@@ -26,8 +27,9 @@ Objectifs fin de semaine: Minimum viable product
 ----------------------------------------------------------
 
 Ne plus utiliser click droit. Au lieu, selectionner, et lorsque l'item est selectionner,
-faire apparaitre des petites icones d'actions au dessus. La premiere icone de cette barre
-d'outils serait une icone pour piner la barre.
+faire apparaitre des petites icones d'actions au dessus.
+TODO: Pouvoir docker la barre sur les cotes et que ca reste la.
+
 
 TODODOODODOODDODO : RENAME preview to previews!!!
 

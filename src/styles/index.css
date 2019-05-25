@@ -348,3 +348,15 @@ input[type="text"] {
   border-radius: 18px;
   border: 1px solid #cfcece;
 }
+.tooltipButton {
+  border: 1px solid #808080;
+  font-size: 24px;
+}
+.rightTooltip {
+  position: fixed;
+  top: 0px;
+  z-index: 100;
+  border-left: 2px solid black;
+  background-color: #C0C0C0;
+  height: 100%;
+}

@@ -7,6 +7,8 @@ import SimpleDb from './SimpleDb'
 export const PREVIEWS = 'previews'
 export const TABLES = 'tables'
 export const NESTED = 'foo.bar.blah' // nested exemple
+export const MOUSE_ACTION = 'mouseAction'
+export const MOUSE_ACTION_DRAG = 'drag'
 
 function _path(path) {
   if (typeof path === 'string') {
@@ -40,6 +42,7 @@ class Store {
   }
 
   load = (paths) => {
+    if (!this.db) {return null}
     console.log('loading: ' + paths)
     _.castArray(paths).forEach(path => {
       const isLoaded = _.get(this.componentLoadedMap, path)
@@ -53,7 +56,7 @@ class Store {
   }
    
   dispatch = (path, val) => {
-    this.db.set(path,val)
+    if (this.db) {this.db.set(path,val)}
     this.set(path,val)
   }
 
@@ -75,12 +78,12 @@ class Store {
   }
 
   dispatchDelete = (path) => {
-    this.db.unset(path)
+    if (this.db) {this.db.unset(path)}
     this.unset(path)
   }
 
   dispatchUpdate = (path, updates) => {
-    this.db.update(path, updates)
+    if (this.db) {this.db.update(path, updates)}
     _.keys(updates).forEach(k => {
       this.set(_path(path) + '.' + k, updates[k])
     })    

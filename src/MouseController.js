@@ -13,7 +13,7 @@ class MouseController extends React.Component {
     // TODO: Only open menu when it selects something
     return (
       <div onMouseUp={(e) => {
-        this.setState({menuOpened: !this.state.menuOpened, x: e.pageX, y: e.pageY})
+        this.setState({menuOpened: true, x: e.pageX, y: e.pageY})
         console.log('onMouseUp correct')
       }}>
         {this.state.menuOpened ? <Tooltip x={this.state.x} y={this.state.y}/> : null}

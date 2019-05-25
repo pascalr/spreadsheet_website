@@ -17,9 +17,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 class StatusBar extends React.Component {
-  constructor(props) {
-    super(props)
-  }
   render = () => {
     // TODO: No internet connection
     // TODO: Not logged in, all changes are local

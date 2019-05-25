@@ -19,20 +19,18 @@ const theStore = new Store({test: '1212'})
 //import KeyController from './KeyController'
 //<KeyController>
 //</KeyController>
+//<MouseController>
+//</MouseController>
 ReactDOM.render(
   <StoreProvider store={theStore}>
   <Provider store={store}>
-  <MouseController>
     <DragDropContextProvider backend={HTML5Backend}>
-      {/*<Router>*/}
         <ByPass if={process.env.NODE_ENV === 'development'}>
           <ErrorBoundary>
             <App />
           </ErrorBoundary>
         </ByPass>
-        {/*</Router>*/}
     </DragDropContextProvider>
-  </MouseController>
   </Provider>
   </StoreProvider>,
   document.getElementById('root')

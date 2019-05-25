@@ -18,6 +18,7 @@ import SearchBar from './SearchBar'
 import PreviewMenu from './menus/PreviewMenu'
 import * as PATH from './constants/paths'
 import FAB from './FAB'
+import Tooltip from './Tooltip'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -57,6 +58,7 @@ class App extends React.Component {
         {router.resolve(routes, this.props.route || this.props.history.location.hash)}
         <PreviewMenu />
         <FAB/>
+        <Tooltip/>
         <TableMenu db={this.props.db} />
         <ColumnMenu db={this.props.db} />
       </div>

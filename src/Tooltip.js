@@ -1,17 +1,43 @@
 import React from 'react'
 import _ from 'lodash'
+import {MOUSE_ACTION,MOUSE_ACTION_DRAG,withDispatch} from './contexts'
 
 import {
-  MdAdd,
   MdDragHandle,
-  MdHistory,
-  MdPinDrop,
+  MdPhotoSizeSelectSmall,
 } from 'react-icons/md';
 
+function tooltipButton(draw, callback) {
+  return <span className="tooltipButton" onClick={callback}>{draw}</span>
+}
+
+const RightTooltip = withDispatch((props) => {
+  
+  function enableDrag() {
+    props.cache(MOUSE_ACTION, MOUSE_ACTION_DRAG)
+  }
+
+  return (
+    <div style={{float:'right', width: '26px'}}>
+      <div className='rightTooltip'>
+      <div className='appRow'>
+        {tooltipButton(<MdDragHandle/>,enableDrag)}
+        {tooltipButton(<MdPhotoSizeSelectSmall/>,() => {return null})}
+      </div>
+      </div>
+    </div>
+  )
+})
+
 // avec(SELECTION,
-const Tooltip = (props) => {
+  /*const Tooltip = withDispatch((props) => {
+
+  
+
+  //const tableRow = [] ....
   return (
     <div style={{
+      zIndex: '1000',
       borderStyle: 'solid',
       borderWidth: '2px',
       borderColor: 'black',
@@ -20,10 +46,13 @@ const Tooltip = (props) => {
       left: props.x + 20,
       top: props.y - 20,}}
     >
-      <div> <MdDragHandle onClick={() => console.log('clicked!')}/>Selection name<MdPinDrop/> </div>
-      <div> 4Arrow <MdAdd/><MdHistory/></div>
+      <div className='appRow'>
+        {tooltipButton(<MdDragHandle/>,enableDrag)}
+        {tooltipButton(<MdClose/>,() => {return null})}
+      </div>
+      <div className='prewviewRow'> <MdViewColumn/>4Arrow Selection name<MdAdd/><MdHistory/></div>
     </div>
   )
-}
+})*/
 
-export default Tooltip
+export default RightTooltip

@@ -1,6 +1,5 @@
-import React, { Component, useState } from 'react'
+import React from 'react'
 import _ from 'lodash'
-import { connect } from "react-redux"
 import Image from './Image'
 import ABCJS from 'abcjs/midi'
 //import MathJax from 'react-mathjax'
@@ -8,10 +7,6 @@ import uuidv1 from 'uuid/v1'
 import TableLink from './TableLink'
 
 import 'abcjs/abcjs-midi.css'
-
-const tex = `f(x) = \\int_{-\\infty}^\\infty
-    \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}
-    \\,d\\xi`
 
 window.uuidv1 = uuidv1
 
