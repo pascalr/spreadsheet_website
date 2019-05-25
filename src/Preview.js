@@ -188,11 +188,10 @@ class PreviewSelection extends React.Component {
     })
   }
 
-  //  </Selection>
-  //   <Selection onSelect={this.onSelect} onMouseDown={this.onMouseDown}
-  //   canStart={this.canStartSelection}>
   render = () => {
     return (
+     <Selection onSelect={this.onSelect} onMouseDown={this.onMouseDown}
+     canStart={this.canStartSelection}>
         <div id="screen" className={this.props.editMode ? "editMode" : "notEditMode"}
           style={{width: 1920, height: 10000, outline: 'none'}}
           onMouseUp={this.onMouseUp}
@@ -261,6 +260,7 @@ class PreviewSelection extends React.Component {
           </LocatedPreview>
           }
         </div>
+      </Selection>
     );
   }
 }

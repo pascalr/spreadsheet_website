@@ -76,6 +76,10 @@ window.tex = (formula) => {
       return 'invalid table name'
     }*/
 
+window.backgroundColor = (color) => (content) => {
+  return <span style={{backgroundColor: color}}>{content}</span>
+}
+
 window.table = (name) => {
   return <TableLink name={name}/>
 }

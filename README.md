@@ -1,4 +1,6 @@
 THIS IS A BIG WORK IN PROGRESS.
+I HAVE MADE THIS PUBLIC IN ORDER TO USE GITHUB PAGES,
+BUT THIS IS REALLY NOT READY TO BE PUBLIC YET.
 
 TODO: Store the state of the mouse in the store. What is it doing? Dragging of selecting???
 https://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-flow-capture
