@@ -2,17 +2,13 @@ THIS IS A BIG WORK IN PROGRESS.
 I HAVE MADE THIS PUBLIC IN ORDER TO USE GITHUB PAGES,
 BUT THIS IS REALLY NOT READY TO BE PUBLIC YET.
 
-TODO: Store the state of the mouse in the store. What is it doing? Dragging of selecting???
-https://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-flow-capture
-I have to add an event listener, so I detect it first upward.
-
-TODO: Add cache(......), cacheUpdate() cacheUnset()... same as dispatch but does not persist
-data to db
-
 There are 3 levels of formulas:
 The raw with ids
 The clean formula
 The evaluated value
+
+Ne plus utiliser Preview. Utiliser des sub-tables. Rajouter des sous-tables flotantes.
+Apres tu peux clicker et zoomer dessus.
 
 ----------------------------------------------------------
 Objectifs fin de semaine: Minimum viable product
@@ -32,6 +28,8 @@ Ne plus utiliser click droit. Au lieu, selectionner, et lorsque l'item est selec
 faire apparaitre des petites icones d'actions au dessus.
 TODO: Pouvoir docker la barre sur les cotes et que ca reste la.
 
+si tu edit un fichier foo.json, mon programme va generer foo.meta.json, qui contient les donnees
+a propos de l'affichage.
 
 TODODOODODOODDODO : RENAME preview to previews!!!
 

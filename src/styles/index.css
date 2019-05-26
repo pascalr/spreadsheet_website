@@ -351,6 +351,7 @@ input[type="text"] {
 .tooltipButton {
   border: 1px solid #808080;
   font-size: 24px;
+  height: 28px;
 }
 .rightTooltip {
   position: fixed;
@@ -359,4 +360,18 @@ input[type="text"] {
   border-left: 2px solid black;
   background-color: #C0C0C0;
   height: 100%;
+}
+.leftTooltip {
+  position: fixed;
+  top: 0px;
+  z-index: 100;
+  width: 25px;
+  border-right: 2px solid black;
+  background-color: #C0C0C0;
+  height: 100%;
+}
+.tooltipButton:hover {background-color: #3e8e41}
+
+.tooltipButton:active {
+  background-color: #3e4e11;
 }

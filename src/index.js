@@ -13,7 +13,7 @@ import ByPass from './lib/ByPass'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContextProvider } from 'react-dnd'
 import {Store, StoreProvider} from './contexts'
-//import MouseController from './MouseController'
+import MouseController from './MouseController'
 import SimpleDb from './SimpleDb'
 
 import myData from './data.json' // Used for the demo on github pages
@@ -23,10 +23,9 @@ const theStore = !_.isEmpty(myData) ? new Store(myData) : new Store({}, new Simp
 //import KeyController from './KeyController'
 //<KeyController>
 //</KeyController>
-//<MouseController>
-//</MouseController>
 ReactDOM.render(
   <StoreProvider store={theStore}>
+  <MouseController>
   <Provider store={store}>
     <DragDropContextProvider backend={HTML5Backend}>
         <ByPass if={process.env.NODE_ENV === 'development'}>
@@ -36,6 +35,7 @@ ReactDOM.render(
         </ByPass>
     </DragDropContextProvider>
   </Provider>
+  </MouseController>
   </StoreProvider>,
   document.getElementById('root')
 );

@@ -1,30 +1,39 @@
 import React from 'react'
 import _ from 'lodash'
-import {withDispatch} from './contexts'
+import {avec, MOUSE_ACTION, MOUSE_ACTION_DRAG,
+  MOUSE_ACTION_RESIZE, MOUSE_ACTION_ADD} from './contexts'
 import Tooltip from './Tooltip'
 
 class MouseController extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {menuOpened: false}
+  }
+
+  onKeyUp = e => {
+    // Esc key sets mouse action to none
+    if (e.which === 27) {
+      this.props.cache(MOUSE_ACTION, 'none')
+    }
   }
   
   render = () => {
-    // TODO: Only open menu when it selects something
+    const style = {}
+    if (_.get(this.props, MOUSE_ACTION) === MOUSE_ACTION_DRAG) {
+      style.cursor = 'move'
+    } else if (_.get(this.props, MOUSE_ACTION) === MOUSE_ACTION_RESIZE) {
+      style.cursor = 'nesw-resize'
+    } else if (_.get(this.props, MOUSE_ACTION) === MOUSE_ACTION_ADD) {
+      style.cursor = 'copy'
+    }
+    
+    //style.cursor = 'wait'
+
     return (
-      <div onMouseUp={(e) => {
-        this.setState({menuOpened: true, x: e.pageX, y: e.pageY})
-        console.log('onMouseUp correct')
-      }}>
-        {this.state.menuOpened ? <Tooltip x={this.state.x} y={this.state.y}/> : null}
+      <div style={style} onKeyUp={this.onKeyUp}>
         {this.props.children}
       </div>
-    );
+    )
   }
 }
 
-export default withDispatch(MouseController)
-
-
-
-
+export default avec(MOUSE_ACTION, MouseController)

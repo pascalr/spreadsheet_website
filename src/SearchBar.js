@@ -6,6 +6,11 @@ import Autocomplete from 'react-autocomplete'
 import { addPreview, set } from "./actions"
 import * as PATH from './constants/paths'
 
+import {
+  MdSearch,
+} from 'react-icons/md';
+
+
 function optionsFromDefs(defs) {
   return _.keys(defs).map(k => (
     {value: `/tables/${k}`, label: defs[k].name, id: k}
@@ -66,7 +71,7 @@ class SearchBar extends React.Component {
     return (
       <React.Fragment>
         <div style={{textAlign: 'center'}}>
-          <span>Tables:</span>
+          <span style={{fontSize: '24px'}}><MdSearch/></span>
           <Autocomplete
             getItemValue={(item) => item.label}
             items={optionsFromDefs(this.props.defs)}

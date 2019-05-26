@@ -19,6 +19,7 @@ import PreviewMenu from './menus/PreviewMenu'
 import * as PATH from './constants/paths'
 import FAB from './FAB'
 import Tooltip from './Tooltip'
+import {avec, ROUTE} from './contexts'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -44,18 +45,18 @@ class App extends React.Component {
   }
   
   render() {
-    if (this.props.route) {
+    const route = _.get(this.props, ROUTE) || this.props.route
+    if (route) {
       this.props.history.push({
-        hash: this.props.route,
+        hash: route,
       })
     }
     return (
       <div className="app">
         <div className="taskbars">
-          <StatusBar/>
           <SearchBar/>
         </div>
-        {router.resolve(routes, this.props.route || this.props.history.location.hash)}
+        {router.resolve(routes, route || this.props.history.location.hash)}
         <PreviewMenu />
         <FAB/>
         <Tooltip/>
@@ -66,4 +67,4 @@ class App extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDistpatchToProps)(App);
+export default connect(mapStateToProps, mapDistpatchToProps)(avec(ROUTE,App));

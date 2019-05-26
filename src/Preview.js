@@ -10,8 +10,10 @@ import Table from './Table'
 import Draggable from './Draggable'
 import Resizable from './Resizable'
 import TableAutocomplete from './TableAutocomplete'
-import {avec, PREVIEWS} from './contexts'
+import {avec, PREVIEWS, MOUSE_ACTION, SELECTION, MOUSE_ACTION_ADD,
+MOUSE_ACTION_DRAG, MOUSE_ACTION_RESIZE} from './contexts'
 import {genDef} from './helpers'
+import ByPass from './lib/ByPass'
 
 // When the user makes it a selection, it creates a temporaty table.
 // If the user takes the focus away from the text field, delete it
@@ -83,6 +85,9 @@ class PreviewSelection extends React.Component {
     super(props)
     this.state = {tempPreview: null, selection: [], selectionToCopy: []}
   }
+  componentDidUpdate = (prevProps, prevState, snapshot) => {
+    this.props.cache(SELECTION, this.state.selection)
+  }
   // If the selection includes at least one preview, select it.
   // Else, create a new empty preview.
   onSelect = (x0,x1,y0,y1) => {
@@ -101,7 +106,7 @@ class PreviewSelection extends React.Component {
     
     if (ids && ids.length !== 0) {
       this.setState({selection: ids})
-    } else {
+    } else if (_.get(this.props, MOUSE_ACTION) === MOUSE_ACTION_ADD) {
   
       const width = x1-x0
       const height = y1-y0
@@ -189,7 +194,12 @@ class PreviewSelection extends React.Component {
   }
 
   render = () => {
+    let canSelect = true
+    if (_.get(this.props, MOUSE_ACTION) === MOUSE_ACTION_DRAG) {canSelect = false}
+    if (_.get(this.props, MOUSE_ACTION) === MOUSE_ACTION_RESIZE) {canSelect = false}
+
     return (
+     <ByPass if={!canSelect}>
      <Selection onSelect={this.onSelect} onMouseDown={this.onMouseDown}
      canStart={this.canStartSelection}>
         <div id="screen" className={this.props.editMode ? "editMode" : "notEditMode"}
@@ -261,6 +271,7 @@ class PreviewSelection extends React.Component {
           }
         </div>
       </Selection>
+      </ByPass>
     );
   }
 }
@@ -271,5 +282,5 @@ class PreviewSelection extends React.Component {
   </Loading>
 }*/
 
-const connectedPreviewSelection = connect(mapStateToProps,mapDispatchToProps)(avec(PREVIEWS, PreviewSelection))
+const connectedPreviewSelection = connect(mapStateToProps,mapDispatchToProps)(avec([PREVIEWS, MOUSE_ACTION], PreviewSelection))
 export {connectedPreviewSelection as PreviewSelection }

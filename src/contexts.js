@@ -8,6 +8,10 @@ export const TABLES = 'tables'
 export const NESTED = 'foo.bar.blah' // nested exemple
 export const MOUSE_ACTION = 'mouseAction'
 export const MOUSE_ACTION_DRAG = 'drag'
+export const MOUSE_ACTION_RESIZE = 'resize'
+export const MOUSE_ACTION_ADD = 'add'
+export const SELECTION = 'selection'
+export const ROUTE = 'routepath'
 
 function _path(path) {
   if (typeof path === 'string') {
@@ -88,7 +92,7 @@ class Store {
 
   callCallbacks = (rawPath, val) => {
     const path = _path(rawPath)
-    const cs = this.callbacksByPath[path].filter(c => c ? true : false)
+    const cs = (this.callbacksByPath[path] || []).filter(c => c ? true : false)
     console.log('' + cs.length + ' callbacks called')
     _.forEach(cs, c => {
       c(val)
@@ -166,6 +170,7 @@ function storeProps(store) {
     dispatch: store.dispatch,
     dispatchDelete: store.dispatchDelete,
     dispatchUpdate: store.dispatchUpdate,
+    cache: store.set,
   }
 }
 
