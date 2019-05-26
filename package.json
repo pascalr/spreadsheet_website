@@ -99,8 +99,7 @@
     "copyWindows": "cp -R build \"/media/windows/Documents and Settings/pasca/Desktop\"",
     "copyLaptop": "cp -R build \"../Downloads/\"",
     "oldbuild": "node scripts/build.js",
-    "deployGithub": "gh-pages -d build",
-    "predeploy": "node scripts/build.js",
+    "predeploy": "cp db/data/demo.json src/data.json && node scripts/build.js && echo {} > src/data.json",
     "deploy": "gh-pages -d build",
     "test": "node scripts/test.js"
   },

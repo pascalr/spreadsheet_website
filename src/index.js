@@ -4,6 +4,7 @@ import './styles/index.css'
 import App from './App'
 import ErrorBoundary from './ErrorBoundary'
 import * as serviceWorker from './serviceWorker';
+import _ from 'lodash'
 
 import { Provider } from "react-redux";
 import store from "./store"
@@ -12,9 +13,12 @@ import ByPass from './lib/ByPass'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContextProvider } from 'react-dnd'
 import {Store, StoreProvider} from './contexts'
-import MouseController from './MouseController'
+//import MouseController from './MouseController'
+import SimpleDb from './SimpleDb'
 
-const theStore = new Store({test: '1212'})
+import myData from './data.json' // Used for the demo on github pages
+
+const theStore = !_.isEmpty(myData) ? new Store(myData) : new Store({}, new SimpleDb())
 
 //import KeyController from './KeyController'
 //<KeyController>

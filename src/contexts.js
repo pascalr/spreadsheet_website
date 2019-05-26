@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import _ from 'lodash'
-import SimpleDb from './SimpleDb'
 //import { connect } from "react-redux"
 //import store from './SingletonStore'
 
@@ -21,11 +20,11 @@ function _path(path) {
 // Lazy loading data
 // The issue with lazy loading is that it makes render functions non pure.
 class Store {
-  constructor(data) {
+  constructor(data, db) {
     this.data = data || {} // Immutable maybe???
     this.callbacksByPath = {}
     this.componentLoadedMap = {}
-    this.db = new SimpleDb()
+    this.db = db
   }
   // Format could be array, string
   get = (path) => {
@@ -42,7 +41,12 @@ class Store {
   }
 
   load = (paths) => {
-    if (!this.db) {return null}
+    if (!this.db) {
+      _.castArray(paths).forEach(path => {
+        this.callCallbacks(path, this.get(path))
+      })
+      return null
+    }
     console.log('loading: ' + paths)
     _.castArray(paths).forEach(path => {
       const isLoaded = _.get(this.componentLoadedMap, path)
@@ -60,20 +64,13 @@ class Store {
     this.set(path,val)
   }
 
-  unset = (rawPath, val) => {
+  unset = (rawPath) => {
     let path = _path(rawPath)
     console.log('unsetting ' + path)
     this.data = _.omit(this.data, [rawPath])
     const divPaths = path.split('.')
     for (let i = divPaths.length; i > 0; i--) {
-      path = _path(divPaths.slice(0,i))
-      if (this.callbacksByPath[path]) {
-        const cs = this.callbacksByPath[path].filter(c => c ? true : false)
-        console.log('' + cs.length + ' callbacks called')
-        _.forEach(cs, c => {
-          c(val)
-        })
-      }
+      this.callCallbacks(divPaths.slice(0,i), undefined)
     }
   }
 
@@ -89,6 +86,15 @@ class Store {
     })    
   }
 
+  callCallbacks = (rawPath, val) => {
+    const path = _path(rawPath)
+    const cs = this.callbacksByPath[path].filter(c => c ? true : false)
+    console.log('' + cs.length + ' callbacks called')
+    _.forEach(cs, c => {
+      c(val)
+    })
+  }
+
   set = (rawPath, val) => {
     let path = _path(rawPath)
     console.log('setting ' + path)
@@ -96,13 +102,8 @@ class Store {
     _.set(this.data, path, val)
     const divPaths = path.split('.')
     for (let i = divPaths.length; i > 0; i--) {
-      path = _path(divPaths.slice(0,i))
       if (this.callbacksByPath[path]) {
-        const cs = this.callbacksByPath[path].filter(c => c ? true : false)
-        console.log('' + cs.length + ' callbacks called')
-        _.forEach(cs, c => {
-          c(val)
-        })
+        this.callCallbacks(divPaths.slice(0,i), val)
       }
     }
   }
