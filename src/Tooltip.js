@@ -1,6 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import {MOUSE_ACTION,MOUSE_ACTION_DRAG,SELECTION, ROUTE, PREVIEWS,
+  SIDE_MENU, COLOR_SIDE_MENU, MOUSE_ACTION_COLOR,
   MOUSE_ACTION_ADD, MOUSE_ACTION_RESIZE,avec} from './contexts'
 
 import {
@@ -37,10 +38,14 @@ const RightTooltip = avec([SELECTION,PREVIEWS], (props) => {
       props.cache(ROUTE, `/tables/${tableId}`)
     }
   }
+  function toggleColorSideMenu() {
+    const v = _.get(props,SIDE_MENU) === COLOR_SIDE_MENU ? '' : COLOR_SIDE_MENU
+    props.cache(SIDE_MENU, v)
+    props.cache(MOUSE_ACTION, MOUSE_ACTION_COLOR)
+  }
 
   return (
     //<div style={{float:'right', width: '26px'}}>
-    <div style={{float:'left', width: '26px'}}>
       <div className='leftTooltip'>
         <div className='appRow'>
           {tooltipButton(<MdHome/>,redirectHome)}
@@ -48,10 +53,9 @@ const RightTooltip = avec([SELECTION,PREVIEWS], (props) => {
           {tooltipButton(<MdPhotoSizeSelectSmall/>,enableResize)}
           {tooltipButton(<MdAdd/>,enableAdd)}
           {tooltipButton(<MdRemoveRedEye/>,openSelection)}
-          {tooltipButton(<MdColorLens/>,() => {})}
+          {tooltipButton(<MdColorLens/>,toggleColorSideMenu)}
         </div>
       </div>
-    </div>
   )
 })
 
@@ -80,4 +84,4 @@ const RightTooltip = avec([SELECTION,PREVIEWS], (props) => {
   )
 })*/
 
-export default RightTooltip
+export default avec(SIDE_MENU,RightTooltip)

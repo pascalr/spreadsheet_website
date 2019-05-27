@@ -20,6 +20,7 @@ import * as PATH from './constants/paths'
 import FAB from './FAB'
 import Tooltip from './Tooltip'
 import {avec, ROUTE} from './contexts'
+import SideMenu from './SideMenu'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -51,15 +52,20 @@ class App extends React.Component {
         hash: route,
       })
     }
+    //<div style={{display: 'flex', flexDirection: 'row'}}>
     return (
       <div className="app">
         <div className="taskbars">
           <SearchBar/>
         </div>
-        {router.resolve(routes, route || this.props.history.location.hash)}
         <PreviewMenu />
-        <FAB/>
-        <Tooltip/>
+        <div>
+          <Tooltip />
+          <SideMenu />
+          <div style={{position: 'absolute', left: '26px'}}>
+            {router.resolve(routes, route || this.props.history.location.hash)}
+          </div>
+        </div>
         <TableMenu db={this.props.db} />
         <ColumnMenu db={this.props.db} />
       </div>

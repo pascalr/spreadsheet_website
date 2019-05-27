@@ -10,8 +10,12 @@ export const MOUSE_ACTION = 'mouseAction'
 export const MOUSE_ACTION_DRAG = 'drag'
 export const MOUSE_ACTION_RESIZE = 'resize'
 export const MOUSE_ACTION_ADD = 'add'
+export const MOUSE_ACTION_COLOR = 'color'
 export const SELECTION = 'selection'
 export const ROUTE = 'routepath'
+export const SIDE_MENU = 'sideMenu'
+export const COLOR_SIDE_MENU = 'Color Menu'
+export const BACKGROUND_COLOR = 'backgroundColor'
 
 function _path(path) {
   if (typeof path === 'string') {
@@ -106,9 +110,7 @@ class Store {
     _.set(this.data, path, val)
     const divPaths = path.split('.')
     for (let i = divPaths.length; i > 0; i--) {
-      if (this.callbacksByPath[path]) {
-        this.callCallbacks(divPaths.slice(0,i), val)
-      }
+      this.callCallbacks(divPaths.slice(0,i), val)
     }
   }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import {avec, MOUSE_ACTION, MOUSE_ACTION_DRAG,
+import {avec, MOUSE_ACTION, MOUSE_ACTION_DRAG, MOUSE_ACTION_COLOR,
   MOUSE_ACTION_RESIZE, MOUSE_ACTION_ADD} from './contexts'
 import Tooltip from './Tooltip'
 
@@ -24,6 +24,8 @@ class MouseController extends React.Component {
       style.cursor = 'nesw-resize'
     } else if (_.get(this.props, MOUSE_ACTION) === MOUSE_ACTION_ADD) {
       style.cursor = 'copy'
+    } else if (_.get(this.props, MOUSE_ACTION) === MOUSE_ACTION_COLOR) {
+      style.cursor = 'url(\'paintbrushCursor.png\'), auto'
     }
     
     //style.cursor = 'wait'
