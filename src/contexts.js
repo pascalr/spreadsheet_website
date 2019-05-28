@@ -16,6 +16,7 @@ export const ROUTE = 'routepath'
 export const SIDE_MENU = 'sideMenu'
 export const COLOR_SIDE_MENU = 'Color Menu'
 export const BACKGROUND_COLOR = 'backgroundColor'
+export const SELECTED_COLOR = 'selectedColor'
 
 function _path(path) {
   if (typeof path === 'string') {
@@ -30,6 +31,7 @@ function _path(path) {
 class Store {
   constructor(data, db) {
     this.data = data || {} // Immutable maybe???
+    this.cacheData = {}
     this.callbacksByPath = {}
     this.componentLoadedMap = {}
     this.db = db
@@ -60,7 +62,6 @@ class Store {
       const isLoaded = _.get(this.componentLoadedMap, path)
       if (!isLoaded) {
         this.db.get(path, (data) => {
-          _.set(this.componentLoadedMap, path, true)
           this.set(path, data)
         })
       }
@@ -105,6 +106,7 @@ class Store {
 
   set = (rawPath, val) => {
     let path = _path(rawPath)
+    _.set(this.componentLoadedMap, path, true)
     console.log('setting ' + path)
     // TODO: Before updating, checks that the value has really changed
     _.set(this.data, path, val)
@@ -120,7 +122,6 @@ class Store {
     paths.forEach(p => {
       const newPaths = [..._.castArray(this.callbacksByPath[p]), callback]
       this.callbacksByPath[p] = newPaths
-      this.componentLoadedMap[p] = false
     })
   }
 
@@ -137,34 +138,57 @@ class StoreProvider extends React.Component {
   }
 }
 
+  /*function withSubscription(WrappedComponent) {
+  class WithSubscription extends React.Component {/* ... *//*}
+  WithSubscription.displayName = `WithSubscription(${getDisplayName(WrappedComponent)})`;
+  return WithSubscription;
+}
+
+function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+}*/
+
 // FUNCTION avec
 // avec (rawModels : String or [String], Comp : React Component) => (props)
 // avec is the french word for with which is a reserved keyword in javascript
 // avec(MODEL.PREVIEW,
 // avec should load and rerender the components whenever they change.
-const avec = (rawPaths, Comp) => (props) => {
-  const [subProps, setSubProps] = useState(null)
-  const paths = _.castArray(rawPaths)
-  const logSetSubProps = (blah) => {
-    // important to make sure the subProps is never null
-    // because null is used to mean that is was never loaded
-    return setSubProps(blah || {}) 
-  }
-  //const storeProps = paths.reduce((acc,curr) => {
-  //  _.set(acc, curr, 
-  //},{})
-  return <StoreContext.Consumer>
-    {store => {
-      if (subProps !== null) {
-        // TODO: Only pass the data needed, don't pass the whole store.data
-        return <Comp {...props} {...store.data} {...storeProps(store)} />
-      } else {
-        store.subscribe(paths, logSetSubProps)
-        store.load(paths)
-        return null
+const avec = function(rawPaths, Comp){
+  class Avec extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {subProps: null}
+    }
+    render() {
+      const paths = _.castArray(rawPaths)
+      const logSetSubProps = (blah) => {
+        // important to make sure the subProps is never null
+        // because null is used to mean that is was never loaded
+        return this.setState({subProps: (blah || {})}) 
       }
-    }}
-  </StoreContext.Consumer>
+      //const storeProps = paths.reduce((acc,curr) => {
+      //  _.set(acc, curr, 
+      //},{})
+      return <StoreContext.Consumer>
+        {store => {
+          if (this.state.subProps !== null) {
+            // TODO: Only pass the data needed, don't pass the whole store.data
+            return <Comp {...this.props} {...store.data} {...storeProps(store)} />
+          } else {
+            store.subscribe(paths, logSetSubProps)
+            store.load(paths)
+            return null
+          }
+        }}
+      </StoreContext.Consumer>
+    }
+  }
+  Avec.displayName = `Avec(${getDisplayName(Comp)}, ${_.castArray(rawPaths).join(', ')})`
+  return Avec;
+}
+
+function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
 
 function storeProps(store) {
@@ -176,7 +200,7 @@ function storeProps(store) {
   }
 }
 
-const withDispatch = (Comp) => (props) => {
+const withDispatch = (Comp) => function WithDispatch(props) {
   return <StoreContext.Consumer>
     {store => {
       return <Comp {...props} {...storeProps(store)}/>

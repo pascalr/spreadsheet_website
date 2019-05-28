@@ -59,12 +59,10 @@ class App extends React.Component {
           <SearchBar/>
         </div>
         <PreviewMenu />
-        <div>
-          <Tooltip />
-          <SideMenu />
-          <div style={{position: 'absolute', left: '26px'}}>
-            {router.resolve(routes, route || this.props.history.location.hash)}
-          </div>
+        <Tooltip />
+        <SideMenu />
+        <div style={{position: 'absolute', left: '26px'}}>
+          {router.resolve(routes, route || this.props.history.location.hash)}
         </div>
         <TableMenu db={this.props.db} />
         <ColumnMenu db={this.props.db} />

@@ -25,7 +25,7 @@ class MouseController extends React.Component {
     } else if (_.get(this.props, MOUSE_ACTION) === MOUSE_ACTION_ADD) {
       style.cursor = 'copy'
     } else if (_.get(this.props, MOUSE_ACTION) === MOUSE_ACTION_COLOR) {
-      style.cursor = 'url(\'paintbrushCursor.png\'), auto'
+      style.cursor = 'url(\'paintbrushCursor.png\') 0 18, auto'
     }
     
     //style.cursor = 'wait'

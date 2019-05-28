@@ -24,6 +24,8 @@ Objectifs fin de semaine: Minimum viable product
 - etre capable de tout retrouver (recherche???)
 ----------------------------------------------------------
 
+https://ytmp3.cc/
+
 Ne plus utiliser click droit. Au lieu, selectionner, et lorsque l'item est selectionner,
 faire apparaitre des petites icones d'actions au dessus.
 TODO: Pouvoir docker la barre sur les cotes et que ca reste la.

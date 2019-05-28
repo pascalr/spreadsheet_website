@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import {MOUSE_ACTION,MOUSE_ACTION_DRAG,SELECTION, ROUTE, PREVIEWS,
-  SIDE_MENU, COLOR_SIDE_MENU, MOUSE_ACTION_COLOR,
+  MOUSE_ACTION_COLOR,
   MOUSE_ACTION_ADD, MOUSE_ACTION_RESIZE,avec} from './contexts'
 
 import {
@@ -38,9 +38,7 @@ const RightTooltip = avec([SELECTION,PREVIEWS], (props) => {
       props.cache(ROUTE, `/tables/${tableId}`)
     }
   }
-  function toggleColorSideMenu() {
-    const v = _.get(props,SIDE_MENU) === COLOR_SIDE_MENU ? '' : COLOR_SIDE_MENU
-    props.cache(SIDE_MENU, v)
+  function enableColorBrush() {
     props.cache(MOUSE_ACTION, MOUSE_ACTION_COLOR)
   }
 
@@ -53,35 +51,10 @@ const RightTooltip = avec([SELECTION,PREVIEWS], (props) => {
           {tooltipButton(<MdPhotoSizeSelectSmall/>,enableResize)}
           {tooltipButton(<MdAdd/>,enableAdd)}
           {tooltipButton(<MdRemoveRedEye/>,openSelection)}
-          {tooltipButton(<MdColorLens/>,toggleColorSideMenu)}
+          {tooltipButton(<MdColorLens/>,enableColorBrush)}
         </div>
       </div>
   )
 })
 
-  /*const Tooltip = withDispatch((props) => {
-
-  
-
-  //const tableRow = [] ....
-  return (
-    <div style={{
-      zIndex: '1000',
-      borderStyle: 'solid',
-      borderWidth: '2px',
-      borderColor: 'black',
-      backgroundColor: '#C0C0C0',
-      position: 'absolute',
-      left: props.x + 20,
-      top: props.y - 20,}}
-    >
-      <div className='appRow'>
-        {tooltipButton(<MdDragHandle/>,enableDrag)}
-        {tooltipButton(<MdClose/>,() => {return null})}
-      </div>
-      <div className='prewviewRow'> <MdViewColumn/>4Arrow Selection name<MdAdd/><MdHistory/></div>
-    </div>
-  )
-})*/
-
-export default avec(SIDE_MENU,RightTooltip)
+export default RightTooltip

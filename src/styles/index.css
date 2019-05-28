@@ -379,6 +379,7 @@ input[type="text"] {
   height: 100%;
   width: 200px;
   border-right: 2px solid black;
+  z-index: 10;
 /*  background-color: #C0C0C0;*/
 }
 
