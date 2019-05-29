@@ -1,10 +1,10 @@
 import React from 'react'
 import _ from 'lodash'
 import { connect } from "react-redux"
-import Link from './Link'
 import Autocomplete from 'react-autocomplete'
 import { addPreview, set } from "./actions"
 import * as PATH from './constants/paths'
+import colorable from './colorable'
 
 import {
   MdSearch,
@@ -68,9 +68,11 @@ class SearchBar extends React.Component {
     return ciIncludes(item.label,str)
   }
   render = () => {
+    const style={...(this.props.style || {})}
+    style.textAlign = 'center'
     return (
       <React.Fragment>
-        <div style={{textAlign: 'center'}}>
+        <div style={style}>
           <span style={{fontSize: '24px'}}><MdSearch/></span>
           <Autocomplete
             getItemValue={(item) => item.label}
@@ -89,11 +91,11 @@ class SearchBar extends React.Component {
             onSelect={(val, item) => this.props.set(PATH.ROUTE,item.value)}
             menuStyle={autocompleteMenuStyle}
           />
+          <hr />
         </div>
-        <hr />
       </React.Fragment>
     );
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(SearchBar)
+export default connect(mapStateToProps,mapDispatchToProps)(colorable('searchBar', SearchBar))

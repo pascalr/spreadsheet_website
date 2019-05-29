@@ -3,6 +3,9 @@ import _ from 'lodash'
 import {MOUSE_ACTION,MOUSE_ACTION_DRAG,SELECTION, ROUTE, PREVIEWS,
   MOUSE_ACTION_COLOR,
   MOUSE_ACTION_ADD, MOUSE_ACTION_RESIZE,avec} from './contexts'
+import colorable from './colorable'
+
+import { IoIosMove } from "react-icons/io";
 
 import {
   MdDragHandle,
@@ -42,12 +45,13 @@ const RightTooltip = avec([SELECTION,PREVIEWS], (props) => {
     props.cache(MOUSE_ACTION, MOUSE_ACTION_COLOR)
   }
 
+  const style = {...(props.style || {})}
   return (
     //<div style={{float:'right', width: '26px'}}>
-      <div className='leftTooltip'>
+      <div className='leftTooltip' style={style}>
         <div className='appRow'>
           {tooltipButton(<MdHome/>,redirectHome)}
-          {tooltipButton(<MdDragHandle/>,enableDrag)}
+          {tooltipButton(<IoIosMove/>,enableDrag)}
           {tooltipButton(<MdPhotoSizeSelectSmall/>,enableResize)}
           {tooltipButton(<MdAdd/>,enableAdd)}
           {tooltipButton(<MdRemoveRedEye/>,openSelection)}
@@ -57,4 +61,4 @@ const RightTooltip = avec([SELECTION,PREVIEWS], (props) => {
   )
 })
 
-export default RightTooltip
+export default colorable('Tooltip',RightTooltip)
