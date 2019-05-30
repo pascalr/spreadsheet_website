@@ -263,6 +263,7 @@ class PreviewSelection extends React.Component {
                 } else {
                   const def = genDef(this.props.defs,null,this.state.tempPreview.tableId)
                   this.props.dispatch([TABLE.DEFS,def.id],def.attrs)
+                  this.props.dispatch([TABLE.TABLES,def.id],'')
                 }
                 this.props.dispatch(path, preview);
               }}

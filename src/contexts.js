@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import _ from 'lodash'
 //import { connect } from "react-redux"
 //import store from './SingletonStore'
+import { Map } from 'immutable';
 
 export const PREVIEWS = 'previews'
 export const TABLES = 'tables'
@@ -26,11 +27,20 @@ function _path(path) {
   }
 }
 
+function _arrayPath(path) {
+  if (typeof path === 'string') {
+    return path.split('.')
+  } else {
+    return path.filter(c => c && !_.empty(c) ? true : false)
+  }
+}
+
 // Lazy loading data
 // The issue with lazy loading is that it makes render functions non pure.
 class Store {
   constructor(data, db) {
-    this.data = data || {} // Immutable maybe???
+    //this.data = data || {} // Immutable maybe???
+    this.data = Map(data || {}) // Immutable maybe???
     this.cacheData = {}
     this.callbacksByPath = {}
     this.componentLoadedMap = {}
@@ -38,16 +48,11 @@ class Store {
   }
   // Format could be array, string
   get = (path) => {
-    return _.get(this.data, path)
-    /*const isLoaded = _.get(this.componentLoadedMap, path)
-    if (isLoaded) {
-      return _.get(this.data, path)
-    } else {
-      this.db.get(path, (data) => {
-        this.set(path, data)
-        _.set(this.componentLoadedMap, path)
-      })
-    }*/
+    //return _.get(this.data, path)
+    const val = this.data.getIn(_arrayPath(path))
+    console.log('val')
+    console.log(val)
+    return val
   }
 
   load = (paths) => {
@@ -76,7 +81,8 @@ class Store {
   unset = (rawPath) => {
     let path = _path(rawPath)
     console.log('unsetting ' + path)
-    this.data = _.omit(this.data, [rawPath])
+    //this.data = _.omit(this.data, [rawPath])
+    this.data = this.data.deleteIn(_arrayPath(path))
     const divPaths = path.split('.')
     for (let i = divPaths.length; i > 0; i--) {
       this.callCallbacks(divPaths.slice(0,i), undefined)
@@ -109,7 +115,14 @@ class Store {
     _.set(this.componentLoadedMap, path, true)
     console.log('setting ' + path)
     // TODO: Before updating, checks that the value has really changed
-    _.set(this.data, path, val)
+    //_.set(this.data, path, val)
+    console.log('debugging')
+    console.log(_arrayPath(path))
+    console.log(val)
+    console.log(typeof val)
+    console.log(this.data.toJS())
+    this.data = this.data.setIn(_arrayPath(path), val)
+    console.log(this.data.toJS())
     const divPaths = path.split('.')
     for (let i = divPaths.length; i > 0; i--) {
       this.callCallbacks(divPaths.slice(0,i), val)
@@ -119,6 +132,8 @@ class Store {
   // whenever the value of any of the paths changes, rerender the component
   subscribe = (rawPaths, callback) => {
     const paths = _.castArray(rawPaths)
+    // FIXME: To avoid duplicates, subscribe should store in an object instead
+    // of in an array.
     paths.forEach(p => {
       const newPaths = [..._.castArray(this.callbacksByPath[p]), callback]
       this.callbacksByPath[p] = newPaths
@@ -173,7 +188,7 @@ const avec = function(rawPaths, Comp){
         {store => {
           if (this.state.subProps !== null) {
             // TODO: Only pass the data needed, don't pass the whole store.data
-            return <Comp {...this.props} {...store.data} {...storeProps(store)} />
+            return <Comp {...this.props} {...store.data.toJS()} {...storeProps(store)} />
           } else {
             store.subscribe(paths, logSetSubProps)
             store.load(paths)

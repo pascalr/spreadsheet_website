@@ -3,6 +3,12 @@ var app = express();
 var editJsonFile = require("edit-json-file");
 var bodyParser = require('body-parser')
 
+// TODO: Specify the file to use from command line only. Don't use from the url.
+// This touch the file to make sure it exists.
+//const fs = require('fs');
+//const filename = 'file.txt';
+//fs.closeSync(fs.openSync(filename, 'w'));
+
 var app = express()
 
 // parse application/x-www-form-urlencoded

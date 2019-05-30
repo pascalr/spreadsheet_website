@@ -2,13 +2,26 @@ THIS IS A BIG WORK IN PROGRESS.
 I HAVE MADE THIS PUBLIC IN ORDER TO USE GITHUB PAGES,
 BUT THIS IS REALLY NOT READY TO BE PUBLIC YET.
 
-There are 3 levels of formulas:
+withPersist => subscribes and loads
+withCached => subscribes only
+avec => deprecated, use withPersist and withCache, renverser l'ordre des arguments:
+withCache(Comp, blah blah)
+withPersist(Comp, blah blah)
+
+Me concentrer sur la partie table. Ce n'est pas encore claire ce que je veux comme desktop.
+
+There are 3 levels of formulas: 
 The raw with ids
 The clean formula
 The evaluated value
 
 Ne plus utiliser Preview. Utiliser des sub-tables. Rajouter des sous-tables flotantes.
 Apres tu peux clicker et zoomer dessus.
+
+En plus des bookmarks, pouvoir prendre des screenshots comme reminder de qqchose.
+
+Prendre en notes plein de charte pour moi comme ca:
+https://www.boltdepot.com/fastener-information/bolts/us-bolt-head-size.aspx
 
 ----------------------------------------------------------
 Objectifs fin de semaine: Minimum viable product
@@ -28,6 +41,7 @@ https://ytmp3.cc/
 
 Ne plus utiliser click droit. Au lieu, selectionner, et lorsque l'item est selectionner,
 faire apparaitre des petites icones d'actions au dessus.
+TODO: Enlever tous les menus click droit.
 TODO: Pouvoir docker la barre sur les cotes et que ca reste la.
 
 si tu edit un fichier foo.json, mon programme va generer foo.meta.json, qui contient les donnees
