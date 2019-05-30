@@ -50,8 +50,6 @@ class Store {
   get = (path) => {
     //return _.get(this.data, path)
     const val = this.data.getIn(_arrayPath(path))
-    console.log('val')
-    console.log(val)
     return val
   }
 
@@ -116,13 +114,7 @@ class Store {
     console.log('setting ' + path)
     // TODO: Before updating, checks that the value has really changed
     //_.set(this.data, path, val)
-    console.log('debugging')
-    console.log(_arrayPath(path))
-    console.log(val)
-    console.log(typeof val)
-    console.log(this.data.toJS())
     this.data = this.data.setIn(_arrayPath(path), val)
-    console.log(this.data.toJS())
     const divPaths = path.split('.')
     for (let i = divPaths.length; i > 0; i--) {
       this.callCallbacks(divPaths.slice(0,i), val)
