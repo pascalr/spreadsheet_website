@@ -155,6 +155,52 @@ function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }*/
 
+class LoadOnce extends React.Component {
+  componentDidMount() {
+    console.log('Loading once: ' + this.props.paths)
+    this.props.store.load(this.props.paths)
+    this.props.store.subscribe(this.props.paths, this.props.callback)
+  }
+  render() {return null}
+}
+
+class SubscribeOnce extends React.Component {
+  componentDidMount() {
+    console.log('Subscribing once: ' + this.props.paths)
+    this.props.store.subscribe(this.props.paths, this.props.callback)
+  }
+  render() {return null}
+}
+
+const withCached = function(rawPaths, Comp) {
+  class WithCached extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {subProps: null}
+    }
+    render() {
+      const paths = _.castArray(rawPaths)
+      const logSetSubProps = (blah) => {
+        // important to make sure the subProps is never null
+        // because null is used to mean that is was never loaded
+        return this.setState({subProps: (blah || {})}) 
+      }
+      return <StoreContext.Consumer>
+        {store => {
+          if (this.state.subProps !== null) {
+            // TODO: Only pass the data needed, don't pass the whole store.data
+            return <Comp {...this.props} {...store.data.toJS()} {...storeProps(store)} />
+          } else {
+            return <SubscribeOnce store={store} paths={paths} callback={logSetSubProps}/>
+          }
+        }}
+      </StoreContext.Consumer>
+    }
+  }
+  WithCached.displayName = `WithCached(${getDisplayName(Comp)}, ${_.castArray(rawPaths).join(', ')})`
+  return WithCached
+}
+
 // FUNCTION avec
 // avec (rawModels : String or [String], Comp : React Component) => (props)
 // avec is the french word for with which is a reserved keyword in javascript
@@ -182,9 +228,7 @@ const avec = function(rawPaths, Comp){
             // TODO: Only pass the data needed, don't pass the whole store.data
             return <Comp {...this.props} {...store.data.toJS()} {...storeProps(store)} />
           } else {
-            store.subscribe(paths, logSetSubProps)
-            store.load(paths)
-            return null
+            return <LoadOnce store={store} paths={paths} callback={logSetSubProps}/>
           }
         }}
       </StoreContext.Consumer>
@@ -222,3 +266,4 @@ export {withDispatch}
 export {StoreProvider}
 export {Store}
 export {avec}
+export {withCached}

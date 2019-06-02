@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import {avec, MOUSE_ACTION, SELECTED_COLOR,
+import {avec, MOUSE_ACTION, SELECTED_COLOR,withCached,
   MOUSE_ACTION_COLOR, withDispatch} from './contexts'
 import colorable from './colorable'
 
@@ -16,6 +16,9 @@ const ColorBox = withDispatch(props => {
 })
 
 const ColorSideMenu = colorable('sideMenu', function ColorableSideMenu(props) {
+  if (_.get(props, MOUSE_ACTION) !== MOUSE_ACTION_COLOR) {
+    return null
+  }
   const style={...(props.style || {})}
   style.border = 'solid 3px black'
   style.height = '100%'
@@ -50,14 +53,16 @@ const ColorSideMenu = colorable('sideMenu', function ColorableSideMenu(props) {
 })
 
 const PositionedSideMenu = props => {
-  let menu = null
-  if (_.get(props, MOUSE_ACTION) === MOUSE_ACTION_COLOR) {
-    menu = <ColorSideMenu {...props}/>
+  //let menu = null
+  if (_.get(props, MOUSE_ACTION) !== MOUSE_ACTION_COLOR) {
+    return null
+  //  menu = <ColorSideMenu {...props}/>
   }
-  if (!menu) {return null}
+    //{menu}
+  //if (!menu) {return null}
   return <div className='leftSideMenu'>
-    {menu}
+    <ColorSideMenu {...props}/>
   </div>
 }
 
-export default avec(MOUSE_ACTION,PositionedSideMenu)
+export default withCached(MOUSE_ACTION,PositionedSideMenu)

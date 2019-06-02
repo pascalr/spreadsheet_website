@@ -21,6 +21,7 @@ import FAB from './FAB'
 import Tooltip from './Tooltip'
 import {avec, ROUTE} from './contexts'
 import SideMenu from './SideMenu'
+import avec2 from './avec'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -71,4 +72,4 @@ class App extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDistpatchToProps)(avec(ROUTE,App));
+export default connect(mapStateToProps, mapDistpatchToProps)(avec2('test', avec(ROUTE,App)));
