@@ -4,6 +4,7 @@ import {MOUSE_ACTION,MOUSE_ACTION_DRAG,SELECTION, ROUTE, PREVIEWS,
   MOUSE_ACTION_COLOR,
   MOUSE_ACTION_ADD, MOUSE_ACTION_RESIZE,avec} from './contexts'
 import colorable from './colorable'
+import avec2 from './avec'
 
 import { IoIosMove } from "react-icons/io";
 
@@ -23,7 +24,7 @@ function tooltipButton(draw, callback) {
 const RightTooltip = avec([SELECTION,PREVIEWS], (props) => {
 
   function redirectHome() {
-    props.cache(ROUTE, `/`)
+    props.set('route', `/`)
   }
   function enableDrag() {
     props.cache(MOUSE_ACTION, MOUSE_ACTION_DRAG)
@@ -38,7 +39,7 @@ const RightTooltip = avec([SELECTION,PREVIEWS], (props) => {
     const ids = _.get(props, SELECTION)
     if (ids.length === 1) {
       const tableId = props.previews[ids[0]].tableId
-      props.cache(ROUTE, `/tables/${tableId}`)
+      props.set('route', `/tables/${tableId}`)
     }
   }
   function enableColorBrush() {
@@ -61,4 +62,4 @@ const RightTooltip = avec([SELECTION,PREVIEWS], (props) => {
   )
 })
 
-export default colorable('Tooltip',RightTooltip)
+export default colorable('Tooltip',avec2(null, RightTooltip))

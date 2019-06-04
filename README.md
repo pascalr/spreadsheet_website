@@ -2,6 +2,9 @@ THIS IS A BIG WORK IN PROGRESS.
 I HAVE MADE THIS PUBLIC IN ORDER TO USE GITHUB PAGES,
 BUT THIS IS REALLY NOT READY TO BE PUBLIC YET.
 
+v1 is Firebase only and need to be online
+should work on github pages
+
 withPersist => subscribes and loads
 withCached => subscribes only
 avec => deprecated, use withPersist and withCache, renverser l'ordre des arguments:

@@ -47,7 +47,7 @@ class App extends React.Component {
   }
   
   render() {
-    const route = _.get(this.props, ROUTE) || this.props.route
+    const route = this.props.route
     if (route) {
       this.props.history.push({
         hash: route,
@@ -72,4 +72,4 @@ class App extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDistpatchToProps)(avec2('test', avec(ROUTE,App)));
+export default connect(mapStateToProps, mapDistpatchToProps)(avec2('route', App));
