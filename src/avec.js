@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch) => ({
 const avec = (attrs, Comp) => {
   attrs = _.castArray(attrs)
   const map = (state) => (attrs.reduce((acc, curr) => {
-    acc[curr] = _.get(state.cache.root, curr)
+    _.set(acc, curr, _.get(state.cache.root, curr))
     return acc
   }, {}))
   return connect(map, mapDispatchToProps)(Comp)

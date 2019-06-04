@@ -22,6 +22,7 @@ import Tooltip from './Tooltip'
 import {avec, ROUTE} from './contexts'
 import SideMenu from './SideMenu'
 import avec2 from './avec'
+import Page from './Page'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -37,6 +38,7 @@ const routes = [
   {path: '/index.html', action: () => (<Screen />), default: true},
   {path: '/', action: () => (<Screen />)},
   {path: '/tables/:id', action: (props) => (<Table {...props} />)},
+  {path: '/pages/:id', action: (props) => (<Page {...props} />)},
 ]
 
 class App extends React.Component {
@@ -62,7 +64,7 @@ class App extends React.Component {
         <PreviewMenu />
         <Tooltip />
         <SideMenu />
-        <div style={{position: 'absolute', left: '26px'}}>
+        <div style={{position: 'absolute', left: '26px', width: '100%'}}>
           {router.resolve(routes, route || this.props.history.location.hash)}
         </div>
         <TableMenu db={this.props.db} />

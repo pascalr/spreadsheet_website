@@ -8,6 +8,7 @@ import { RIEInput } from 'riek'
 import { set, setDb } from '../actions'
 import _ from 'lodash'
 import {avec, TABLES} from '../contexts'
+import avec2 from '../avec'
 
 const mapStateToProps = state => ({
   db: state.db,
@@ -26,7 +27,7 @@ class Table extends React.Component {
   onCellsChanged = (layoutNb) => (changes, additions) => {
     //let data = this.data() ? {...this.data()} : {}
     let data = this.props.tables ? this.props.tables[this.props.id] : {}
-    if (data === "") {data = {}}
+    if (!data || data === "") {data = {}}
     //let data = this.props.data || {}
     const def = this.def()
     changes.concat(additions || []).forEach(({cell, row, col, value, type}) => {
@@ -49,8 +50,8 @@ class Table extends React.Component {
     })
     console.log('onCellsChanged')
     console.log(data)
-    //this.props.db.set([TABLE.TABLES,this.props.id],data)
-    this.props.dispatch([TABLE.TABLES,this.props.id],data)
+    this.props.db.set([TABLE.TABLES,this.props.id],data)
+    //this.props.dispatch([TABLE.TABLES,this.props.id],data)
     this.setState({data})
   }
 
@@ -148,10 +149,28 @@ class Table extends React.Component {
     );
   }
 
+  componentDidMount = () => {
+    this.props.db.get([TABLE.TABLES,this.props.id],this.props.set([TABLE.TABLES, this.props.id]))
+  }
+
+  componentDidUpdate = () => {
+    // FIXME: This is a quick fix, but I need to think about how to do this correctly
+    /*if (this.def() && !this.data()) {
+      console.log('badly updating table not found')
+      this.props.db.get([TABLE.TABLES,this.props.id],
+        (val) => this.props.set([TABLE.TABLES, this.props.id])(val || 'loaded'))
+    }*/
+  }
+
+
+//  componentDidMount() {
+    // subscribe to table changes
+ // }
+
 }
 
 const AvecTable = (props) => {
-  const Component = avec(TABLES+'.'+props.id, Table)
+  const Component = avec2(TABLES+'.'+props.id, Table)
   return <Component {...props}/>
 }
 
