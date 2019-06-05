@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import avec from './avec'
+import avec, {connectFor} from './avec'
 //import Autocomplete from 'react-autocomplete'
 //import { COMMANDS } from '../Command'
 
@@ -14,10 +14,13 @@ class Item extends React.Component {
   constructor (props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
+    this.renderTextArea = this.renderTextArea.bind(this)
+    this.state = {value: props.value || ''}
   }
 
   handleChange (e) {
-    this.props.onChange(e.target.value)
+    this.setState({value: e.target.value})
+    this.props.persist(['items',this.props.id,'value'],e.target.value)
   }
 
   textAreaKeyDown = (e) => {
@@ -29,17 +32,30 @@ class Item extends React.Component {
     }
   }
 
-  render (props) {
-    return (<div onKeyDown={this.onKeyDown}>
-      <textarea {...props}
-        value={'foo' || this.props.value.slice(1)}
+  // Must be in a different function than render.
+  // see https://github.com/erikras/redux-form/issues/1853
+  renderTextArea = () => {
+    return (<div onKeyDown={this.onKeyDown} key={"div_textarea_item_"+this.props.id}>
+      <textarea
+        key={"textarea_item_"+this.props.id}
+        value={this.state.value || '• Empty'}
         ref={input => { this._input = input }}
-        onChange={(e) => {this.props.onChange('='+e.target.value)}}
+        onChange={this.handleChange}
         onKeyDown={this.textAreaKeyDown}
         style={{width: '100%'}}
       />
     </div>)
   }
+
+  render () {
+    console.log('Rendering item')
+    return <div key='test'>{this.renderTextArea()}</div>
+  }
 }
 
-export default Item
+const AvecItem = props => {
+  const Component = connectFor(Item, {value: ['items',props.id,'value']})
+  return <Component {...props}/>
+}
+
+export default avec(null, Item)

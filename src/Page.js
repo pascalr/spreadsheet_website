@@ -14,14 +14,14 @@ const PAGE_STYLE = {
   width: '60%',
 }
 
-function addItem(pageName, set) {
-  const id = uuidv1()
-  set(['pages',pageName],{items: [id]})
-}
-
 class Page extends React.Component {
   renderItems = () => {
-    return this.props.items.map(item => <Item id={item}/>)
+    return this.props.items.map(item => <Item id={item} key={item}/>)
+  }
+
+  addItem = (pageName) => {
+    const id = uuidv1()
+    this.props.persist(['pages',pageName],{items: [id]})
   }
 
   render = () => {
@@ -32,14 +32,13 @@ class Page extends React.Component {
       <h1>{name}</h1>
       {items ? this.renderItems() : 'The page \''+name+'\' is currently empty.'}
       <br/><br/>
-      <div><button onClick={() => addItem(name, this.props.set)}>Add item</button></div>
+      <div><button onClick={() => this.addItem(name)}>Add item</button></div>
       <h2>Pages with similar names:</h2>
     </div>);
   }
 }
 
 const AvecPage = props => {
-  console.log('rerender AvecPage')
   const name = decodeURI(props.id)
   const Component = connectFor(Page, {items: ['pages',name,'items']})
   return <Component {...props}/>

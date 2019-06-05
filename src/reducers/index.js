@@ -1,7 +1,7 @@
 import * as ACTION from "../constants/action-types";
 //import { combineReducers } from 'redux'
 import { createBrowserHistory } from 'history'
-//import Firebase from '../Firebase'
+import Firebase from '../Firebase'
 import SimpleDb from '../SimpleDb'
 import { Map } from 'immutable';
 import _ from 'lodash'
@@ -81,8 +81,8 @@ function defs(state = {}, action) {
 export default function combination(state, action) {
   if (state === undefined) {
     state = {
-      db: new SimpleDb(),
-      //db: new Firebase(),
+      //db: new SimpleDb(),
+      db: new Firebase(),
       history: createBrowserHistory(),
     };
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
