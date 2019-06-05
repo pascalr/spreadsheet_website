@@ -385,3 +385,7 @@ input[type="text"] {
 .tooltipButton:active {
   background-color: #3e4e11;
 }
+
+textarea:not(:focus) {
+  border: none;
+}

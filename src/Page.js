@@ -1,40 +1,39 @@
 import React from 'react'
 import _ from 'lodash'
-import avec from './avec'
+import avec, {connectFor} from './avec'
 import uuidv1 from 'uuid/v1'
+import Item from './Item'
 
 // A Page is a list of Item.
 // An Item can be a Page.
 
 const PAGE_STYLE = {
   textAlign: 'center',
-  width: '100%',
+  marginLeft: '20%',
+  marginRight: '20%',
+  width: '60%',
 }
 
-// FIXME: Escape pageName .
 function addItem(pageName, set) {
   const id = uuidv1()
-  set(pageName,{items: [id]})
+  set(['pages',pageName],{items: [id]})
 }
 
 class Page extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   renderItems = () => {
-    return 'has items'
+    return this.props.items.map(item => <Item id={item}/>)
   }
 
   render = () => {
+    const {id, items} = this.props
     console.log('rerender Page')
-    const name = decodeURI(this.props.id)
-    const that = _.get(this.props, name)
+    const name = decodeURI(id)
     return (<div style={PAGE_STYLE}>
       <h1>{name}</h1>
-      {that && that.items ? this.renderItems() : 'The page \''+name+'\' is currently empty.'}
+      {items ? this.renderItems() : 'The page \''+name+'\' is currently empty.'}
       <br/><br/>
       <div><button onClick={() => addItem(name, this.props.set)}>Add item</button></div>
+      <h2>Pages with similar names:</h2>
     </div>);
   }
 }
@@ -42,7 +41,7 @@ class Page extends React.Component {
 const AvecPage = props => {
   console.log('rerender AvecPage')
   const name = decodeURI(props.id)
-  const Component = avec(name, Page)
+  const Component = connectFor(Page, {items: ['pages',name,'items']})
   return <Component {...props}/>
 }
 

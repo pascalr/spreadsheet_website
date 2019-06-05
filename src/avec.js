@@ -14,6 +14,16 @@ const mapDispatchToProps = (dispatch) => ({
   //unset(path) => dispatch(un
 })
 
+export const connectFor = (Comp, attrs) => {
+  const names = _.keys(attrs)
+  const map = (state) => (names.reduce((acc, curr) => {
+    _.set(acc, curr, _.get(state.cache.root, attrs[curr]))
+    return acc
+  }, {}))
+  return connect(map, mapDispatchToProps)(Comp)
+}
+
+// TODO: avec([path],[path],...Comp)
 const avec = (attrs, Comp) => {
   attrs = _.castArray(attrs)
   const map = (state) => (attrs.reduce((acc, curr) => {
