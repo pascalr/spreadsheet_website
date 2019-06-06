@@ -262,8 +262,8 @@ const withDispatch = (Comp) => function WithDispatch(props) {
 //export avec(PREVIEWS)(Exemple)
 //export avec([TABLES, PREVIEWS])(Exemple)
 
-export {withDispatch}
-export {StoreProvider}
-export {Store}
-export {avec}
-export {withCached}
+//export {withDispatch}
+//export {StoreProvider}
+//export {Store}
+//export {avec}
+//export {withCached}

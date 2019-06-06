@@ -1,10 +1,11 @@
 import React from 'react'
 import _ from 'lodash'
-import {avec, MOUSE_ACTION, SELECTED_COLOR,withCached,
-  MOUSE_ACTION_COLOR, withDispatch} from './contexts'
+import avec from './avec'
+import {MOUSE_ACTION, SELECTED_COLOR,
+  MOUSE_ACTION_COLOR} from './consts'
 import colorable from './colorable'
 
-const ColorBox = withDispatch(props => {
+const ColorBox = avec(null, props => {
   const style = {width: '20px', height:'20px'}
   style.backgroundColor = props.color
   style.cursor = 'pointer'
@@ -65,4 +66,4 @@ const PositionedSideMenu = props => {
   </div>
 }
 
-export default withCached(MOUSE_ACTION,PositionedSideMenu)
+export default avec(MOUSE_ACTION,PositionedSideMenu)

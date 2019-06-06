@@ -11,7 +11,7 @@ import TableMenu from './Table/TableMenu'
 import * as TABLE from './constants/tables'
 import { defsLoaded } from './actions'
 import Table from './Table'
-import Screen from './Screen'
+//import Screen from './Screen'
 import router from './router'
 import StatusBar from './StatusBar'
 import SearchBar from './SearchBar'
@@ -35,9 +35,10 @@ const mapDistpatchToProps = dispatch => ({
 })
 
 const routes = [
-  {path: '/index.html', action: () => (<Screen />), default: true},
-  {path: '/', action: () => (<Screen />)},
-  {path: '/tables/:id', action: (props) => (<Table {...props} />)},
+//  {path: '/index.html', action: () => (<Screen />), default: true},
+//  {path: '/', action: () => (<Screen />)},
+//  {path: '/tables/:id', action: (props) => (<Table {...props} />)},
+  {path: '/', action: (props) => (<Page {...props} />), default: true},
   {path: '/pages/:id', action: (props) => (<Page {...props} />)},
 ]
 
@@ -56,14 +57,14 @@ class App extends React.Component {
       })
     }
     //<div style={{display: 'flex', flexDirection: 'row'}}>
+        //<Tooltip />
+        //<SideMenu />
     return (
       <div className="app">
         <div className="taskbars">
           <SearchBar/>
         </div>
         <PreviewMenu />
-        <Tooltip />
-        <SideMenu />
         <div style={{position: 'absolute', left: '26px', width: '100%'}}>
           {router.resolve(routes, route || this.props.history.location.hash)}
         </div>

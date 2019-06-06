@@ -18,15 +18,15 @@ import SimpleDb from './SimpleDb'
 
 import myData from './data.json' // Used for the demo on github pages
 
-const theStore = !_.isEmpty(myData) ? new Store(myData) : new Store({}, new SimpleDb())
+//const theStore = !_.isEmpty(myData) ? new Store(myData) : new Store({}, new SimpleDb())
 
 //import KeyController from './KeyController'
 //<KeyController>
 //</KeyController>
 ReactDOM.render(
-  <StoreProvider store={theStore}>
+//  <StoreProvider store={theStore}>
+<Provider store={store}>
   <MouseController>
-  <Provider store={store}>
     <DragDropContextProvider backend={HTML5Backend}>
         <ByPass if={process.env.NODE_ENV === 'development'}>
           <ErrorBoundary>
@@ -34,9 +34,9 @@ ReactDOM.render(
           </ErrorBoundary>
         </ByPass>
     </DragDropContextProvider>
-  </Provider>
   </MouseController>
-  </StoreProvider>,
+</Provider>,
+//  </StoreProvider>,
   document.getElementById('root')
 );
 

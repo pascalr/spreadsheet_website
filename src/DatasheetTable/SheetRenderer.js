@@ -7,7 +7,7 @@ import { colDragSource, colDropTarget } from './drag-drop.js'
 import { RIEInput } from 'riek'
 import { set } from '../actions'
 import * as TABLE from '../constants/tables'
-import {withDispatch} from '../contexts'
+import avec from '../avec'
 
 const colMapStateToProps = state => ({
   db: state.db,
@@ -37,7 +37,7 @@ class ColumnNameBase extends React.Component {
   }
 }
 
-const ColumnName = connect(colMapStateToProps, colMapDispatchToProps)(withDispatch(ColumnNameBase));
+const ColumnName = connect(colMapStateToProps, colMapDispatchToProps)(avec(null, ColumnNameBase));
 
 class HeaderBase extends React.Component {
   render() {

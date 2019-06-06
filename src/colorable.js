@@ -1,7 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
-import {avec, MOUSE_ACTION, BACKGROUND_COLOR, SELECTED_COLOR,
-MOUSE_ACTION_COLOR} from './contexts'
+import avec from './avec'
+import {MOUSE_ACTION, BACKGROUND_COLOR, SELECTED_COLOR,
+MOUSE_ACTION_COLOR} from './consts'
 
 const colorable = (id, Comp) => avec([SELECTED_COLOR, MOUSE_ACTION,
   BACKGROUND_COLOR+'.'+id], function Colorable(props) {

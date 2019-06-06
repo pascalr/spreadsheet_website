@@ -1,8 +1,9 @@
 import React from 'react'
 import _ from 'lodash'
+import avec from './avec'
 import {MOUSE_ACTION,MOUSE_ACTION_DRAG,SELECTION, ROUTE, PREVIEWS,
   MOUSE_ACTION_COLOR,
-  MOUSE_ACTION_ADD, MOUSE_ACTION_RESIZE,avec} from './contexts'
+  MOUSE_ACTION_ADD, MOUSE_ACTION_RESIZE} from './consts'
 import colorable from './colorable'
 import avec2 from './avec'
 

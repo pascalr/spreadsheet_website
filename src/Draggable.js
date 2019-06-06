@@ -1,14 +1,14 @@
 import React, {useState} from 'react'
 import { connect } from "react-redux"
 import {DraggableCore} from 'react-draggable'
-import {withDispatch} from './contexts'
+import avec from './avec'
 
 const dragLinkProps = (state) => ({
   db: state.db
 })
 
 // TODO: Specify scale: number to draggable. See https://github.com/mzabriskie/react-draggable
-const Draggable = connect(dragLinkProps)(withDispatch((props) => {
+const Draggable = connect(dragLinkProps)(avec(null, (props) => {
   const [isDragging, setIsDragging] = useState(false)
   const [offsetX, setOffsetX] = useState(0)
   const [offsetY, setOffsetY] = useState(0)

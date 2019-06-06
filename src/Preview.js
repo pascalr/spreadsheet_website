@@ -10,8 +10,9 @@ import Table from './Table'
 import Draggable from './Draggable'
 import Resizable from './Resizable'
 import TableAutocomplete from './TableAutocomplete'
-import {avec, PREVIEWS, MOUSE_ACTION, SELECTION, MOUSE_ACTION_ADD,
-MOUSE_ACTION_DRAG, MOUSE_ACTION_RESIZE} from './contexts'
+import avec from './avec'
+import {PREVIEWS, MOUSE_ACTION, SELECTION, MOUSE_ACTION_ADD,
+MOUSE_ACTION_DRAG, MOUSE_ACTION_RESIZE} from './consts'
 import {genDef} from './helpers'
 import ByPass from './lib/ByPass'
 

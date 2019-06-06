@@ -1,7 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
-import {avec, MOUSE_ACTION, MOUSE_ACTION_DRAG, MOUSE_ACTION_COLOR,
-  MOUSE_ACTION_RESIZE, MOUSE_ACTION_ADD} from './contexts'
+import avec from './avec'
+import {MOUSE_ACTION, MOUSE_ACTION_DRAG, MOUSE_ACTION_COLOR,
+  MOUSE_ACTION_RESIZE, MOUSE_ACTION_ADD} from './consts'
 import Tooltip from './Tooltip'
 
 class MouseController extends React.Component {
