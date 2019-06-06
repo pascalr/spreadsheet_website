@@ -79,6 +79,7 @@
     "react-tiny-fab": "^2.0.0",
     "reactjs-popup": "^1.4.0",
     "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
     "resolve": "1.10.0",
     "riek": "^1.1.0",
     "sass-loader": "7.1.0",

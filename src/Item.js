@@ -11,6 +11,12 @@ const ITEM_STYLE = {
 }
 
 class Item extends React.Component {
+
+  componentDidMount() {
+    console.log('fetching item')
+    this.props.fetch(['items',this.props.id,'value'])
+  }
+
   constructor (props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
@@ -49,7 +55,11 @@ class Item extends React.Component {
 
   render () {
     console.log('Rendering item')
-    return <div key='test'>{this.renderTextArea()}</div>
+    return <div key={'div'+this.props.id}>{this.renderTextArea()}</div>
+  }
+
+  componentWillUnmount() {
+    console.log('unmounting item')
   }
 }
 
@@ -58,4 +68,4 @@ const AvecItem = props => {
   return <Component {...props}/>
 }
 
-export default avec(null, Item)
+export default AvecItem

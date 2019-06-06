@@ -2,6 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import { connect } from "react-redux"
 import * as ACTION from "./constants/action-types"
+import axios from 'axios'
 
 // implicitly forwarding arguments
 //    onReceiveImpressions: (...impressions) =>
@@ -21,9 +22,16 @@ function persist(db, path, val) {
   return { type: ACTION.CACHE.SET, path: ['root', ...path], val };
 }
 
+function fetch(db, path) {
+  return function(dispatch) {
+    db.get(path, (data) => dispatch(set(path,data)))
+  };
+}
+
 const mapDispatchToProps = (dispatch, props) => ({
   set: (path, val) => dispatch(set(path,val)),
   dispatchPersist: (db) => (path, val) => dispatch(persist(db, path,val)),
+  dispatchFetch: (db) => (path) => dispatch(fetch(db, path)),
   //unset(path) => dispatch(un
 })
 
@@ -37,6 +45,7 @@ const mergeProps = (propsFromState, propsFromDispatch, ownProps) => {
     ...propsFromDispatch,
     ...ownProps,
     persist: propsFromDispatch.dispatchPersist(propsFromState.db),
+    fetch: propsFromDispatch.dispatchFetch(propsFromState.db),
   };
 };
 

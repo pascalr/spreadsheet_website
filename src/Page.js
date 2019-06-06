@@ -15,7 +15,15 @@ const PAGE_STYLE = {
 }
 
 class Page extends React.Component {
+
+  componentDidMount() {
+    console.log('fetching page')
+    this.props.fetch(['pages',decodeURI(this.props.id),'items'])
+  }
+
   renderItems = () => {
+    console.log('key = ')
+    console.log(this.props.items)
     return this.props.items.map(item => <Item id={item} key={item}/>)
   }
 
